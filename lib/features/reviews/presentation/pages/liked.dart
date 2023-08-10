@@ -13,6 +13,7 @@ class _LikedPageState extends State<LikedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Center(
         child: Text('Liked Page'),
       ),

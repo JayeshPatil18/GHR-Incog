@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:review_app/utils/bottom_nav_icons.dart';
+import 'package:review_app/constants/color.dart';
+import 'package:review_app/constants/elevation.dart';
 import '../provider/bottom_nav_bar.dart';
+import '../widgets/bottom_nav_icons.dart';
 import 'home.dart';
 import 'liked.dart';
 import 'leaderboard.dart';
@@ -27,10 +29,12 @@ class _LandingPageState extends State<LandingPage> {
     return Consumer<BottomNavigationProvider>(
       builder: ((context, value, child) {
         return Scaffold(
+          backgroundColor: AppColors.backgroundColor60,
           body: screens[value.currentIndex],
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
+            elevation: AppElevations.fabButtonElev,
             child: Icon(
             Icons.add, // Replace with the desired icon
             size: 40, // You can adjust the size of the icon
@@ -43,9 +47,10 @@ class _LandingPageState extends State<LandingPage> {
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0)),
             child: BottomAppBar(
+              elevation: AppElevations.bottomNavBarElev,
               shape: CircularNotchedRectangle(),
               notchMargin: 12,
-              color: Colors.blue,
+              color: AppColors.primaryColor30,
               child: Container(
                 height: 60,
                 child: Row(
@@ -63,7 +68,7 @@ class _LandingPageState extends State<LandingPage> {
                         value.updateIndex(1);
                       },
                     ),
-                    SizedBox(width: 48.0), // Empty space for center notch
+                    SizedBox(width: 80.0), // Empty space for center notch
                     GestureDetector(
                       child: bottomNavIcons[2],
                       onTap: () {

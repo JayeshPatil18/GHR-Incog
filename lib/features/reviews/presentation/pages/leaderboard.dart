@@ -13,6 +13,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Center(
         child: Text('Leaderboard Page'),
       ),
