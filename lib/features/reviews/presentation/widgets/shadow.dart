@@ -6,14 +6,14 @@ class ContainerShadow {
   static final List<BoxShadow> boxShadow = [
     BoxShadow(
       color: AppShadowColors.topShadow,
-      offset: Offset(-4.0, -4.0),
-      blurRadius: 10,
+      offset: Offset(-3, -3),
+      blurRadius: 8,
       spreadRadius: 0.0,
     ),
     BoxShadow(
       color: AppShadowColors.bottomShadow,
-      offset: Offset(4.0, 4.0),
-      blurRadius: 10,
+      offset: Offset(3, 3),
+      blurRadius: 8,
       spreadRadius: 0.0,
     ),
   ];

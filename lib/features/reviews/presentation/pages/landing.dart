@@ -33,6 +33,7 @@ class _LandingPageState extends State<LandingPage> {
         return Scaffold(
           backgroundColor: AppColors.backgroundColor60,
           body: screens[value.currentIndex],
+          resizeToAvoidBottomInset: false,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(

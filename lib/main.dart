@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
 import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart';
 import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar.dart';
