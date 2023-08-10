@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:review_app/utils/bottom_nav_icons.dart';
 import '../provider/bottom_nav_bar.dart';
 import 'home.dart';
 import 'liked.dart';
@@ -50,28 +51,28 @@ class _LandingPageState extends State<LandingPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.home),
-                      onPressed: () {
+                    GestureDetector(
+                      child: bottomNavIcons[0],
+                      onTap: () {
                         value.updateIndex(0);
                       },
                     ),
-                    IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
+                    GestureDetector(
+                      child: bottomNavIcons[1],
+                      onTap: () {
                         value.updateIndex(1);
                       },
                     ),
                     SizedBox(width: 48.0), // Empty space for center notch
-                    IconButton(
-                      icon: Icon(Icons.notifications),
-                      onPressed: () {
+                    GestureDetector(
+                      child: bottomNavIcons[2],
+                      onTap: () {
                         value.updateIndex(2);
                       },
                     ),
-                    IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: () {
+                    GestureDetector(
+                      child: bottomNavIcons[3],
+                      onTap: () {
                         value.updateIndex(3);
                       },
                     ),
