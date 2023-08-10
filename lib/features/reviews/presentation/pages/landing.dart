@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
+import 'package:review_app/constants/shadow_color.dart';
+import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../provider/bottom_nav_bar.dart';
 import '../widgets/bottom_nav_icons.dart';
 import 'home.dart';
@@ -34,12 +36,29 @@ class _LandingPageState extends State<LandingPage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
-            elevation: AppElevations.fabButtonElev,
-            child: Icon(
-            Icons.add, // Replace with the desired icon
-            size: 40, // You can adjust the size of the icon
-            color: Colors.white, // You can adjust the color of the icon
+            backgroundColor: AppColors.secondaryColor10,
+            elevation: 1,
+            child: Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.all(Radius.circular(50)),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.secondaryColor10.withOpacity(0.2),
+          spreadRadius: 3,
+          blurRadius: 3,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+              child: Icon(
+              Icons.add, // Replace with the desired icon
+              size: 35, // You can adjust the size of the icon
+              color: AppColors.primaryColor30, // You can adjust the color of the icon
           ),
+            ),
             onPressed: () {},
           ),
           bottomNavigationBar: ClipRRect(
