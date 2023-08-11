@@ -8,13 +8,13 @@ class ContainerShadow {
       color: AppShadowColors.topShadow,
       offset: Offset(-3, -3),
       blurRadius: 8,
-      spreadRadius: 0.0,
+      spreadRadius: 1.0,
     ),
     BoxShadow(
       color: AppShadowColors.bottomShadow,
       offset: Offset(3, 3),
       blurRadius: 8,
-      spreadRadius: 0.0,
+      spreadRadius: 1.0,
     ),
   ];
 }

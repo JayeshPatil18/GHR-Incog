@@ -7,3 +7,16 @@ class AppColors {
   static const textColor = Color(0xFF32395D);
   static const iconColor = Color(0xFFCDCDCD);
 }
+
+MaterialColor mainAppColor = const MaterialColor(0xFF0DD8DF, <int, Color>{
+         50: Color(0xFF0DD8DF),
+         100: Color(0xFF0DD8DF),
+         200: Color(0xFF0DD8DF),
+         300: Color(0xFF0DD8DF),
+         400: Color(0xFF0DD8DF),
+         500: Color(0xFF0DD8DF),
+         600: Color(0xFF0DD8DF),
+         700: Color(0xFF0DD8DF),
+         800: Color(0xFF0DD8DF),
+         900: Color(0xFF0DD8DF),
+   });

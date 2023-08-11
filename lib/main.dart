@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: ((context) => BottomNavigationProvider()))
       ],
       child: MaterialApp(
+        theme: ThemeData(
+         primarySwatch: mainAppColor
+      ),
         debugShowCheckedModeBanner: false,
         title: 'Review Products',
         initialRoute: '/',

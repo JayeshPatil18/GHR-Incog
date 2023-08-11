@@ -18,8 +18,13 @@ TextStyle subText(){
   return const TextStyle(fontSize: 16, color: AppColors.textColor);
 }
 
+// In use
+TextStyle hintFieldText(){
+  return const TextStyle(fontSize: 18, color: AppColors.iconColor);
+}
 
+// In use
 TextStyle textFieldText(){
-  return const TextStyle(fontSize: 16, color: AppColors.textColor);
+  return const TextStyle(fontSize: 19, color: AppColors.textColor);
 }
 
