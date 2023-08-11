@@ -14,8 +14,9 @@ TextStyle videoTextTitle(){
   return const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textColor);
 }
 
-TextStyle subText(){
-  return const TextStyle(fontSize: 16, color: AppColors.textColor);
+// In use
+TextStyle filterText(){
+  return const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.primaryColor30);
 }
 
 // In use

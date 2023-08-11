@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
+import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../constants/boarder.dart';
@@ -97,6 +98,20 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            SizedBox(height : 20),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: ContainerShadow.boxShadow,
+                    color: AppColors.textColor,
+                    borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius),
+                  ),
+                  padding: EdgeInsets.only(top: 12, bottom: 12, left: 14, right: 14),
+                  child: Text('All', style: filterText()),
+                ),
+              ],
+            )
           ],
         ),
       ),
