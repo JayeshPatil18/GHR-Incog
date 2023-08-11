@@ -9,6 +9,7 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../utils/fonts.dart';
+import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +21,50 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
+
+  String selectedItem = 'Option 1';
+
+  void _showDropdown() async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text('Option 1'),
+                onTap: () {
+                  setState(() {
+                    selectedItem = 'Option 1';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Option 2'),
+                onTap: () {
+                  setState(() {
+                    selectedItem = 'Option 2';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Option 3'),
+                onTap: () {
+                  setState(() {
+                    selectedItem = 'Option 3';
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -107,8 +152,57 @@ class _HomePageState extends State<HomePage> {
                     color: AppColors.textColor,
                     borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius),
                   ),
-                  padding: EdgeInsets.only(top: 12, bottom: 12, left: 14, right: 14),
-                  child: Text('All', style: filterText()),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
+                  child: Text('All', style: filterText(color: AppColors.primaryColor30)),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: ContainerShadow.boxShadow,
+                    color: AppColors.primaryColor30,
+                    borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
+                    ),
+                  ),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
+                  child: Text('Category', style: filterText(color: AppColors.textColor)),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: ContainerShadow.boxShadow,
+                    color: AppColors.primaryColor30,
+                    borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
+                    ),
+                  ),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
+                  child: Text('Brand', style: filterText(color: AppColors.textColor)),
+                ),
+                SizedBox(width: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: ContainerShadow.boxShadow,
+                    color: AppColors.primaryColor30,
+                    borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
+                    ),
+                  ),
+                  padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
+                  child: Text('Rating', style: filterText(color: AppColors.textColor)),
+                ),
+                SizedBox(width: 12),
+                GestureDetector(
+                  onTap: () {
+                    showSortDialog(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: ContainerShadow.boxShadow,
+                      color: AppColors.backgroundColor60,
+                      borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
+                      ),
+                    ),
+                    padding: EdgeInsets.only(top: 10, bottom: 10, left: 11, right: 11),
+                    child: Icon(Icons.sort_rounded, color: AppColors.textColor),
+                  ),
                 ),
               ],
             )
@@ -116,5 +210,20 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void showSortDialog(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: false,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+        builder: (context) => DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.60,
+            maxChildSize: 0.60,
+            builder: (context, scrollContoller) => SingleChildScrollView(
+                  child: SortCard(),
+                )));
   }
 }

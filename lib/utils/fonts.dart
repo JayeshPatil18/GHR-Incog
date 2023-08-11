@@ -10,13 +10,14 @@ TextStyle textSubtitle(){
   return const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textColor);
 }
 
-TextStyle videoTextTitle(){
-  return const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textColor);
+// In use
+TextStyle subBoldText(){
+  return const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.bold);
 }
 
 // In use
-TextStyle filterText(){
-  return const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.primaryColor30);
+TextStyle filterText({Color color = AppColors.primaryColor30}){
+  return TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: color);
 }
 
 // In use
