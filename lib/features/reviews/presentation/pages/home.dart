@@ -8,6 +8,7 @@ import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../constants/boarder.dart';
+import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../widgets/sort_card.dart';
 
@@ -113,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                   child: TextField(
                   style: textFieldText(),
                   focusNode: _focusNode,
+                  cursorHeight: TextCursorHeight.cursorHeight,
                   decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.only(top: 16, bottom: 16, left: 20, right: 80),
