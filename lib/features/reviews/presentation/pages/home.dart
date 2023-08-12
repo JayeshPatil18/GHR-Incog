@@ -5,6 +5,7 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
+import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../constants/boarder.dart';
@@ -225,7 +226,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 30,),
+                ReviewModel()
               ],
             ),
           ),

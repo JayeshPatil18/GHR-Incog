@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../constants/shadow_color.dart';
 
@@ -18,3 +19,13 @@ class ContainerShadow {
     ),
   ];
 }
+  
+class TextShadow {
+  static final BoxShadow textShadow= BoxShadow(
+        offset: Offset(2.0, 2.0),
+        blurRadius: 30,
+        color: Colors.grey.shade400,
+        spreadRadius: 0
+      );
+}
+  

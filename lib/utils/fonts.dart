@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/constants/shadow_color.dart';
+import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 
 TextStyle textTitle(){
   return const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.textColor);
 }
 
-TextStyle textSubtitle(){
-  return const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textColor);
+// In use
+TextStyle subReviewPrice({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+      offset: Offset(0, 0),
+      blurRadius: 0,
+      color: Colors.transparent,
+    ),}){
+  return TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color, shadows: [boxShadow]);
 }
 
 // In use
