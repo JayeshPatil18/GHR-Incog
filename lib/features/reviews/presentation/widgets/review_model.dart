@@ -19,28 +19,35 @@ class _ReviewModelState extends State<ReviewModel> {
   Widget build(BuildContext context) {
     return Container(
       width: 200,
-      height: 200,
       decoration: BoxDecoration(
-        color: AppColors.primaryColor30,
-        borderRadius: BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
-        boxShadow: ContainerShadow.boxShadow
-      ),
+          color: AppColors.primaryColor30,
+          borderRadius:
+              BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
+          boxShadow: ContainerShadow.boxShadow),
       padding: EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
-                child: Image.network('https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE', fit: BoxFit.cover)
-                ),
+                  borderRadius:
+                      BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
+                  child: Image.network(
+                      'https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE',
+                      fit: BoxFit.cover)),
               Positioned(
                 top: 8,
                 left: 8,
                 child: Row(
                   children: [
-                    Text('\u{20B9}', style: subReviewPrice(color: AppColors.secondaryColor10, boxShadow: TextShadow.textShadow)),
-                    Text('${1040}', style: subReviewPrice(boxShadow: TextShadow.textShadow)),
+                    Text('\u{20B9}',
+                        style: subReviewPrice(
+                            color: AppColors.secondaryColor10,
+                            boxShadow: TextShadow.textShadow)),
+                    Text('${1040}',
+                        style:
+                            subReviewPrice(boxShadow: TextShadow.textShadow)),
                   ],
                 ),
               ),
@@ -49,12 +56,39 @@ class _ReviewModelState extends State<ReviewModel> {
                 right: 8,
                 child: Row(
                   children: [
-                    Icon(Icons.favorite_border, color: Colors.white, shadows: [TextShadow.textShadow],)
+                    Icon(
+                      Icons.favorite_border,
+                      color: Colors.white,
+                      shadows: [TextShadow.textShadow],
+                    )
                   ],
                 ),
               )
             ],
-          )
+          ),
+          SizedBox(height: 10),
+          Text('Nike Air Force (White)', style: reviewTitle()),
+              SizedBox(height: 8),
+              Text('Men\'s clothing', style: reviewCategory()),
+              SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('12/04/2023', style: dateReview()),  
+              Row(
+                children: [
+                  Icon(Icons.star, size: 17, color: Colors.yellow),
+                  Icon(Icons.star, size: 17, color: Colors.yellow),
+                  Icon(Icons.star, size: 17, color: Colors.yellow),
+                  Icon(Icons.star, size: 17, color: AppColors.iconColor),
+                  Icon(Icons.star, size: 17, color: AppColors.iconColor),
+                ],
+              )
+            ],
+          ),
+
+           
+          
         ],
       ),
     );

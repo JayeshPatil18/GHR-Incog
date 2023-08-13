@@ -3,9 +3,44 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
+// Rivew Model Fonts
+//************//
 
-TextStyle textTitle(){
-  return const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.textColor);
+
+// In use
+TextStyle viewBtnText({BoxShadow boxShadow = const BoxShadow(
+      offset: Offset(0, 0),
+      blurRadius: 0,
+      color: Colors.transparent,
+    ),}){
+  return TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondaryColor10, shadows: [boxShadow]);
+}
+
+// In use
+TextStyle dateReview({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+      offset: Offset(0, 0),
+      blurRadius: 0,
+      color: Colors.transparent,
+    ),}){
+  return TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
+}
+
+// In use
+TextStyle reviewCategory({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+      offset: Offset(0, 0),
+      blurRadius: 0,
+      color: Colors.transparent,
+    ),}){
+  return TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
+}
+
+// In use
+TextStyle reviewTitle({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+      offset: Offset(0, 0),
+      blurRadius: 0,
+      color: Colors.transparent,
+    ),}){
+  return TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color, shadows: [boxShadow]);
 }
 
 // In use
@@ -14,8 +49,10 @@ TextStyle subReviewPrice({Color color = AppColors.textColor, BoxShadow boxShadow
       blurRadius: 0,
       color: Colors.transparent,
     ),}){
-  return TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color, shadows: [boxShadow]);
+  return TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color, shadows: [boxShadow]);
 }
+//************//
+
 
 // In use
 TextStyle subBoldText(){
