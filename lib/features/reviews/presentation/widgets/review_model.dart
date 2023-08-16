@@ -55,8 +55,8 @@ class _ReviewModelState extends State<ReviewModel> {
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(
-                        AppBoarderRadius.reviewModelRadius),
-                    child: widget.imageUrl == 'null'
+                        AppBoarderRadius.reviewModelImageRadius),
+                    child: widget.imageUrl == null
                         ? SizedBox(width: 156, height: 156)
                         : Image.network(widget.imageUrl, fit: BoxFit.cover)),
                 Positioned(
@@ -112,13 +112,13 @@ class _ReviewModelState extends State<ReviewModel> {
                       Text(widget.category, style: reviewSubTitle()),
                     ],
                   ),
-                  SizedBox(height: 6),
+                  SizedBox(height: 4),
                 ],
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10, right: 10,bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
