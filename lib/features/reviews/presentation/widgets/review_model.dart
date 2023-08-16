@@ -92,33 +92,35 @@ class _ReviewModelState extends State<ReviewModel> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
             child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 8),
-                  Text(widget.title, style: reviewTitle()),
-                  SizedBox(height: 4),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(widget.brand, style: reviewSubTitle()),
-                      Text('  ○  ',
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textColor)),
-                      Text(widget.category, style: reviewSubTitle()),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                ],
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 2),
+                    Text(widget.title, style: reviewTitle()),
+                    SizedBox(height: 4),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(widget.brand, style: reviewSubTitle()),
+                        Text('  ○  ',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textColor)),
+                        Text(widget.category, style: reviewSubTitle()),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                  ],
+                ),
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 10, right: 10,bottom: 5),
+            margin: EdgeInsets.only(left: 10, right: 10,bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
