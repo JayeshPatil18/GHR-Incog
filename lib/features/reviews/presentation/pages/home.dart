@@ -167,10 +167,11 @@ class _HomePageState extends State<HomePage> {
             ];
           },
           body: Container(
-            margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+            margin: EdgeInsets.only(top: 20),
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -236,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                               AppBoarderRadius.filterRadius),
                         ),
                         padding: EdgeInsets.only(
-                            top: 10, bottom: 10, left: 11, right: 11),
+                            top: 10, bottom: 10, left: 7, right: 7),
                         child: Icon(Icons.sort_rounded,
                             color: AppColors.textColor),
                       ),
@@ -244,11 +245,11 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Expanded(
                   child: GridView.builder(
-                    padding: EdgeInsets.only(bottom: 100),
+                    padding: EdgeInsets.only(top: 10, bottom: 100, left: 20, right: 20),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisSpacing: 20,
@@ -259,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.vertical,
                       itemCount: 10,
                       itemBuilder: (BuildContext context, int index) {
-                        return ReviewModel(imageUrl : 'https://img.avery.com/f_auto,q_auto,c_scale,w_280/web/weprint/labels/weprint-tile-shape-tea-square', price : '100', isLiked : true, title : 'Nike Air Force (White)', category : 'Men\'s clothing', date : '12/04/2023', rating : 3);
+                        return ReviewModel(imageUrl : 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', price : '100', isLiked : true, title : 'Apple iPhone 14 Pro', brand : 'Apple', category : 'Smart Phones', date : '12/04/2023', rating : 3);
                       }),
                 ),
               ],

@@ -7,14 +7,13 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 //************//
 
 
-// In use
-TextStyle viewBtnText({BoxShadow boxShadow = const BoxShadow(
-      offset: Offset(0, 0),
-      blurRadius: 0,
-      color: Colors.transparent,
-    ),}){
-  return TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondaryColor10, shadows: [boxShadow]);
-}
+// TextStyle viewBtnText({BoxShadow boxShadow = const BoxShadow(
+//       offset: Offset(0, 0),
+//       blurRadius: 0,
+//       color: Colors.transparent,
+//     ),}){
+//   return TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondaryColor10, shadows: [boxShadow]);
+// }
 
 // In use
 TextStyle dateReview({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
@@ -22,16 +21,16 @@ TextStyle dateReview({Color color = AppColors.textColor, BoxShadow boxShadow = c
       blurRadius: 0,
       color: Colors.transparent,
     ),}){
-  return TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
+  return TextStyle(fontSize: 11, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
 }
 
 // In use
-TextStyle reviewCategory({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+TextStyle reviewSubTitle({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
       offset: Offset(0, 0),
       blurRadius: 0,
       color: Colors.transparent,
     ),}){
-  return TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
+  return TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
 }
 
 // In use
@@ -40,7 +39,7 @@ TextStyle reviewTitle({Color color = AppColors.textColor, BoxShadow boxShadow = 
       blurRadius: 0,
       color: Colors.transparent,
     ),}){
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color, shadows: [boxShadow]);
+  return TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: color, shadows: [boxShadow]);
 }
 
 // In use
@@ -53,15 +52,13 @@ TextStyle subReviewPrice({Color color = AppColors.textColor, BoxShadow boxShadow
 }
 //************//
 
-
-// In use
-TextStyle subBoldText(){
-  return const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.bold);
-}
+// TextStyle subBoldText(){
+//   return const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.bold);
+// }
 
 // In use
 TextStyle filterText({Color color = AppColors.primaryColor30}){
-  return TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: color);
+  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
 }
 
 // In use
