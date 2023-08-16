@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:isolate';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -7,8 +10,26 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import 'package:review_app/utils/fonts.dart';
 
+import '../../../../constants/values.dart';
+
 class ReviewModel extends StatefulWidget {
-  const ReviewModel({super.key});
+  final String imageUrl;
+  final String price;
+  final bool isLiked;
+  final String title;
+  final String category;
+  final String date;
+  final int rating;
+
+  const ReviewModel({
+    required this.imageUrl,
+    required this.price,
+    required this.isLiked,
+    required this.title,
+    required this.category,
+    required this.date,
+    required this.rating,
+  });
 
   @override
   State<ReviewModel> createState() => _ReviewModelState();
@@ -18,7 +39,6 @@ class _ReviewModelState extends State<ReviewModel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
       decoration: BoxDecoration(
           color: AppColors.primaryColor30,
           borderRadius:
@@ -33,9 +53,7 @@ class _ReviewModelState extends State<ReviewModel> {
               ClipRRect(
                   borderRadius:
                       BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
-                  child: Image.network(
-                      'https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE',
-                      fit: BoxFit.cover)),
+                  child: widget.imageUrl == 'null' ? SizedBox(width: 156, height: 156) : Image.network(widget.imageUrl, fit: BoxFit.cover)),
               Positioned(
                 top: 8,
                 left: 8,
@@ -45,50 +63,53 @@ class _ReviewModelState extends State<ReviewModel> {
                         style: subReviewPrice(
                             color: AppColors.secondaryColor10,
                             boxShadow: TextShadow.textShadow)),
-                    Text('${1040}',
+                    Text(widget.price,
                         style:
                             subReviewPrice(boxShadow: TextShadow.textShadow)),
                   ],
                 ),
               ),
               Positioned(
-                top: 8,
-                right: 8,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                      shadows: [TextShadow.textShadow],
-                    )
-                  ],
-                ),
-              )
+                  top: 8,
+                  right: 8,
+                  child: widget.isLiked
+                      ? Icon(
+                          Icons.favorite,
+                          color: AppColors.heartColor,
+                          shadows: [TextShadow.textShadow],
+                        )
+                      : Icon(
+                          Icons.favorite_border,
+                          color: AppColors.primaryColor30,
+                          shadows: [TextShadow.textShadow],
+                        ))
             ],
           ),
           SizedBox(height: 10),
-          Text('Nike Air Force (White)', style: reviewTitle()),
-              SizedBox(height: 8),
-              Text('Men\'s clothing', style: reviewCategory()),
-              SizedBox(height: 8),
+          Text(widget.title, style: reviewTitle()),
+          SizedBox(height: 8),
+          Text(widget.category, style: reviewCategory()),
+          SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('12/04/2023', style: dateReview()),  
-              Row(
-                children: [
-                  Icon(Icons.star, size: 17, color: Colors.yellow),
-                  Icon(Icons.star, size: 17, color: Colors.yellow),
-                  Icon(Icons.star, size: 17, color: Colors.yellow),
-                  Icon(Icons.star, size: 17, color: AppColors.iconColor),
-                  Icon(Icons.star, size: 17, color: AppColors.iconColor),
-                ],
-              )
+              Text(widget.date, style: dateReview()),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  height: 17,
+                  child: ListView.builder(
+                    reverse: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: AppValues.maxRating,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Icon(Icons.star, size: 17, color: index < AppValues.maxRating - widget.rating ? AppColors.iconColor : AppColors.starColor);
+                      },
+                    ),
+                ),
+              ),
             ],
           ),
-
-           
-          
         ],
       ),
     );

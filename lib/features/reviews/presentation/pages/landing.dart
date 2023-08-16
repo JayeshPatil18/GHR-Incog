@@ -31,6 +31,7 @@ class _LandingPageState extends State<LandingPage> {
     return Consumer<BottomNavigationProvider>(
       builder: ((context, value, child) {
         return Scaffold(
+          extendBody: true,
           backgroundColor: AppColors.backgroundColor60,
           body: screens[value.currentIndex],
           resizeToAvoidBottomInset: false,

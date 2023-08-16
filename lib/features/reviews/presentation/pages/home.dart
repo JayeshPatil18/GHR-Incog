@@ -89,75 +89,80 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
+        bottom: false,
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return[
+            return [
               SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Container(
-                margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: Column(
-                  children: [
-                    Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset('assets/icons/menu.png', height: 34, width: 34),
-                    CircleIconContainer(
-                        containerColor: AppColors.textColor,
-                        containerSize: 44,
-                        icon: Image.asset('assets/icons/notification.png',
-                            height: AppIconSize.bottomNavBarIcons,
-                            width: AppIconSize.bottomNavBarIcons))
-                  ],
-                ),
-                SizedBox(height: 40),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: ContainerShadow.boxShadow
-                      ),
-                      child: TextField(
-                      style: textFieldText(),
-                      focusNode: _focusNode,
-                      cursorHeight: TextCursorHeight.cursorHeight,
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.only(top: 16, bottom: 16, left: 20, right: 80),
-                        fillColor: AppColors.primaryColor30,
-                        filled: true,
-                        hintText: _hasFocus ? 'Search Products' : null,
-                        hintStyle: hintFieldText(),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppBoarderRadius.searchBarRadius),
-                          borderSide: const BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
+                delegate: SliverChildListDelegate([
+                  Container(
+                    margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset('assets/icons/menu.png',
+                                height: 34, width: 34),
+                            CircleIconContainer(
+                                containerColor: AppColors.textColor,
+                                containerSize: 44,
+                                icon: Image.asset(
+                                    'assets/icons/notification.png',
+                                    height: AppIconSize.bottomNavBarIcons,
+                                    width: AppIconSize.bottomNavBarIcons))
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: ContainerShadow.boxShadow),
+                              child: TextField(
+                                style: textFieldText(),
+                                focusNode: _focusNode,
+                                cursorHeight: TextCursorHeight.cursorHeight,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      top: 16, bottom: 16, left: 20, right: 80),
+                                  fillColor: AppColors.primaryColor30,
+                                  filled: true,
+                                  hintText:
+                                      _hasFocus ? 'Search Products' : null,
+                                  hintStyle: hintFieldText(),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        AppBoarderRadius.searchBarRadius),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
                                   ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          AppBoarderRadius.searchBarRadius),
+                                      borderSide: BorderSide(
+                                          width: AppBoarderWidth.searchBarWidth,
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                                right: 8,
+                                child: CircleIconContainer(
+                                    icon: const Icon(Icons.search,
+                                        color: AppColors.primaryColor30),
+                                    containerColor: AppColors.secondaryColor10,
+                                    containerSize: 40)),
+                          ],
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(AppBoarderRadius.searchBarRadius),
-                          borderSide: BorderSide(
-                            width: AppBoarderWidth.searchBarWidth,
-                            color: AppBoarderColor.searchBarColor
-                          )
-                        ),
-                      ),
+                      ],
+                    ),
                   ),
-                    ),
-                  Positioned(
-                      right: 8,
-                      child: CircleIconContainer(icon: const Icon(Icons.search, color: AppColors.primaryColor30), containerColor: AppColors.secondaryColor10, containerSize: 40)
-                    ),
-                  ],
-                ),
-                  ],
-                ),
-              ),
-                  ]
-                ),
+                ]),
               )
             ];
           },
@@ -171,43 +176,52 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                         boxShadow: ContainerShadow.boxShadow,
                         color: AppColors.textColor,
-                        borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius),
+                        borderRadius: BorderRadius.circular(
+                            AppBoarderRadius.filterRadius),
                       ),
-                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('All', style: filterText(color: AppColors.primaryColor30)),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 10, left: 13, right: 13),
+                      child: Text('All',
+                          style: filterText(color: AppColors.primaryColor30)),
                     ),
                     SizedBox(width: 12),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: ContainerShadow.boxShadow,
                         color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
-                        ),
+                        borderRadius: BorderRadius.circular(
+                            AppBoarderRadius.filterRadius),
                       ),
-                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Category', style: filterText(color: AppColors.textColor)),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 10, left: 13, right: 13),
+                      child: Text('Category',
+                          style: filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: ContainerShadow.boxShadow,
                         color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
-                        ),
+                        borderRadius: BorderRadius.circular(
+                            AppBoarderRadius.filterRadius),
                       ),
-                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Brand', style: filterText(color: AppColors.textColor)),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 10, left: 13, right: 13),
+                      child: Text('Brand',
+                          style: filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: ContainerShadow.boxShadow,
                         color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
-                        ),
+                        borderRadius: BorderRadius.circular(
+                            AppBoarderRadius.filterRadius),
                       ),
-                      padding: EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Rating', style: filterText(color: AppColors.textColor)),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 10, left: 13, right: 13),
+                      child: Text('Rating',
+                          style: filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     GestureDetector(
@@ -218,17 +232,36 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           boxShadow: ContainerShadow.boxShadow,
                           color: AppColors.backgroundColor60,
-                          borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
-                          ),
+                          borderRadius: BorderRadius.circular(
+                              AppBoarderRadius.filterRadius),
                         ),
-                        padding: EdgeInsets.only(top: 10, bottom: 10, left: 11, right: 11),
-                        child: Icon(Icons.sort_rounded, color: AppColors.textColor),
+                        padding: EdgeInsets.only(
+                            top: 10, bottom: 10, left: 11, right: 11),
+                        child: Icon(Icons.sort_rounded,
+                            color: AppColors.textColor),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 30,),
-                ReviewModel()
+                SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: GridView.builder(
+                    padding: EdgeInsets.only(bottom: 100),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                        crossAxisCount: 2,
+                        childAspectRatio: (100/158)
+                      ),
+                      scrollDirection: Axis.vertical,
+                      itemCount: 10,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ReviewModel(imageUrl : 'https://img.avery.com/f_auto,q_auto,c_scale,w_280/web/weprint/labels/weprint-tile-shape-tea-square', price : '100', isLiked : true, title : 'Nike Air Force (White)', category : 'Men\'s clothing', date : '12/04/2023', rating : 3);
+                      }),
+                ),
               ],
             ),
           ),

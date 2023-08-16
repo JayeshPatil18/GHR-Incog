@@ -22,10 +22,10 @@ class ContainerShadow {
   
 class TextShadow {
   static final BoxShadow textShadow= BoxShadow(
-        offset: Offset(2.0, 2.0),
-        blurRadius: 25,
-        color: Colors.grey.shade400,
-        spreadRadius: 0
+        offset: Offset(0.0, 0.0),
+        blurRadius: 20,
+        color: Colors.white,
+        spreadRadius: 1
       );
 }
   
