@@ -1,6 +1,7 @@
 import 'package:review_app/constants/color.dart';
 
 class AppBoarderRadius {
+  static const userModelRadius = 20.0;
   static const reviewModelRadius = 20.0;
   static const reviewModelImageRadius = 18.0;
   static const searchBarRadius = 20.0;

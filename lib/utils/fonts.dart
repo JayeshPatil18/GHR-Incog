@@ -3,17 +3,28 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
-// Rivew Model Fonts
+
+// In use
+TextStyle pageTitleText(){
+  return const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
+}
+
+// Ranking User Model Fonts
 //************//
 
+// In use
+TextStyle userRankingTitle(){
+  return TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
 
-// TextStyle viewBtnText({BoxShadow boxShadow = const BoxShadow(
-//       offset: Offset(0, 0),
-//       blurRadius: 0,
-//       color: Colors.transparent,
-//     ),}){
-//   return TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondaryColor10, shadows: [boxShadow]);
-// }
+// In use
+TextStyle userRankingSubTitle(){
+  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.textColor);
+}
+//************//
+
+// Rivew Model Fonts
+//************//
 
 // In use
 TextStyle dateReview({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
