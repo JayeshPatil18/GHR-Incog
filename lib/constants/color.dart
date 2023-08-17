@@ -6,6 +6,7 @@ class AppColors {
   static const secondaryColor10 = Color(0xFF0DD8DF);
   static const textColor = Color(0xFF32395D);
   static const iconColor = Color(0xFFCDCDCD);
+  static const iconLightColor = Color(0xFFe4e4e4);
   static const starColor = Color(0xffd4af37);
   static const heartColor = Color(0xfff70059);
 }

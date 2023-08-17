@@ -20,14 +20,14 @@ class _DropdownState extends State<Dropdown> {
       padding: EdgeInsets.only(top: 2, bottom: 2, left: 20, right: 20),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,  // Set the background color here
-        borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius),
+        color: AppColors.primaryColor30,  // Set the background color here
+        borderRadius: BorderRadius.circular(AppBoarderRadius.reviewUploadRadius),
       ),
       child: DropdownButtonHideUnderline(
         child: ButtonTheme(
           child: DropdownButton<String>(
             dropdownColor: AppColors.primaryColor30,
-            style: filterText(),
+            style: textFieldText(),
                 value: selectedValue,
                 onChanged: (newValue) {
                   setState(() {
