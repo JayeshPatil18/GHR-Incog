@@ -39,7 +39,7 @@ class _LandingPageState extends State<LandingPage> {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
             backgroundColor: AppColors.secondaryColor10,
-            elevation: 1,
+            elevation: AppElevations.fabButtonElev,
             child: Container(
               width: 70,
               height: 70,
@@ -73,7 +73,7 @@ class _LandingPageState extends State<LandingPage> {
               notchMargin: 12,
               color: AppColors.primaryColor30,
               child: Container(
-                height: 60,
+                height: 65,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

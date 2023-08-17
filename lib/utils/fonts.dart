@@ -9,6 +9,35 @@ TextStyle pageTitleText(){
   return const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
 }
 
+// Profile User Model Fonts
+//************//
+
+// In use
+TextStyle nameText(){
+  return TextStyle(fontSize: 25, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+// In use
+TextStyle usernameText(){
+  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+}
+
+// In use
+TextStyle userSubText(){
+  return TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+// In use
+TextStyle userValueText(){
+  return TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+// In use
+TextStyle userBioText(){
+  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+}
+//************//
+
 // Ranking User Model Fonts
 //************//
 

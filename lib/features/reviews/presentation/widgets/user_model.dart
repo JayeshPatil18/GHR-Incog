@@ -29,7 +29,7 @@ class UserModel extends StatelessWidget {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.textColor,
                                   width: 1.5,
                                 ),
                               ),
