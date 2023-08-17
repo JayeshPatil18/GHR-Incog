@@ -24,7 +24,7 @@ TextStyle usernameText(){
 
 // In use
 TextStyle userSubText(){
-  return TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  return TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textColor);
 }
 
 // In use

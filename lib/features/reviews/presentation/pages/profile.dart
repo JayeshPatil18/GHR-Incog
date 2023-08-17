@@ -41,7 +41,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: null,
                   toolbarHeight: 218,
                   flexibleSpace: new FlexibleSpaceBar(
-                    background: UserProfileModel()
+                    background: UserProfileModel(
+                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'
+                    )
                   ),
                 ),
               ];

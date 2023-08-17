@@ -6,10 +6,29 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
 
-class UserModel extends StatelessWidget {
-  const UserModel({super.key});
+class UserModel extends StatefulWidget {
 
+  final String profileUrl;
+  final String name;
+  final String username;
+  final int rank;
+  final int points;
+
+  const UserModel({super.key, 
+    required this.profileUrl,
+    required this.name,
+    required this.username,
+    required this.rank,
+    required this.points
+  });
+
+  @override
+  State<UserModel> createState() => _UserModelState();
+}
+
+class _UserModelState extends State<UserModel> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +53,7 @@ class UserModel extends StatelessWidget {
                                 ),
                               ),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
+                                backgroundImage: NetworkImage(widget.profileUrl),
                                 radius: 40,
                               )
                             ),
@@ -45,12 +64,12 @@ class UserModel extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Harry Marsh',
+                                      widget.name,
                                       style: userRankingTitle(),
                                     ),
                                     SizedBox(height: 6),
                                     Text(
-                                      '@harshmarsh',
+                                      '@${widget.username}',
                                       style: userRankingSubTitle(),
                                     ),
                                   ],
@@ -63,9 +82,9 @@ class UserModel extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('1st', style: userRankingTitle()),
+                            Text(widget.rank.toString(), style: userRankingTitle()),
                             SizedBox(height: 6),
-                            Text('Pts. 400',
+                            Text('Pts. ${widget.points}',
                                 style: userRankingSubTitle()),
                           ],
                         ),

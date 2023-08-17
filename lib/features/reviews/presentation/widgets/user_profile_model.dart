@@ -5,10 +5,31 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
 
-class UserProfileModel extends StatelessWidget {
-  const UserProfileModel({super.key});
+class UserProfileModel extends StatefulWidget {
 
+  final String profileUrl;
+  final String name;
+  final String username;
+  final int rank;
+  final int points;
+  final String bio;
+
+  const UserProfileModel({super.key, 
+    required this.profileUrl,
+    required this.name,
+    required this.username,
+    required this.rank,
+    required this.points,
+    required this.bio
+  });
+
+  @override
+  State<UserProfileModel> createState() => _UserProfileModelState();
+}
+
+class _UserProfileModelState extends State<UserProfileModel> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +56,7 @@ class UserProfileModel extends StatelessWidget {
                                 ),
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                      'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg'),
+                                      widget.profileUrl),
                                   radius: 50,
                                 )),
                             Container(
@@ -49,12 +70,12 @@ class UserProfileModel extends StatelessWidget {
                                     children: [
                                       Container(
                                           alignment: Alignment.topLeft,
-                                          child: Text('Harrybaba',
+                                          child: Text(widget.name,
                                               style: nameText())),
                                       Container(
                                           alignment: Alignment.topLeft,
                                           margin: EdgeInsets.only(top: 6),
-                                          child: Text('@Harrybaba',
+                                          child: Text('@${widget.username}',
                                               style: usernameText()))
                                     ],
                                   ),
@@ -65,11 +86,11 @@ class UserProfileModel extends StatelessWidget {
                                     children: [
                                       Text('Rank', style: userSubText()),
                                       SizedBox(width: 6),
-                                      Text('1st', style: userValueText()),
+                                      Text(widget.rank.toString(), style: userValueText()),
                                       SizedBox(width: 20),
                                       Text('Points', style: userSubText()),
                                       SizedBox(width: 6),
-                                      Text('400', style: userValueText()),
+                                      Text(widget.points.toString(), style: userValueText()),
                                     ],
                                   )
                                 ],
@@ -79,7 +100,7 @@ class UserProfileModel extends StatelessWidget {
                         ),
                         SizedBox(height: 14),
                         Text(
-                            'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student',
+                            widget.bio,
                             style: userBioText())
                       ],
                     ),
