@@ -61,7 +61,9 @@ class _LandingPageState extends State<LandingPage> {
               color: AppColors.primaryColor30, // You can adjust the color of the icon
           ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, 'upload');
+            },
           ),
           bottomNavigationBar: ClipRRect(
             borderRadius: BorderRadius.only(

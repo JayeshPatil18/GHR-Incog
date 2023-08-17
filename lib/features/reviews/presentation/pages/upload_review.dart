@@ -56,8 +56,8 @@ class _UploadReviewState extends State<UploadReview> {
   @override
   void dispose() {
     _focusNameNode.dispose();
-    _focusNameNode.dispose();
-    _focusNameNode.dispose();
+    _focusDescNode.dispose();
+    _focusSummaryNode.dispose();
     super.dispose();
   }
 
@@ -84,8 +84,13 @@ class _UploadReviewState extends State<UploadReview> {
                     EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                 child: Row(
                   children: [
-                    Icon(Icons.arrow_back_ios,
-                        color: AppColors.textColor, size: 28),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back_ios,
+                          color: AppColors.textColor, size: 28),
+                    ),
                     SizedBox(width: 10),
                     Text('Review', style: pageTitleText()),
                   ],

@@ -11,6 +11,11 @@ class RouteGenerator{
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
+          builder: (_) => const LandingPage()
+        );
+
+      case 'upload':
+        return MaterialPageRoute(
           builder: (_) => const UploadReview()
         );
 
