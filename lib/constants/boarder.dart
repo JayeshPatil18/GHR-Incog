@@ -6,6 +6,7 @@ class AppBoarderRadius {
   static const reviewModelImageRadius = 18.0;
   static const searchBarRadius = 20.0;
   static const filterRadius = 15.0;
+  static const reviewUploadRadius = 15.0;
 }
 
 class AppBoarderColor {
@@ -14,4 +15,5 @@ class AppBoarderColor {
 
 class AppBoarderWidth {
   static const searchBarWidth = 1.0;
+  static const reviewUploadWidth = 0.5;
 }

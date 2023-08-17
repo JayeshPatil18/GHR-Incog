@@ -4,6 +4,24 @@ import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 
+// Ranking User Model Fonts
+//************//
+
+// In use
+TextStyle uploadButtonText(){
+  return TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+// In use
+TextStyle lableText(){
+  return TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+// TextStyle textFieldHint(){
+//   return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.textColor);
+// }
+//************//
+
 // In use
 TextStyle pageTitleText(){
   return const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);

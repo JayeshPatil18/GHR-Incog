@@ -52,7 +52,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                 padding: EdgeInsets.only(top: 10, left: 14, right: 14, bottom: 90),
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return UserModel(profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400);
+                  return UserModel(profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: index + 1, points : 400);
                 },
               ),
             )
