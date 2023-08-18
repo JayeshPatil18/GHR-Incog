@@ -17,9 +17,9 @@ TextStyle lableText(){
   return TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
 }
 
-// TextStyle textFieldHint(){
-//   return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.textColor);
-// }
+TextStyle suggestionText({Color color = AppColors.textColor}){
+  return TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: color);
+}
 //************//
 
 // In use

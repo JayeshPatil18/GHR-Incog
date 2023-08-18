@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Categorys {
+class Items {
   static List<String> categorys = [
-    'Option 1',
-    'Option 2',
-    'Option 3',
-    'Option 4',
+    'Category 1',
+    'Category 2',
+    'Category 3',
+    'Category 4',
+  ];
+
+  static List<String> brands = [
+    'Brand 1',
+    'Brand 2',
+    'Brand 3',
+    'Brand 4',
   ];
 }

@@ -9,6 +9,7 @@ class AppColors {
   static const iconLightColor = Color(0xFFe4e4e4);
   static const starColor = Color(0xffd4af37);
   static const heartColor = Color(0xfff70059);
+  static const errorColor = Color(0xFFff3333);
 }
 
 MaterialColor mainAppColor = const MaterialColor(0xFF0DD8DF, <int, Color>{

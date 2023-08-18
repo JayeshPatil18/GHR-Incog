@@ -11,6 +11,7 @@ class AppBoarderRadius {
 
 class AppBoarderColor {
   static const searchBarColor = AppColors.secondaryColor10;
+  static const errorColor = AppColors.errorColor;
 }
 
 class AppBoarderWidth {

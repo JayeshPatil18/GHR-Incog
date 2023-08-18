@@ -34,7 +34,7 @@ class _DropdownState extends State<Dropdown> {
                     selectedValue = newValue!;
                   });
                 },
-                items: Categorys.categorys.map<DropdownMenuItem<String>>((String value) {
+                items: Items.categorys.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
