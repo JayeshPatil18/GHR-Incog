@@ -4,10 +4,10 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
 import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart';
 import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar.dart';
+import 'package:review_app/routes/route_generator.dart';
 
 import 'features/reviews/presentation/pages/liked.dart';
 import 'features/reviews/presentation/pages/profile.dart';
-import 'features/reviews/presentation/routes/route_generator.dart';
 
 void main() {
   runApp(const MyApp());

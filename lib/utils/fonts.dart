@@ -27,6 +27,11 @@ TextStyle pageTitleText(){
   return const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
 }
 
+// In use
+TextStyle pageBigTitleText(){
+  return const TextStyle(fontSize: 36, fontWeight: FontWeight.w600, color: AppColors.textColor);
+}
+
 // Profile User Model Fonts
 //************//
 
@@ -129,3 +134,17 @@ TextStyle textFieldText(){
   return const TextStyle(fontSize: 19, color: AppColors.textColor);
 }
 
+// Authentication Fonts
+//************//
+
+// In use
+TextStyle authMsgText({Color color = AppColors.textColor}){
+  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
+}
+
+TextStyle authButtonText({Color color = AppColors.primaryColor30}){
+  return TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: color);
+}
+
+
+//************//

@@ -133,11 +133,7 @@ class _UploadReviewState extends State<UploadReview> {
                   rateIndex = -2;
                 });
               }
-              if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Fill All Valid Details'),
-                    backgroundColor: AppColors.textColor));
-              }
+              _formKey.currentState!.validate();
             },
             child: Icon(Icons.check_rounded,
                 color: AppColors.primaryColor30, size: 38),

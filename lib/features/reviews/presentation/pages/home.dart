@@ -102,8 +102,13 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Image.asset('assets/icons/menu.png',
-                                height: 34, width: 34),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, 'login');
+                              },
+                              child: Image.asset('assets/icons/menu.png',
+                                  height: 34, width: 34),
+                            ),
                             CircleIconContainer(
                                 containerColor: AppColors.textColor,
                                 containerSize: 44,
