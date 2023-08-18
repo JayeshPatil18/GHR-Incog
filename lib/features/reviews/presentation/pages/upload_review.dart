@@ -533,7 +533,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 AppBoarderRadius.reviewUploadRadius),
                             border: Border.all(
                                 color: rateIndex != -2 ? AppColors.secondaryColor10 : AppColors.errorColor,
-                                width: AppBoarderWidth.reviewUploadWidth)),
+                                width: rateIndex != -2 ? AppBoarderWidth.reviewUploadWidth : AppBoarderWidth.searchBarWidth)),
                         child: SizedBox(
                           height: 30,
                           child: ListView.builder(
