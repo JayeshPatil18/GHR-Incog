@@ -218,6 +218,7 @@ class _UploadReviewState extends State<UploadReview> {
                         decoration:
                             BoxDecoration(boxShadow: ContainerShadow.boxShadow),
                         child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: ((value) {
                             return _validateInput(value, 0);
                           }),
@@ -369,6 +370,7 @@ class _UploadReviewState extends State<UploadReview> {
                             decoration: BoxDecoration(
                                 boxShadow: ContainerShadow.boxShadow),
                             child: TextFormField(
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: ((value) {
                                 return _validateInput(value, 2);
                               }),
@@ -471,6 +473,7 @@ class _UploadReviewState extends State<UploadReview> {
                             decoration: BoxDecoration(
                                 boxShadow: ContainerShadow.boxShadow),
                             child: TextFormField(
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: ((value) {
                                 return _validateInput(value, 3);
                               }),
@@ -573,6 +576,7 @@ class _UploadReviewState extends State<UploadReview> {
                         decoration:
                             BoxDecoration(boxShadow: ContainerShadow.boxShadow),
                         child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: ((value) {
                             return _validateInput(value, 4);
                           }),
