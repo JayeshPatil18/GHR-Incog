@@ -49,31 +49,39 @@ class _UploadReviewState extends State<UploadReview> {
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
-          return '';
+          return 'Field empty';
         }
         break;
 
       case 1:
         if (input == null || input.isEmpty) {
-          return '';
+          return 'Field empty';
+        } else if (input.length < 10) {
+          return 'Description must have at least 10 digit';
         }
         break;
 
       case 2:
-        if (input == null || input.isEmpty || !(Items.categorys.contains(input))) {
-          return '';
+        if (input == null || input.isEmpty) {
+          return 'Field empty';
+        } else if(!(Items.categorys.contains(input))){
+          return 'Category not exist';
         }
         break;
 
       case 3:
-        if (input == null || input.isEmpty || !(Items.brands.contains(input))) {
-          return '';
+        if (input == null || input.isEmpty) {
+          return 'Field empty';
+        } else if(!(Items.brands.contains(input))){
+          return 'Brand not exist';
         }
         break;
 
       case 4:
         if (input == null || input.isEmpty) {
-          return '';
+          return 'Field empty';
+        } else if (input.length < 10) {
+          return 'Description must have at least 10 digit';
         }
         break;
 
