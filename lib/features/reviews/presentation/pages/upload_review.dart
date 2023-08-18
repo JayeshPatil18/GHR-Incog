@@ -114,11 +114,6 @@ class _UploadReviewState extends State<UploadReview> {
 
   @override
   void dispose() {
-    _focusNameNode.dispose();
-    _focusDescNode.dispose();
-    _focusCategoryNode.dispose();
-    _focusBrandNode.dispose();
-    _focusSummaryNode.dispose();
     super.dispose();
   }
 
