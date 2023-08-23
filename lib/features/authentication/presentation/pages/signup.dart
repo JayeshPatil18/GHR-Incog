@@ -37,6 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String phoneNo = "";
+  int phoneNoValid = 0;
 
   String? _validateInput(String? input, int index) {
     switch (index) {
@@ -48,7 +49,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
       case 1:
         if (input == null || input.isEmpty) {
-          print(input);
           return 'Field empty';
         }
         break;
@@ -258,8 +258,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width: phoneNoValid != -1 ? AppBoarderWidth.reviewUploadWidth : AppBoarderWidth.searchBarWidth,
+                                          color: phoneNoValid != -1 ? AppBoarderColor.searchBarColor : AppBoarderColor.errorColor)),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -270,8 +270,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.searchBarWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width: phoneNoValid != -1 ? AppBoarderWidth.searchBarWidth : 2,
+                                          color: phoneNoValid == -1 ? Color.fromARGB(255, 209, 51, 51) : AppBoarderColor.searchBarColor)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -282,6 +282,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
+                      setState(() {
+                        print(phone.number);
+                        if(phone != null || phone.number.length == 10){
+                          phoneNoValid = 1;
+                        } else{
+                          phoneNoValid = -1;
+                        }
+                      });
                       phoneNo = phone.completeNumber;
                     },
                   ),
@@ -362,6 +370,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                       ),
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
+                                    if(phoneNoValid != 1){
+                                      setState(() {
+                                        phoneNoValid = -1;
+                                      });
+                                    }
                                    },
                                   child: Text('Sign Up', style: authButtonText())
                                 ),
