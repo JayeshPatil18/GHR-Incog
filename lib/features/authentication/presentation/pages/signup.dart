@@ -374,6 +374,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                       setState(() {
                                         phoneNoValid = -1;
                                       });
+                                    } else if (!isNumeric(phoneNo)){
+                                      setState(() {
+                                        phoneNoValid = -1;
+                                      });
                                     }
                                    },
                                   child: Text('Sign Up', style: authButtonText())
@@ -386,4 +390,11 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ));
   }
+
+  bool isNumeric(String s) {
+ if (s == null) {
+   return false;
+ }
+ return double.tryParse(s) != null;
+}
 }
