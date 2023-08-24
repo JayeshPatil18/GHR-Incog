@@ -19,20 +19,21 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor60,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
+        backgroundColor: AppColors.backgroundColor60,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Container(
+                margin:
+                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -40,10 +41,38 @@ class _NotificationPageState extends State<NotificationPage> {
                               color: AppColors.textColor, size: 26),
                         ),
                         SizedBox(width: 10),
-                      Text('Notifications', style: MainFonts.pageTitleText()),
-                    ],
-                  ),
-                  Container(
+                        Text('Notifications', style: MainFonts.pageTitleText()),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: (() {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            title: const Text('Clear all'),
+                            content: const Text(
+                                'All notifications will be removed.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'OK');
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      child: Container(
                         decoration: BoxDecoration(
                           boxShadow: ContainerShadow.boxShadow,
                           color: AppColors.textColor,
@@ -53,23 +82,29 @@ class _NotificationPageState extends State<NotificationPage> {
                         padding: EdgeInsets.only(
                             top: 10, bottom: 10, left: 13, right: 13),
                         child: Text('Clear All',
-                            style: MainFonts.filterText(color: AppColors.primaryColor30)),
+                            style: MainFonts.filterText(
+                                color: AppColors.primaryColor30)),
                       ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: 10, left: 14, right: 14, bottom: 90),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return NotificationModel(profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', ago: '');
-                },
-              ),
-            )
-          ],
-        ),
-      )
-    );
+              Expanded(
+                child: ListView.builder(
+                  padding:
+                      EdgeInsets.only(top: 10, left: 14, right: 14, bottom: 90),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return NotificationModel(
+                        profileUrl:
+                            'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                        name: 'Henry Tyson',
+                        ago: '');
+                  },
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
