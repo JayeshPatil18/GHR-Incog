@@ -11,17 +11,14 @@ import '../../../../utils/methods.dart';
 class NotificationModel extends StatefulWidget {
   final String profileUrl;
   final String name;
-  final String username;
-  final int rank;
-  final int points;
+  final String ago;
 
   const NotificationModel(
       {super.key,
       required this.profileUrl,
       required this.name,
-      required this.username,
-      required this.rank,
-      required this.points});
+      required this.ago,
+      });
 
   @override
   State<NotificationModel> createState() => _NotificationModelState();
@@ -41,7 +38,7 @@ class _NotificationModelState extends State<NotificationModel> {
         children: [
           Align(
             alignment: Alignment.topRight,
-            child: Text('10 min ago', style: NotificationFonts.agoText())),
+            child: Text(widget.ago, style: NotificationFonts.agoText())),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

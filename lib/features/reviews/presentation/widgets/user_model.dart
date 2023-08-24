@@ -82,7 +82,7 @@ class _UserModelState extends State<UserModel> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(widget.rank.toString(), style: UserModelFonts.userRankingTitle()),
+                            Text(suffixOfNumber(widget.rank), style: UserModelFonts.userRankingTitle()),
                             SizedBox(height: 6),
                             Text('Pts. ${widget.points}',
                                 style: UserModelFonts.userRankingSubTitle()),

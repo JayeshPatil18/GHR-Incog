@@ -86,7 +86,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                     children: [
                                       Text('Rank', style: ProfileUserFonts.userSubText()),
                                       SizedBox(width: 6),
-                                      Text(widget.rank.toString(), style: ProfileUserFonts.userValueText()),
+                                      Text(suffixOfNumber(widget.rank), style: ProfileUserFonts.userValueText()),
                                       SizedBox(width: 20),
                                       Text('Points', style: ProfileUserFonts.userSubText()),
                                       SizedBox(width: 6),
