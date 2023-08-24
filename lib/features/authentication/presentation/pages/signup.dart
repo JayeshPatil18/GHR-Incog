@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:review_app/constants/color.dart';
@@ -37,7 +38,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String phoneNo = "";
-  int phoneNoValid = 0;
 
   String? _validateInput(String? input, int index) {
     switch (index) {
@@ -56,6 +56,8 @@ class _SignUpPageState extends State<SignUpPage> {
       case 2:
         if (input == null || input.isEmpty) {
           return 'Field empty';
+        } else if(!isNumeric(input) || input.length != 10){
+          return 'Invalid phone number';
         }
         break;
 
@@ -240,26 +242,43 @@ class _SignUpPageState extends State<SignUpPage> {
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
                               child: Text('Phone Number', style: lableText()),
                             ),
-                            IntlPhoneField(
-                              autovalidateMode:
+                            Container(
+                              child: TextFormField(
+                                maxLength: 10,
+                                controller: phoneNoController,
+                                autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                              showCountryFlag: false,
-                              showDropdownIcon: true,
-                              cursorColor: AppColors.secondaryColor10,
-                              dropdownTextStyle: textFieldText(),
-                              style: textFieldText(),
-                    controller: phoneNoController,
-                    focusNode: _focusPhoneNoNode,
-                    cursorHeight: TextCursorHeight.cursorHeight,
-                    decoration: InputDecoration(
-                      hintStyle: hintFieldText(),
-                      hintText: _hasPhoneNoFocus ? 'Enter phone number' : null,
-                        enabledBorder: OutlineInputBorder(
+                                validator: ((value) {
+                                  return _validateInput(value, 2);
+                                }),
+                                style: textFieldText(),
+                                keyboardType: TextInputType.number,
+                                focusNode: _focusPhoneNoNode,
+                                cursorHeight: TextCursorHeight.cursorHeight,
+                                decoration: InputDecoration(
+                                  prefixIcon: CountryCodePicker(
+                                    textStyle: textFieldText(),
+                              onChanged: print,
+                              initialSelection: '+91',
+                              favorite: ['+91', 'IND'],
+                              showFlagDialog: true,
+                              showFlagMain: false,
+                              showFlag: false,
+                              alignLeft: false,
+                            ),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 16, bottom: 16, left: 20, right: 20),
+                                  fillColor: AppColors.primaryColor30,
+                                  filled: true,
+                                  hintText:
+                                      _hasPhoneNoFocus ? 'Enter phone number' : null,
+                                  hintStyle: hintFieldText(),
+                                  enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: phoneNoValid != -1 ? AppBoarderWidth.reviewUploadWidth : AppBoarderWidth.searchBarWidth,
-                                          color: phoneNoValid != -1 ? AppBoarderColor.searchBarColor : AppBoarderColor.errorColor)),
+                                          width: AppBoarderWidth.reviewUploadWidth,
+                                          color: AppBoarderColor.searchBarColor)),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -270,29 +289,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: phoneNoValid != -1 ? AppBoarderWidth.searchBarWidth : 2,
-                                          color: phoneNoValid == -1 ? Color.fromARGB(255, 209, 51, 51) : AppBoarderColor.searchBarColor)),
+                                          width: AppBoarderWidth.searchBarWidth,
+                                          color: AppBoarderColor.searchBarColor)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
                                           width: AppBoarderWidth.searchBarWidth,
                                           color: AppBoarderColor.errorColor)),
-                    ),
-
-                    initialCountryCode: 'IN',
-                    onChanged: (phone) {
-                      setState(() {
-                        print(phone.number);
-                        if(phone != null || phone.number.length == 10){
-                          phoneNoValid = 1;
-                        } else{
-                          phoneNoValid = -1;
-                        }
-                      });
-                      phoneNo = phone.completeNumber;
-                    },
-                  ),
+                                ),
+                              ),
+                            ),
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
@@ -370,15 +377,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                       ),
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
-                                    if(phoneNoValid != 1){
-                                      setState(() {
-                                        phoneNoValid = -1;
-                                      });
-                                    } else if (!isNumeric(phoneNo)){
-                                      setState(() {
-                                        phoneNoValid = -1;
-                                      });
-                                    }
                                    },
                                   child: Text('Sign Up', style: authButtonText())
                                 ),

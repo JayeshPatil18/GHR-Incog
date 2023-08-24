@@ -25,6 +25,9 @@ class _UploadReviewState extends State<UploadReview> {
   final FocusNode _focusNameNode = FocusNode();
   bool _hasNameFocus = false;
 
+  final FocusNode _focusPriceNode = FocusNode();
+  bool _hasPriceFocus = false;
+
   final FocusNode _focusDescNode = FocusNode();
   bool _hasDescFocus = false;
 
@@ -38,6 +41,7 @@ class _UploadReviewState extends State<UploadReview> {
   int rateIndex = -1;
 
   TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   TextEditingController brandController = TextEditingController();
@@ -56,12 +60,18 @@ class _UploadReviewState extends State<UploadReview> {
       case 1:
         if (input == null || input.isEmpty) {
           return 'Field empty';
+        }
+        break;
+
+      case 2:
+        if (input == null || input.isEmpty) {
+          return 'Field empty';
         } else if (input.length < 10) {
           return 'Description must have at least 10 digit';
         }
         break;
 
-      case 2:
+      case 3:
         if (input == null || input.isEmpty) {
           return 'Field empty';
         } else if(!(Items.categorys.contains(input))){
@@ -69,7 +79,7 @@ class _UploadReviewState extends State<UploadReview> {
         }
         break;
 
-      case 3:
+      case 4:
         if (input == null || input.isEmpty) {
           return 'Field empty';
         } else if(!(Items.brands.contains(input))){
@@ -77,11 +87,11 @@ class _UploadReviewState extends State<UploadReview> {
         }
         break;
 
-      case 4:
+      case 5:
         if (input == null || input.isEmpty) {
           return 'Field empty';
         } else if (input.length < 10) {
-          return 'Description must have at least 10 digit';
+          return 'Summary must have at least 10 digit';
         }
         break;
 
@@ -96,6 +106,12 @@ class _UploadReviewState extends State<UploadReview> {
     _focusNameNode.addListener(() {
       setState(() {
         _hasNameFocus = _focusNameNode.hasFocus;
+      });
+    });
+
+    _focusPriceNode.addListener(() {
+      setState(() {
+        _hasPriceFocus = _focusPriceNode.hasFocus;
       });
     });
 
@@ -262,7 +278,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Description', style: lableText()),
+                        child: Text('Price', style: lableText()),
                       ),
                       Container(
                         decoration:
@@ -271,6 +287,62 @@ class _UploadReviewState extends State<UploadReview> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: ((value) {
                             return _validateInput(value, 1);
+                          }),
+                          keyboardType: TextInputType.number,
+                          style: textFieldText(),
+                          focusNode: _focusPriceNode,
+                          cursorHeight: TextCursorHeight.cursorHeight,
+                          decoration: InputDecoration(
+                            prefix: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Text('\u{20B9}', style: textFieldText()),
+                            ),
+                            contentPadding: EdgeInsets.only(
+                                top: 16, bottom: 16, left: 20, right: 20),
+                            fillColor: AppColors.primaryColor30,
+                            filled: true,
+                            hintText:
+                                _hasPriceFocus ? 'Enter product price' : null,
+                            hintStyle: hintFieldText(),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.reviewUploadRadius),
+                                borderSide: BorderSide(
+                                    width: AppBoarderWidth.reviewUploadWidth,
+                                    color: AppBoarderColor.searchBarColor)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.reviewUploadRadius),
+                                borderSide: BorderSide(
+                                    width: AppBoarderWidth.reviewUploadWidth,
+                                    color: AppBoarderColor.searchBarColor)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.reviewUploadRadius),
+                                borderSide: BorderSide(
+                                    width: AppBoarderWidth.searchBarWidth,
+                                    color: AppBoarderColor.searchBarColor)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.reviewUploadRadius),
+                                borderSide: BorderSide(
+                                    width: AppBoarderWidth.searchBarWidth,
+                                    color: AppBoarderColor.errorColor)),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10, left: 5),
+                        child: Text('Description', style: lableText()),
+                      ),
+                      Container(
+                        decoration:
+                            BoxDecoration(boxShadow: ContainerShadow.boxShadow),
+                        child: TextFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: ((value) {
+                            return _validateInput(value, 2);
                           }),
                           maxLines: 2,
                           style: textFieldText(),
@@ -371,7 +443,7 @@ class _UploadReviewState extends State<UploadReview> {
                             child: TextFormField(
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: ((value) {
-                                return _validateInput(value, 2);
+                                return _validateInput(value, 3);
                               }),
                               controller: categoryController,
                               focusNode: _focusCategoryNode,
@@ -474,7 +546,7 @@ class _UploadReviewState extends State<UploadReview> {
                             child: TextFormField(
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: ((value) {
-                                return _validateInput(value, 3);
+                                return _validateInput(value, 4);
                               }),
                               controller: brandController,
                               focusNode: _focusBrandNode,
@@ -577,7 +649,7 @@ class _UploadReviewState extends State<UploadReview> {
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: ((value) {
-                            return _validateInput(value, 4);
+                            return _validateInput(value, 5);
                           }),
                           maxLines: 4,
                           style: textFieldText(),
