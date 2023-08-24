@@ -157,7 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
                                   hintText:
-                                      _hasNameFocus ? 'Enter username' : null,
+                                      _hasNameFocus ? 'Enter name' : null,
                                   hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(

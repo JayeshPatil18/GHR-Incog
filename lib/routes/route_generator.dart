@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
+import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/notification.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
@@ -37,6 +38,11 @@ class RouteGenerator{
       case 'notification':
         return MaterialPageRoute(
           builder: (_) => const NotificationPage()
+        );
+
+      case 'editprofile':
+        return MaterialPageRoute(
+          builder: (_) => const EditProfile()
         );
 
       default:

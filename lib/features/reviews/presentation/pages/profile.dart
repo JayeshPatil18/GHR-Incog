@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:review_app/features/reviews/presentation/widgets/user_profile_model.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -33,18 +35,14 @@ class _ProfilePageState extends State<ProfilePage> {
           )
         ),
         body: NestedScrollView(
-          floatHeaderSlivers: true,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                SliverAppBar(
-                  title: null,
-                  toolbarHeight: 218,
-                  flexibleSpace: new FlexibleSpaceBar(
-                    background: UserProfileModel(
-                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'
+                SliverStickyHeader(
+                  sticky: false,
+                  header: UserProfileModel(
+                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'sfsfsfsfsfsfsdsdfsfsfsd'
                     )
-                  ),
                 ),
               ];
             },

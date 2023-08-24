@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, 'login');
+                                Navigator.pushNamed(context, 'editprofile');
                               },
                               child: Image.asset('assets/icons/menu.png',
                                   height: 34, width: 34),
