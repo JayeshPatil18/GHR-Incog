@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
+import 'package:review_app/features/reviews/presentation/pages/view_review.dart';
 import 'package:review_app/main.dart';
 
 import '../features/authentication/presentation/pages/signup.dart';
@@ -14,7 +15,7 @@ class RouteGenerator{
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const LandingPage()
+          builder: (_) => const ViewReview()
         );
 
       case 'upload':

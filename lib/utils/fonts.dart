@@ -3,8 +3,31 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
+// Ranking Upload Review Fonts
+//************//
 
-// Ranking User Model Fonts
+TextStyle titleText({Color color =AppColors.textColor}){
+  return TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: color);
+}
+
+TextStyle subTitleText(){
+  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+}
+
+TextStyle contentLabelText({Color color = AppColors.textColor}){
+  return TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: AppColors.textColor);
+}
+
+TextStyle reviewUserText({Color color = AppColors.textColor}){
+  return TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: AppColors.textColor);
+}
+
+TextStyle contentText({Color color = AppColors.textColor}){
+  return const TextStyle(fontSize: 17, color: AppColors.textColor);
+}
+//************//
+
+// Ranking Upload Review Fonts
 //************//
 
 // In use

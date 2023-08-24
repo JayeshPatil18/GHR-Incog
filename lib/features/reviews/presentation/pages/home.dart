@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.vertical,
                       itemCount: 10,
                       itemBuilder: (BuildContext context, int index) {
-                        return ReviewModel(imageUrl : 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', price : '100', isLiked : true, title : 'Apple iPhone 14 Pro', brand : 'Apple', category : 'Smart Phones', date : '12/04/2023', rating : 3);
+                        return ReviewModel(imageUrl : 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', price : '100', isLiked : false, title : 'Apple iPhone 14 Pro', brand : 'Apple', category : 'Smart Phones', date : '12/04/2023', rating : 3);
                       }),
                 ),
               ],
