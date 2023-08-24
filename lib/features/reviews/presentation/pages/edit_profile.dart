@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -46,14 +49,65 @@ class _EditProfileState extends State<EditProfile> {
         break;
 
       case 2:
-        if (input == null || input.isEmpty) {
-          return 'Field empty';
+        if (input.toString().length > 136) {
+          return 'Bio should be within 136 characters';
         }
         break;
 
       default:
         return null;
     }
+  }
+
+  File? _imageFile;
+  final picker = ImagePicker();
+
+  pickImage(ImageSource source) async {
+    try {
+      final pickedFile = await picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          Navigator.pop(context);
+          _imageFile = File(pickedFile.path);
+        });
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
+  void pickSource() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Gallary'),
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: AppColors.iconLightColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -101,6 +155,48 @@ class _EditProfileState extends State<EditProfile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          GestureDetector(
+                  onTap: () {
+                    pickSource();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppColors.secondaryColor10,
+                                    width: 2,
+                                  ),
+                                ),
+                      child: Stack(children: [
+                        _imageFile != null
+                            ? CircleAvatar(
+                                backgroundImage: FileImage(_imageFile!),
+                                radius: 60,
+                              )
+                            : CircleAvatar(
+                                backgroundImage: NetworkImage('https://media.wired.com/photos/5c57c3e3ce277c2cb23d575b/1:1/w_1666,h_1666,c_limit/Culture_Facebook_TheSocialNetwork.jpg'),
+                                radius: 60,
+                              ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .white, // Set the background color of the icon
+                                shape: BoxShape
+                                    .circle, // Set the shape of the background to a circle
+                              ),
+                              child: Icon(Icons.add_circle,
+                                  color: AppColors.secondaryColor10, size: 35)),
+                        ),
+                      ]),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10, left: 5),
                             child: Text('Full Name', style: MainFonts.lableText()),
@@ -205,7 +301,7 @@ class _EditProfileState extends State<EditProfile> {
                           SizedBox(height: 20),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10, left: 5),
-                            child: Text('Bio', style: MainFonts.lableText()),
+                            child: Text('Bio (Optional)', style: MainFonts.lableText()),
                           ),
                           Container(
                             child: TextFormField(
@@ -268,7 +364,7 @@ class _EditProfileState extends State<EditProfile> {
                                 onPressed: () { 
                                   _formKey.currentState!.validate();
                                  },
-                                child: Text('Login', style: AuthFonts.authButtonText())
+                                child: Text('Save Changes', style: AuthFonts.authButtonText())
                               ),
                           ),
                         ]),

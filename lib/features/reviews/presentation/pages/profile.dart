@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SliverStickyHeader(
                   sticky: false,
                   header: UserProfileModel(
-                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'sfsfsfsfsfsfsdsdfsfsfsd'
+                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'
                     )
                 ),
               ];
