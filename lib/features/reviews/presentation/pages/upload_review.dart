@@ -1,3 +1,4 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -49,6 +50,8 @@ class _UploadReviewState extends State<UploadReview> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  String priceCurrency = '₹';
+
   String? _validateInput(String? input, int index) {
     switch (index) {
       case 0:
@@ -74,7 +77,7 @@ class _UploadReviewState extends State<UploadReview> {
       case 3:
         if (input == null || input.isEmpty) {
           return 'Field empty';
-        } else if(!(Items.categorys.contains(input))){
+        } else if (!(Items.categorys.contains(input))) {
           return 'Category not exist';
         }
         break;
@@ -82,7 +85,7 @@ class _UploadReviewState extends State<UploadReview> {
       case 4:
         if (input == null || input.isEmpty) {
           return 'Field empty';
-        } else if(!(Items.brands.contains(input))){
+        } else if (!(Items.brands.contains(input))) {
           return 'Brand not exist';
         }
         break;
@@ -144,7 +147,7 @@ class _UploadReviewState extends State<UploadReview> {
           child: FloatingActionButton(
             backgroundColor: AppColors.secondaryColor10,
             onPressed: () {
-              if(rateIndex == -1){
+              if (rateIndex == -1) {
                 setState(() {
                   rateIndex = -2;
                 });
@@ -293,10 +296,34 @@ class _UploadReviewState extends State<UploadReview> {
                           focusNode: _focusPriceNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
-                            prefix: Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Text('\u{20B9}', style: textFieldText()),
-                            ),
+                            prefixIcon: GestureDetector(
+                                onTap: (() {
+                                  showCurrencyPicker(
+                                    context: context,
+                                    theme: CurrencyPickerThemeData(
+                                      flagSize: 25,
+                                      titleTextStyle: TextStyle(fontSize: 17),
+                                      subtitleTextStyle: TextStyle(
+                                          fontSize: 15,
+                                          color: Theme.of(context).hintColor),
+                                      bottomSheetHeight:
+                                          MediaQuery.of(context).size.height /
+                                              1.8,
+                                    ),
+                                    favorite: ['INR'],
+                                    onSelect: (Currency currency) =>
+                                        setState(() {
+                                      priceCurrency =
+                                          currency.symbol.toString();
+                                    }),
+                                  );
+                                }),
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 16, bottom: 16, left: 10),
+                                  child: Text(priceCurrency,
+                                      style: textFieldText(),
+                                      textAlign: TextAlign.center),
+                                )),
                             contentPadding: EdgeInsets.only(
                                 top: 16, bottom: 16, left: 20, right: 20),
                             fillColor: AppColors.primaryColor30,
@@ -441,7 +468,8 @@ class _UploadReviewState extends State<UploadReview> {
                             decoration: BoxDecoration(
                                 boxShadow: ContainerShadow.boxShadow),
                             child: TextFormField(
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: ((value) {
                                 return _validateInput(value, 3);
                               }),
@@ -544,7 +572,8 @@ class _UploadReviewState extends State<UploadReview> {
                             decoration: BoxDecoration(
                                 boxShadow: ContainerShadow.boxShadow),
                             child: TextFormField(
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: ((value) {
                                 return _validateInput(value, 4);
                               }),
@@ -606,8 +635,12 @@ class _UploadReviewState extends State<UploadReview> {
                             borderRadius: BorderRadius.circular(
                                 AppBoarderRadius.reviewUploadRadius),
                             border: Border.all(
-                                color: rateIndex != -2 ? AppColors.secondaryColor10 : AppColors.errorColor,
-                                width: rateIndex != -2 ? AppBoarderWidth.reviewUploadWidth : AppBoarderWidth.searchBarWidth)),
+                                color: rateIndex != -2
+                                    ? AppColors.secondaryColor10
+                                    : AppColors.errorColor,
+                                width: rateIndex != -2
+                                    ? AppBoarderWidth.reviewUploadWidth
+                                    : AppBoarderWidth.searchBarWidth)),
                         child: SizedBox(
                           height: 30,
                           child: ListView.builder(

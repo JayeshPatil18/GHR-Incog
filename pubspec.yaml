@@ -45,6 +45,7 @@ dependencies:
   country_code_picker: ^3.0.0
   country_picker: ^2.0.19
   csc_picker: ^0.2.7
+  currency_picker: ^2.0.14
 
 dev_dependencies:
   flutter_test:
