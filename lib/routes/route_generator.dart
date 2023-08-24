@@ -48,6 +48,16 @@ class RouteGenerator{
           builder: (_) => const EditProfile()
         );
 
+      case 'updatepassowrd':
+        return MaterialPageRoute(
+          builder: (_) => const UpdatePassword()
+        );
+
+      case 'changephoneno':
+        return MaterialPageRoute(
+          builder: (_) => const ChangePhoneNo()
+        );
+
       default:
         return _errorRoute();
     }

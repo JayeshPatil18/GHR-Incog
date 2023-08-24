@@ -87,6 +87,143 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Container(
+          margin: EdgeInsets.only(top: 26),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: <Widget>[
+                  Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    padding: EdgeInsets.only(top: 28, left: 20, right: 20),
+                    width: double.infinity,
+                    height: 100,
+                    color: Colors.white,
+                    child: Text('Settings', style: MainFonts.pageTitleText()),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('editprofile');
+                    },
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.edit_outlined,
+                                  size: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Text('Edit Profile',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(fontSize: 16)),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    color: AppColors.iconLightColor,
+                    width: double.infinity,
+                    height: 1,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('changephoneno');
+                    },
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.numbers,
+                                  size: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Text('Change Phone number',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(fontSize: 16)),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    color: AppColors.iconLightColor,
+                    width: double.infinity,
+                    height: 1,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('updatepassowrd');
+                    },
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.lock_outlined,
+                                  size: 20,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Text('Update Password',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(fontSize: 16)),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.transparent,
       body: SafeArea(
         bottom: false,
@@ -104,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, 'editprofile');
+                                Scaffold.of(context).openDrawer();
                               },
                               child: Image.asset('assets/icons/menu.png',
                                   height: 34, width: 34),
