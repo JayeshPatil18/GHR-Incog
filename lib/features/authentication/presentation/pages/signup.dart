@@ -37,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String phoneNo = "";
+  String countryCode = "+91";
 
   String? _validateInput(String? input, int index) {
     switch (index) {
@@ -258,12 +258,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 decoration: InputDecoration(
                                   prefixIcon: CountryCodePicker(
                                     textStyle: textFieldText(),
-                              onChanged: print,
+                              onChanged: ((value) {
+                                countryCode = value.dialCode.toString();
+                              }),
                               initialSelection: '+91',
                               favorite: ['+91', 'IND'],
                               showFlagDialog: true,
                               showFlagMain: false,
-                              showFlag: false,
                               alignLeft: false,
                             ),
                                   contentPadding: EdgeInsets.only(
