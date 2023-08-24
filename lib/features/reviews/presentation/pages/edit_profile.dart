@@ -59,6 +59,34 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+    @override
+  void initState() {
+    super.initState();
+
+    _focusNameNode.addListener(() {
+      setState(() {
+        _hasNameFocus = _focusNameNode.hasFocus;
+      });
+    });
+    
+    _focusUsernameNode.addListener(() {
+      setState(() {
+        _hasUsernameFocus = _focusUsernameNode.hasFocus;
+      });
+    });
+
+    _focusBioNode.addListener(() {
+      setState(() {
+        _hasBioFocus = _focusBioNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   File? _imageFile;
   final picker = ImagePicker();
 
