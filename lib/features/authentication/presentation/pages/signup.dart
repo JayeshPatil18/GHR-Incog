@@ -118,7 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   alignment: Alignment.centerLeft,
                   margin:
                       EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                  child: Text('Sign Up', style: pageBigTitleText()),
+                  child: Text('Sign Up', style: MainFonts.pageBigTitleText()),
                 ),
                 Container(
                     decoration: BoxDecoration(
@@ -138,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Full Name', style: lableText()),
+                              child: Text('Full Name', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -148,7 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 0);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusNameNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -158,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   filled: true,
                                   hintText:
                                       _hasNameFocus ? 'Enter username' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -189,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Username', style: lableText()),
+                              child: Text('Username', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -199,7 +199,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 1);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusUsernameNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -209,7 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   filled: true,
                                   hintText:
                                       _hasUsernameFocus ? 'Enter username' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -240,7 +240,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Phone Number', style: lableText()),
+                              child: Text('Phone Number', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -251,13 +251,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 2);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 keyboardType: TextInputType.number,
                                 focusNode: _focusPhoneNoNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
                                   prefixIcon: CountryCodePicker(
-                                    textStyle: textFieldText(),
+                                    textStyle: MainFonts.textFieldText(),
                               onChanged: ((value) {
                                 countryCode = value.dialCode.toString();
                               }),
@@ -273,7 +273,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   filled: true,
                                   hintText:
                                       _hasPhoneNoFocus ? 'Enter phone number' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -304,7 +304,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Password', style: lableText()),
+                              child: Text('Password', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -314,7 +314,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 3);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusPasswordNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -324,7 +324,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   filled: true,
                                   hintText:
                                       _hasPasswordFocus ? 'Enter password' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -359,9 +359,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               },
                               child: Row(
                                 children: [
-                                  Text('Already has account, ', style: authMsgText()),
-                                  Text('Login', style: authMsgText(color: AppColors.secondaryColor10)),
-                                  Text(' now.', style: authMsgText()),
+                                  Text('Already has account, ', style: AuthFonts.authMsgText()),
+                                  Text('Login', style: AuthFonts.authMsgText(color: AppColors.secondaryColor10)),
+                                  Text(' now.', style: AuthFonts.authMsgText()),
                                 ],
                               ),
                             ),
@@ -379,7 +379,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
                                    },
-                                  child: Text('Sign Up', style: authButtonText())
+                                  child: Text('Sign Up', style: AuthFonts.authButtonText())
                                 ),
                             ),
                           ]),

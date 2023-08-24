@@ -27,7 +27,7 @@ class _DropdownState extends State<Dropdown> {
         child: ButtonTheme(
           child: DropdownButton<String>(
             dropdownColor: AppColors.primaryColor30,
-            style: textFieldText(),
+            style: MainFonts.textFieldText(),
                 value: selectedValue,
                 onChanged: (newValue) {
                   setState(() {

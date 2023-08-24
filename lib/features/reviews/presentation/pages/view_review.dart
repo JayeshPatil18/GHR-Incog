@@ -36,7 +36,7 @@ class _ViewReviewState extends State<ViewReview> {
                                 Navigator.pushNamed(context, 'login');
                               },
                               child: Icon(Icons.arrow_back_ios,
-                                  color: AppColors.textColor, size: 28),
+                                  color: AppColors.textColor, size: 26),
                             ),
                             CircleIconContainer(
                               containerColor: AppColors.backgroundColor60,
@@ -84,12 +84,12 @@ class _ViewReviewState extends State<ViewReview> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('boAt Rockerz 558', style: titleText()),
+                              Text('boAt Rockerz 558', style: ViewReviewFonts.titleText()),
                               Row(children: [
                                 Text('\$',
-                                    style: titleText(
+                                    style: ViewReviewFonts.titleText(
                                         color: AppColors.secondaryColor10)),
-                                Text('1000', style: titleText())
+                                Text('1000', style: ViewReviewFonts.titleText())
                               ]),
                             ],
                           ),
@@ -99,16 +99,16 @@ class _ViewReviewState extends State<ViewReview> {
                             children: [
                             Row(
                             children: [
-                              Text('Boat', style: subTitleText()),
+                              Text('Boat', style: ViewReviewFonts.subTitleText()),
                               Text('  ○  ',
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textColor)),
-                              Text('Headphones', style: subTitleText()),
+                              Text('Headphones', style: ViewReviewFonts.subTitleText()),
                             ],
                           ),
-                          Text('12/04/2023', style: subTitleText())
+                          Text('12/04/2023', style: ViewReviewFonts.subTitleText())
                           ]),
                           SizedBox(height: 20),
                           Row(
@@ -136,17 +136,17 @@ class _ViewReviewState extends State<ViewReview> {
                                   ),
                                 ),
                               ),
-                              Text('@harrymarsh', style: reviewUserText())
+                              Text('@harrymarsh', style: ViewReviewFonts.reviewUserText())
                             ],
                           ),
                           SizedBox(height: 20),
-                          Text('Description', style: contentLabelText()),
+                          Text('Description', style: ViewReviewFonts.contentLabelText()),
                           SizedBox(height: 8),
-                          Text('The details that you provide for a product affect the way that the product is displayed to customers, make it easier for you to organize your products', style: contentText(),),
+                          Text('The details that you provide for a product affect the way that the product is displayed to customers, make it easier for you to organize your products', style: ViewReviewFonts.contentText(),),
                           SizedBox(height: 20),
-                          Text('Summary', style: contentLabelText()),
+                          Text('Summary', style: ViewReviewFonts.contentLabelText()),
                           SizedBox(height: 8),
-                          Text('Well Protected Good experience soundPacking also goodIt will be more better When it work on price should approx 1700.Overall its a Good Product', style: contentText(),),
+                          Text('Well Protected Good experience soundPacking also goodIt will be more better When it work on price should approx 1700.Overall its a Good Product', style: ViewReviewFonts.contentText(),),
                         ],
                       ),
                     ),

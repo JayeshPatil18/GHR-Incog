@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerLeft,
                   margin:
                       EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 20),
-                  child: Text('Login', style: pageBigTitleText()),
+                  child: Text('Login', style: MainFonts.pageBigTitleText()),
                 ),
                 Container(
                     decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Username', style: lableText()),
+                              child: Text('Username', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 0);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusUsernameNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                   filled: true,
                                   hintText:
                                       _hasUsernameFocus ? 'Enter username' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 40),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Password', style: lableText()),
+                              child: Text('Password', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                 validator: ((value) {
                                   return _validateInput(value, 1);
                                 }),
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusPasswordNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                                   filled: true,
                                   hintText:
                                       _hasPasswordFocus ? 'Enter password' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -205,9 +205,9 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Row(
                                 children: [
-                                  Text('Haven\'t created account, ', style: authMsgText()),
-                                  Text('Sign Up', style: authMsgText(color: AppColors.secondaryColor10)),
-                                  Text(' now', style: authMsgText()),
+                                  Text('Haven\'t created account, ', style: AuthFonts.authMsgText()),
+                                  Text('Sign Up', style: AuthFonts.authMsgText(color: AppColors.secondaryColor10)),
+                                  Text(' now', style: AuthFonts.authMsgText()),
                                 ],
                               ),
                             ),
@@ -225,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
                                    },
-                                  child: Text('Login', style: authButtonText())
+                                  child: Text('Login', style: AuthFonts.authButtonText())
                                 ),
                             ),
                           ]),

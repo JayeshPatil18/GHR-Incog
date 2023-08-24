@@ -65,12 +65,12 @@ class _ReviewModelState extends State<ReviewModel> {
                   child: Row(
                     children: [
                       Text('\u{20B9}',
-                          style: subReviewPrice(
+                          style: ReviewModelFonts.subReviewPrice(
                               color: AppColors.secondaryColor10,
                               boxShadow: TextShadow.textShadow)),
                       Text(widget.price,
                           style:
-                              subReviewPrice(boxShadow: TextShadow.textShadow)),
+                              ReviewModelFonts.subReviewPrice(boxShadow: TextShadow.textShadow)),
                     ],
                   ),
                 ),
@@ -99,18 +99,18 @@ class _ReviewModelState extends State<ReviewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 2),
-                    Text(widget.title, style: reviewTitle()),
+                    Text(widget.title, style: ReviewModelFonts.reviewTitle()),
                     SizedBox(height: 4),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(widget.brand, style: reviewSubTitle()),
+                        Text(widget.brand, style: ReviewModelFonts.reviewSubTitle()),
                         Text('  ○  ',
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textColor)),
-                        Text(widget.category, style: reviewSubTitle()),
+                        Text(widget.category, style: ReviewModelFonts.reviewSubTitle()),
                       ],
                     ),
                     SizedBox(height: 4),
@@ -124,7 +124,7 @@ class _ReviewModelState extends State<ReviewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.date, style: dateReview()),
+                Text(widget.date, style: ReviewModelFonts.dateReview()),
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerRight,

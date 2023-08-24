@@ -172,10 +172,10 @@ class _UploadReviewState extends State<UploadReview> {
                         Navigator.pop(context);
                       },
                       child: Icon(Icons.arrow_back_ios,
-                          color: AppColors.textColor, size: 28),
+                          color: AppColors.textColor, size: 26),
                     ),
                     SizedBox(width: 10),
-                    Text('Review', style: pageTitleText()),
+                    Text('Review', style: MainFonts.pageTitleText()),
                   ],
                 ),
               ),
@@ -218,7 +218,7 @@ class _UploadReviewState extends State<UploadReview> {
                             padding: EdgeInsets.only(
                                 top: 10, bottom: 10, left: 16, right: 16),
                             child: Text('Upload Image',
-                                style: filterText(
+                                style: MainFonts.filterText(
                                     color: AppColors.primaryColor30)),
                           ),
                         ])),
@@ -230,7 +230,7 @@ class _UploadReviewState extends State<UploadReview> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Product Name', style: lableText()),
+                        child: Text('Product Name', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
@@ -240,7 +240,7 @@ class _UploadReviewState extends State<UploadReview> {
                           validator: ((value) {
                             return _validateInput(value, 0);
                           }),
-                          style: textFieldText(),
+                          style: MainFonts.textFieldText(),
                           focusNode: _focusNameNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -250,7 +250,7 @@ class _UploadReviewState extends State<UploadReview> {
                             filled: true,
                             hintText:
                                 _hasNameFocus ? 'Enter product name' : null,
-                            hintStyle: hintFieldText(),
+                            hintStyle: MainFonts.hintFieldText(),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                     AppBoarderRadius.reviewUploadRadius),
@@ -281,7 +281,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Price', style: lableText()),
+                        child: Text('Price', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
@@ -292,7 +292,7 @@ class _UploadReviewState extends State<UploadReview> {
                             return _validateInput(value, 1);
                           }),
                           keyboardType: TextInputType.number,
-                          style: textFieldText(),
+                          style: MainFonts.textFieldText(),
                           focusNode: _focusPriceNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -321,7 +321,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 16, bottom: 16, left: 10),
                                   child: Text(priceCurrency,
-                                      style: textFieldText(),
+                                      style: MainFonts.textFieldText(),
                                       textAlign: TextAlign.center),
                                 )),
                             contentPadding: EdgeInsets.only(
@@ -330,7 +330,7 @@ class _UploadReviewState extends State<UploadReview> {
                             filled: true,
                             hintText:
                                 _hasPriceFocus ? 'Enter product price' : null,
-                            hintStyle: hintFieldText(),
+                            hintStyle: MainFonts.hintFieldText(),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                     AppBoarderRadius.reviewUploadRadius),
@@ -361,7 +361,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Description', style: lableText()),
+                        child: Text('Description', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
@@ -372,7 +372,7 @@ class _UploadReviewState extends State<UploadReview> {
                             return _validateInput(value, 2);
                           }),
                           maxLines: 2,
-                          style: textFieldText(),
+                          style: MainFonts.textFieldText(),
                           focusNode: _focusDescNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -383,7 +383,7 @@ class _UploadReviewState extends State<UploadReview> {
                             hintText: _hasDescFocus
                                 ? 'Enter description of product'
                                 : null,
-                            hintStyle: hintFieldText(),
+                            hintStyle: MainFonts.hintFieldText(),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                     AppBoarderRadius.reviewUploadRadius),
@@ -414,7 +414,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Category', style: lableText()),
+                        child: Text('Category', style: MainFonts.lableText()),
                       ),
                       Autocomplete(
                         optionsBuilder: (TextEditingValue textEditingValue) {
@@ -450,7 +450,7 @@ class _UploadReviewState extends State<UploadReview> {
                                       child: ListTile(
                                         tileColor: AppColors.primaryColor30,
                                         title: Text(option,
-                                            style: suggestionText()),
+                                            style: MainFonts.suggestionText()),
                                       ),
                                     );
                                   },
@@ -476,7 +476,7 @@ class _UploadReviewState extends State<UploadReview> {
                               controller: categoryController,
                               focusNode: _focusCategoryNode,
                               onEditingComplete: onFieldSubmitted,
-                              style: textFieldText(),
+                              style: MainFonts.textFieldText(),
                               cursorHeight: TextCursorHeight.cursorHeight,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
@@ -484,7 +484,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 fillColor: AppColors.primaryColor30,
                                 filled: true,
                                 hintText: 'Select Category',
-                                hintStyle: hintFieldText(),
+                                hintStyle: MainFonts.hintFieldText(),
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(
                                         AppBoarderRadius.reviewUploadRadius),
@@ -519,7 +519,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Brand', style: lableText()),
+                        child: Text('Brand', style: MainFonts.lableText()),
                       ),
                       Autocomplete(
                         optionsBuilder: (TextEditingValue textEditingValue) {
@@ -555,7 +555,7 @@ class _UploadReviewState extends State<UploadReview> {
                                       child: ListTile(
                                         tileColor: AppColors.primaryColor30,
                                         title: Text(option,
-                                            style: suggestionText()),
+                                            style: MainFonts.suggestionText()),
                                       ),
                                     );
                                   },
@@ -580,7 +580,7 @@ class _UploadReviewState extends State<UploadReview> {
                               controller: brandController,
                               focusNode: _focusBrandNode,
                               onEditingComplete: onFieldSubmitted,
-                              style: textFieldText(),
+                              style: MainFonts.textFieldText(),
                               cursorHeight: TextCursorHeight.cursorHeight,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
@@ -588,7 +588,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 fillColor: AppColors.primaryColor30,
                                 filled: true,
                                 hintText: 'Select Brand',
-                                hintStyle: hintFieldText(),
+                                hintStyle: MainFonts.hintFieldText(),
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(
                                         AppBoarderRadius.reviewUploadRadius),
@@ -623,7 +623,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Rate', style: lableText()),
+                        child: Text('Rate', style: MainFonts.lableText()),
                       ),
                       Container(
                         padding: EdgeInsets.only(
@@ -674,7 +674,7 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Summary', style: lableText()),
+                        child: Text('Summary', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
@@ -685,7 +685,7 @@ class _UploadReviewState extends State<UploadReview> {
                             return _validateInput(value, 5);
                           }),
                           maxLines: 4,
-                          style: textFieldText(),
+                          style: MainFonts.textFieldText(),
                           focusNode: _focusSummaryNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -696,7 +696,7 @@ class _UploadReviewState extends State<UploadReview> {
                             hintText: _hasSummaryFocus
                                 ? 'Write experience of product'
                                 : null,
-                            hintStyle: hintFieldText(),
+                            hintStyle: MainFonts.hintFieldText(),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
                                     AppBoarderRadius.reviewUploadRadius),

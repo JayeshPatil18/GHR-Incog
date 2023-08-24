@@ -71,12 +71,12 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                       Container(
                                           alignment: Alignment.topLeft,
                                           child: Text(widget.name,
-                                              style: nameText())),
+                                              style: ProfileUserFonts.nameText())),
                                       Container(
                                           alignment: Alignment.topLeft,
                                           margin: EdgeInsets.only(top: 6),
                                           child: Text('@${widget.username}',
-                                              style: usernameText()))
+                                              style: ProfileUserFonts.usernameText()))
                                     ],
                                   ),
                                   SizedBox(height: 20),
@@ -84,13 +84,13 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.end,
                                     children: [
-                                      Text('Rank', style: userSubText()),
+                                      Text('Rank', style: ProfileUserFonts.userSubText()),
                                       SizedBox(width: 6),
-                                      Text(widget.rank.toString(), style: userValueText()),
+                                      Text(widget.rank.toString(), style: ProfileUserFonts.userValueText()),
                                       SizedBox(width: 20),
-                                      Text('Points', style: userSubText()),
+                                      Text('Points', style: ProfileUserFonts.userSubText()),
                                       SizedBox(width: 6),
-                                      Text(widget.points.toString(), style: userValueText()),
+                                      Text(widget.points.toString(), style: ProfileUserFonts.userValueText()),
                                     ],
                                   )
                                 ],
@@ -101,7 +101,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                         SizedBox(height: 14),
                         Text(
                             widget.bio,
-                            style: userBioText())
+                            style: ProfileUserFonts.userBioText())
                       ],
                     ),
                   ),

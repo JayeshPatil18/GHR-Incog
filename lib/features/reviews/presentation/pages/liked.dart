@@ -30,7 +30,7 @@ class _LikedPageState extends State<LikedPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Liked', style: pageTitleText()),
+                  Text('Liked', style: MainFonts.pageTitleText()),
                   Container(
                         decoration: BoxDecoration(
                           boxShadow: ContainerShadow.boxShadow,
@@ -41,7 +41,7 @@ class _LikedPageState extends State<LikedPage> {
                         padding: EdgeInsets.only(
                             top: 10, bottom: 10, left: 13, right: 13),
                         child: Text('Clear All',
-                            style: filterText(color: AppColors.primaryColor30)),
+                            style: MainFonts.filterText(color: AppColors.primaryColor30)),
                       ),
                 ],
               ),

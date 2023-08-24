@@ -3,171 +3,195 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
-// Ranking Upload Review Fonts
-//************//
-
-TextStyle titleText({Color color =AppColors.textColor}){
-  return TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: color);
-}
-
-TextStyle subTitleText(){
-  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
-}
-
-TextStyle contentLabelText({Color color = AppColors.textColor}){
-  return TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: AppColors.textColor);
-}
-
-TextStyle reviewUserText({Color color = AppColors.textColor}){
-  return TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: AppColors.textColor);
-}
-
-TextStyle contentText({Color color = AppColors.textColor}){
-  return const TextStyle(fontSize: 17, color: AppColors.textColor);
-}
-//************//
-
-// Ranking Upload Review Fonts
-//************//
-
 // In use
-TextStyle uploadButtonText(){
-  return TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+class NotificationFonts {
+  static TextStyle messageText({Color color = AppColors.textColor}) {
+    return TextStyle(
+        fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle agoText() {
+    return TextStyle(
+        fontSize: 10, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
 }
 
 // In use
-TextStyle lableText(){
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
-}
+class ViewReviewFonts {
+  static TextStyle titleText({Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: color);
+  }
 
-TextStyle suggestionText({Color color = AppColors.textColor}){
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: color);
-}
-//************//
+  static TextStyle subTitleText() {
+    return TextStyle(
+        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
 
-// In use
-TextStyle pageTitleText(){
-  return const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
-}
+  static TextStyle contentLabelText({Color color = AppColors.textColor}) {
+    return TextStyle(
+        fontSize: 17, fontWeight: FontWeight.w600, color: AppColors.textColor);
+  }
 
-// In use
-TextStyle pageBigTitleText(){
-  return const TextStyle(fontSize: 36, fontWeight: FontWeight.w600, color: AppColors.textColor);
-}
+  static TextStyle reviewUserText({Color color = AppColors.textColor}) {
+    return TextStyle(
+        fontSize: 17, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
 
-// Profile User Model Fonts
-//************//
-
-// In use
-TextStyle nameText(){
-  return TextStyle(fontSize: 25, fontWeight: FontWeight.w500, color: AppColors.textColor);
-}
-
-// In use
-TextStyle usernameText(){
-  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  static TextStyle contentText({Color color = AppColors.textColor}) {
+    return const TextStyle(fontSize: 17, color: AppColors.textColor);
+  }
 }
 
 // In use
-TextStyle userSubText(){
-  return TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textColor);
+class ProfileUserFonts {
+  static TextStyle nameText() {
+    return TextStyle(
+        fontSize: 25, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle usernameText() {
+    return TextStyle(
+        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
+
+  static TextStyle userSubText() {
+    return TextStyle(
+        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
+
+  static TextStyle userValueText() {
+    return TextStyle(
+        fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle userBioText() {
+    return TextStyle(
+        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
 }
 
 // In use
-TextStyle userValueText(){
-  return TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textColor);
+class UserModelFonts {
+  static TextStyle userRankingTitle() {
+    return TextStyle(
+        fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle userRankingSubTitle() {
+    return TextStyle(
+        fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.textColor);
+  }
 }
 
 // In use
-TextStyle userBioText(){
-  return TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
-}
-//************//
-
-// Ranking User Model Fonts
-//************//
-
-// In use
-TextStyle userRankingTitle(){
-  return TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
-}
-
-// In use
-TextStyle userRankingSubTitle(){
-  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: AppColors.textColor);
-}
-//************//
-
-// Rivew Model Fonts
-//************//
-
-// In use
-TextStyle dateReview({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+class ReviewModelFonts {
+  static TextStyle dateReview({
+    Color color = AppColors.textColor,
+    BoxShadow boxShadow = const BoxShadow(
       offset: Offset(0, 0),
       blurRadius: 0,
       color: Colors.transparent,
-    ),}){
-  return TextStyle(fontSize: 11, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
-}
+    ),
+  }) {
+    return TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w400,
+        color: color,
+        shadows: [boxShadow]);
+  }
 
-// In use
-TextStyle reviewSubTitle({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+  static TextStyle reviewSubTitle({
+    Color color = AppColors.textColor,
+    BoxShadow boxShadow = const BoxShadow(
       offset: Offset(0, 0),
       blurRadius: 0,
       color: Colors.transparent,
-    ),}){
-  return TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: color, shadows: [boxShadow]);
-}
+    ),
+  }) {
+    return TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        color: color,
+        shadows: [boxShadow]);
+  }
 
-// In use
-TextStyle reviewTitle({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+  static reviewTitle({
+    Color color = AppColors.textColor,
+    BoxShadow boxShadow = const BoxShadow(
       offset: Offset(0, 0),
       blurRadius: 0,
       color: Colors.transparent,
-    ),}){
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: color, shadows: [boxShadow]);
-}
+    ),
+  }) {
+    return TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: color,
+        shadows: [boxShadow]);
+  }
 
-// In use
-TextStyle subReviewPrice({Color color = AppColors.textColor, BoxShadow boxShadow = const BoxShadow(
+  static TextStyle subReviewPrice({
+    Color color = AppColors.textColor,
+    BoxShadow boxShadow = const BoxShadow(
       offset: Offset(0, 0),
       blurRadius: 0,
       color: Colors.transparent,
-    ),}){
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: color, shadows: [boxShadow]);
-}
-//************//
-
-// TextStyle subBoldText(){
-//   return const TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.bold);
-// }
-
-// In use
-TextStyle filterText({Color color = AppColors.primaryColor30}){
-  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
+    ),
+  }) {
+    return TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: color,
+        shadows: [boxShadow]);
+  }
 }
 
 // In use
-TextStyle hintFieldText(){
-  return const TextStyle(fontSize: 18, color: AppColors.iconColor);
+class MainFonts {
+  static TextStyle uploadButtonText() {
+    return TextStyle(
+        fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle lableText() {
+    return TextStyle(
+        fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
+  }
+
+  static TextStyle suggestionText({Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: color);
+  }
+
+  static TextStyle pageTitleText() {
+    return const TextStyle(
+        fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
+  }
+
+  static TextStyle pageBigTitleText() {
+    return const TextStyle(
+        fontSize: 36, fontWeight: FontWeight.w600, color: AppColors.textColor);
+  }
+
+  static TextStyle filterText({Color color = AppColors.primaryColor30}) {
+    return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
+  }
+
+  static TextStyle hintFieldText() {
+    return const TextStyle(fontSize: 18, color: AppColors.iconColor);
+  }
+
+  static TextStyle textFieldText() {
+    return const TextStyle(fontSize: 19, color: AppColors.textColor);
+  }
 }
 
 // In use
-TextStyle textFieldText(){
-  return const TextStyle(fontSize: 19, color: AppColors.textColor);
+class AuthFonts {
+  static authMsgText({Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
+  }
+
+  static TextStyle authButtonText({Color color = AppColors.primaryColor30}) {
+    return TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: color);
+  }
 }
-
-// Authentication Fonts
-//************//
-
-// In use
-TextStyle authMsgText({Color color = AppColors.textColor}){
-  return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
-}
-
-TextStyle authButtonText({Color color = AppColors.primaryColor30}){
-  return TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: color);
-}
-
-
-//************//

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
+import 'package:review_app/features/reviews/presentation/pages/notification.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_review.dart';
 import 'package:review_app/main.dart';
@@ -15,7 +16,7 @@ class RouteGenerator{
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const ViewReview()
+          builder: (_) => const LandingPage()
         );
 
       case 'upload':
@@ -31,6 +32,11 @@ class RouteGenerator{
       case 'login':
         return MaterialPageRoute(
           builder: (_) => const LoginPage()
+        );
+      
+      case 'notification':
+        return MaterialPageRoute(
+          builder: (_) => const NotificationPage()
         );
 
       default:

@@ -40,7 +40,7 @@ class SelectBottomSheetState extends State<SelectBottomSheet> {
                       decoration:
                           BoxDecoration(boxShadow: ContainerShadow.boxShadow),
                       child: TextField(
-                        style: textFieldText(),
+                        style: MainFonts.textFieldText(),
                         cursorHeight: TextCursorHeight.cursorHeight,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
@@ -48,7 +48,7 @@ class SelectBottomSheetState extends State<SelectBottomSheet> {
                           fillColor: AppColors.primaryColor30,
                           filled: true,
                           hintText: widget.index == 0 ? 'Search Category' : 'Search Brand',
-                          hintStyle: hintFieldText(),
+                          hintStyle: MainFonts.hintFieldText(),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.reviewUploadRadius),

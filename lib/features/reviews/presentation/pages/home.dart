@@ -109,13 +109,18 @@ class _HomePageState extends State<HomePage> {
                               child: Image.asset('assets/icons/menu.png',
                                   height: 34, width: 34),
                             ),
-                            CircleIconContainer(
-                                containerColor: AppColors.textColor,
-                                containerSize: 44,
-                                icon: Image.asset(
-                                    'assets/icons/notification.png',
-                                    height: AppIconSize.bottomNavBarIcons,
-                                    width: AppIconSize.bottomNavBarIcons))
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed('notification');
+                              },
+                              child: CircleIconContainer(
+                                  containerColor: AppColors.textColor,
+                                  containerSize: 44,
+                                  icon: Image.asset(
+                                      'assets/icons/notification.png',
+                                      height: AppIconSize.bottomNavBarIcons,
+                                      width: AppIconSize.bottomNavBarIcons)),
+                            )
                           ],
                         ),
                         const SizedBox(height: 40),
@@ -126,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   boxShadow: ContainerShadow.boxShadow),
                               child: TextField(
-                                style: textFieldText(),
+                                style: MainFonts.textFieldText(),
                                 focusNode: _focusNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
@@ -136,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                                   filled: true,
                                   hintText:
                                       _hasFocus ? 'Search Products' : null,
-                                  hintStyle: hintFieldText(),
+                                  hintStyle: MainFonts.hintFieldText(),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(
                                         AppBoarderRadius.searchBarRadius),
@@ -188,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('All',
-                          style: filterText(color: AppColors.primaryColor30)),
+                          style: MainFonts.filterText(color: AppColors.primaryColor30)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -201,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Category',
-                          style: filterText(color: AppColors.textColor)),
+                          style: MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -214,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Brand',
-                          style: filterText(color: AppColors.textColor)),
+                          style: MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -227,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Rating',
-                          style: filterText(color: AppColors.textColor)),
+                          style: MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     GestureDetector(

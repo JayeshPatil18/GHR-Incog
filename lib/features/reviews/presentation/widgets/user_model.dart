@@ -65,12 +65,12 @@ class _UserModelState extends State<UserModel> {
                                   children: [
                                     Text(
                                       widget.name,
-                                      style: userRankingTitle(),
+                                      style: UserModelFonts.userRankingTitle(),
                                     ),
                                     SizedBox(height: 6),
                                     Text(
                                       '@${widget.username}',
-                                      style: userRankingSubTitle(),
+                                      style: UserModelFonts.userRankingSubTitle(),
                                     ),
                                   ],
                                 ),
@@ -82,10 +82,10 @@ class _UserModelState extends State<UserModel> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(widget.rank.toString(), style: userRankingTitle()),
+                            Text(widget.rank.toString(), style: UserModelFonts.userRankingTitle()),
                             SizedBox(height: 6),
                             Text('Pts. ${widget.points}',
-                                style: userRankingSubTitle()),
+                                style: UserModelFonts.userRankingSubTitle()),
                           ],
                         ),
                         contentPadding:

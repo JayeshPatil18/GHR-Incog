@@ -28,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     alignment: Alignment.centerLeft,
                     margin:
                         EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                    child: Text('Profile', style: pageTitleText()),
+                    child: Text('Profile', style: MainFonts.pageTitleText()),
                   ),
           )
         ),
