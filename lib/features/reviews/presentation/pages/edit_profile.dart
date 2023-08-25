@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -86,56 +87,52 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
-  // File? _imageFile;
-  // final picker = ImagePicker();
+File? _selectedImage;
+  Future pickImage(ImageSource source) async {
+    final image = await ImagePicker().pickImage(source: source);
 
-  // pickImage(ImageSource source) async {
-  //   try {
-  //     final pickedFile = await picker.pickImage(source: source);
-  //     if (pickedFile != null) {
-  //       setState(() {
-  //         Navigator.pop(context);
-  //         _imageFile = File(pickedFile.path);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     debugPrint(error.toString());
-  //   }
-  // }
+    if(image == null) return;
 
-  // void pickSource() {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (context) {
-  //       return Padding(
-  //         padding: const EdgeInsets.all(4.0),
-  //         child: Wrap(
-  //           children: [
-  //             ListTile(
-  //               leading: Icon(Icons.photo),
-  //               title: Text('Gallary'),
-  //               onTap: () {
-  //                 pickImage(ImageSource.gallery);
-  //               },
-  //             ),
-  //             Container(
-  //               margin: EdgeInsets.only(left: 10, right: 10),
-  //               color: AppColors.iconLightColor,
-  //               height: 1,
-  //             ),
-  //             ListTile(
-  //               leading: Icon(Icons.photo_camera),
-  //               title: Text('Camera'),
-  //               onTap: () {
-  //                 pickImage(ImageSource.camera);
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+    setState(() {
+      _selectedImage = File(image!.path);
+    });
+  }
+
+  void pickSource() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Gallary'),
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: AppColors.iconLightColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +181,7 @@ class _EditProfileState extends State<EditProfile> {
                         children: [
                           GestureDetector(
                   onTap: () {
-                    // pickSource();
+                    pickSource();
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -197,6 +194,10 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                       child: Stack(children: [
+                        _selectedImage != null ? CircleAvatar(
+                                backgroundImage: FileImage(_selectedImage!),
+                                radius: 60,
+                              ) :
                         CircleAvatar(
                                 backgroundImage: NetworkImage('https://media.wired.com/photos/5c57c3e3ce277c2cb23d575b/1:1/w_1666,h_1666,c_limit/Culture_Facebook_TheSocialNetwork.jpg'),
                                 radius: 60,

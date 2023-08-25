@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:review_app/constants/values.dart';
+import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/utils/dropdown_items.dart';
 
 import '../../../../constants/boarder.dart';
@@ -136,6 +140,53 @@ class _UploadReviewState extends State<UploadReview> {
     super.dispose();
   }
 
+  File? _selectedImage;
+  Future pickImage(ImageSource source) async {
+    final image = await ImagePicker().pickImage(source: source);
+
+    if (image == null) return;
+
+    setState(() {
+      _selectedImage = File(image!.path);
+    });
+  }
+
+  void pickSource() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Gallary'),
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: AppColors.iconLightColor,
+                height: 1,
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,42 +237,72 @@ class _UploadReviewState extends State<UploadReview> {
             padding: EdgeInsets.only(bottom: 100),
             child: Column(
               children: [
-                Container(
-                    decoration: BoxDecoration(
-                      boxShadow: ContainerShadow.boxShadow,
-                      color: AppColors.primaryColor30,
-                      border: Border.all(
-                          color: AppBoarderColor.searchBarColor,
-                          width: AppBoarderWidth.reviewUploadWidth),
-                      borderRadius: BorderRadius.circular(
-                          AppBoarderRadius.reviewUploadRadius),
-                    ),
-                    height: 320,
-                    width: double.infinity,
-                    margin: EdgeInsets.all(20),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.file_upload_outlined,
-                            size: 50,
-                            color: AppColors.secondaryColor10,
-                          ),
-                          SizedBox(height: 40),
-                          Container(
-                            decoration: BoxDecoration(
-                              boxShadow: ContainerShadow.boxShadow,
-                              color: AppColors.secondaryColor10,
+                GestureDetector(
+                  onTap: () {
+                    pickSource();
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: ContainerShadow.boxShadow,
+                        color: AppColors.primaryColor30,
+                        border: Border.all(
+                            color: AppBoarderColor.searchBarColor,
+                            width: AppBoarderWidth.reviewUploadWidth),
+                        borderRadius: BorderRadius.circular(
+                            AppBoarderRadius.reviewUploadRadius),
+                      ),
+                      height: 320,
+                      width: double.infinity,
+                      margin: EdgeInsets.all(20),
+                      child: _selectedImage != null
+                          ? ClipRRect(
                               borderRadius: BorderRadius.circular(
-                                  AppBoarderRadius.filterRadius),
-                            ),
-                            padding: EdgeInsets.only(
-                                top: 10, bottom: 10, left: 16, right: 16),
-                            child: Text('Upload Image',
-                                style: MainFonts.filterText(
-                                    color: AppColors.primaryColor30)),
-                          ),
-                        ])),
+                                  AppBoarderRadius.reviewUploadRadius),
+                              child: Stack(
+                                children: [
+                                  Center(child: Image(image: FileImage(_selectedImage!))),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Container(
+                                      margin: EdgeInsets.only(bottom: 20),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.secondaryColor10,
+                                        borderRadius: BorderRadius.circular(
+                                            30),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Icon(Icons.file_upload_outlined, color: AppColors.primaryColor30),
+                                    ),
+                                  )
+                                ],
+                              ))
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  Icon(
+                                    Icons.file_upload_outlined,
+                                    size: 50,
+                                    color: AppColors.secondaryColor10,
+                                  ),
+                                  SizedBox(height: 40),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: ContainerShadow.boxShadow,
+                                      color: AppColors.secondaryColor10,
+                                      borderRadius: BorderRadius.circular(
+                                          AppBoarderRadius.filterRadius),
+                                    ),
+                                    padding: EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 16,
+                                        right: 16),
+                                    child: Text('Upload Image',
+                                        style: MainFonts.filterText(
+                                            color: AppColors.primaryColor30)),
+                                  ),
+                                ])),
+                ),
                 Container(
                   padding:
                       EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
@@ -230,7 +311,8 @@ class _UploadReviewState extends State<UploadReview> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Product Name', style: MainFonts.lableText()),
+                        child:
+                            Text('Product Name', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
@@ -319,7 +401,8 @@ class _UploadReviewState extends State<UploadReview> {
                                   );
                                 }),
                                 child: Padding(
-                                  padding: EdgeInsets.only(top: 16, bottom: 16, left: 10),
+                                  padding: EdgeInsets.only(
+                                      top: 16, bottom: 16, left: 10),
                                   child: Text(priceCurrency,
                                       style: MainFonts.textFieldText(),
                                       textAlign: TextAlign.center),
@@ -361,7 +444,8 @@ class _UploadReviewState extends State<UploadReview> {
                       SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 5),
-                        child: Text('Description', style: MainFonts.lableText()),
+                        child:
+                            Text('Description', style: MainFonts.lableText()),
                       ),
                       Container(
                         decoration:
