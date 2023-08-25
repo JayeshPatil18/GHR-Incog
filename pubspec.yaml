@@ -47,7 +47,6 @@ dependencies:
   csc_picker: ^0.2.7
   currency_picker: ^2.0.14
   flutter_sticky_header: ^0.6.5
-  image_picker: ^1.0.2
 
 dev_dependencies:
   flutter_test:

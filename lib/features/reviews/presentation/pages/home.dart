@@ -120,20 +120,19 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   Icons.edit_outlined,
                                   size: 20,
+                                  color: AppColors.textColor,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
                                   child: Text('Edit Profile',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2!
-                                          .copyWith(fontSize: 16)),
+                                      style: MainFonts.settingLabel()),
                                 ),
                               ],
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
+                              color: AppColors.secondaryColor10,
                             ),
                           ],
                         )),
@@ -160,20 +159,19 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   Icons.numbers,
                                   size: 20,
+                                  color: AppColors.textColor,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
                                   child: Text('Change Phone number',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2!
-                                          .copyWith(fontSize: 16)),
+                                      style: MainFonts.settingLabel()),
                                 ),
                               ],
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
+                              color: AppColors.secondaryColor10,
                             ),
                           ],
                         )),
@@ -200,20 +198,19 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   Icons.lock_outlined,
                                   size: 20,
+                                  color: AppColors.textColor,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
                                   child: Text('Update Password',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2!
-                                          .copyWith(fontSize: 16)),
+                                      style: MainFonts.settingLabel()),
                                 ),
                               ],
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
+                              color: AppColors.secondaryColor10,
                             ),
                           ],
                         )),

@@ -183,6 +183,10 @@ class MainFonts {
   static TextStyle textFieldText() {
     return const TextStyle(fontSize: 19, color: AppColors.textColor);
   }
+
+  static TextStyle settingLabel() {
+    return const TextStyle(fontSize: 18, color: AppColors.textColor);
+  }
 }
 
 // In use
