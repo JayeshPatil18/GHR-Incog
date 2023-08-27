@@ -8,7 +8,7 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
-import '../widgets/shadow.dart';
+import '../../../reviews/presentation/widgets/shadow.dart';
 
 class UpdatePassword extends StatefulWidget {
   const UpdatePassword({super.key});

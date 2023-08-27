@@ -8,31 +8,33 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
-import '../widgets/shadow.dart';
+import '../../../reviews/presentation/widgets/shadow.dart';
 
-class VerifyPhoneNo extends StatefulWidget {
-  const VerifyPhoneNo({super.key});
+class ChangePhoneNo extends StatefulWidget {
+  const ChangePhoneNo({super.key});
 
   @override
-  State<VerifyPhoneNo> createState() => _VerifyPhoneNoState();
+  State<ChangePhoneNo> createState() => _ChangePhoneNoState();
 }
 
-class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
+class _ChangePhoneNoState extends State<ChangePhoneNo> {
   
-  final FocusNode _focusCodeNode = FocusNode();
-  bool _hasCodeFocus = false;
+  final FocusNode _focusPhoneNoNode = FocusNode();
+  bool _hasPhoneNoFocus = false;
 
-  TextEditingController codeController = TextEditingController();
+  TextEditingController phoneNoController = TextEditingController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String countryCode = '+91';
+
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _validateInput(String? input, int index) {
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
           return 'Field empty';
-        } else if(!isNumeric(input) || input.length != 6){
-          return 'Invalid Code';
+        } else if(!isNumeric(input) || input.length != 10){
+          return 'Invalid phone number';
         }
         break;
 
@@ -44,9 +46,9 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     @override
   void initState() {
     super.initState();
-    _focusCodeNode.addListener(() {
+    _focusPhoneNoNode.addListener(() {
       setState(() {
-        _hasCodeFocus = _focusCodeNode.hasFocus;
+        _hasPhoneNoFocus = _focusPhoneNoNode.hasFocus;
       });
     });
   }
@@ -77,7 +79,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                           color: AppColors.textColor, size: 26),
                     ),
                     SizedBox(width: 10),
-                    Text('Verify Phone no', style: MainFonts.pageTitleText()),
+                    Text('Change Phone no', style: MainFonts.pageTitleText()),
                   ],
                 ),
               ),
@@ -101,27 +103,39 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Verification Code', style: MainFonts.lableText()),
+                              child: Text('New Phone Number', style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
-                                maxLength: 6,
-                                controller: codeController,
+                                maxLength: 10,
+                                controller: phoneNoController,
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: ((value) {
                                   return _validateInput(value, 0);
                                 }),
                                 style: MainFonts.textFieldText(),
-                                focusNode: _focusCodeNode,
+                                keyboardType: TextInputType.number,
+                                focusNode: _focusPhoneNoNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 decoration: InputDecoration(
+                                  prefixIcon: CountryCodePicker(
+                                    textStyle: MainFonts.textFieldText(),
+                              onChanged: ((value) {
+                                countryCode = value.dialCode.toString();
+                              }),
+                              initialSelection: '+91',
+                              favorite: ['+91', 'IND'],
+                              showFlagDialog: true,
+                              showFlagMain: false,
+                              alignLeft: false,
+                            ),
                                   contentPadding: EdgeInsets.only(
                                       top: 16, bottom: 16, left: 20, right: 20),
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
                                   hintText:
-                                      _hasCodeFocus ? 'XXXXXX' : null,
+                                      _hasPhoneNoFocus ? 'Enter phone number' : null,
                                   hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
@@ -150,8 +164,6 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Text('Verification code has been sent to your phone number, verify phone number to change password', style: AuthFonts.authMsgText(color: Colors.grey)),
                             SizedBox(height: 40),
                             Container(
                               height: 55,
@@ -166,7 +178,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
                                    },
-                                  child: Text('Verify Code', style: AuthFonts.authButtonText())
+                                  child: Text('Send Verification Code', style: AuthFonts.authButtonText())
                                 ),
                             ),
                           ]),
