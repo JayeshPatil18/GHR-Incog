@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
+import 'package:review_app/utils/methods.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
@@ -48,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
     @override
   void initState() {
+
     super.initState();
     _focusUsernameNode.addListener(() {
       setState(() {
@@ -224,6 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                   onPressed: () { 
                                     _formKey.currentState!.validate();
+                                    updateLoginStatus(true);
                                    },
                                   child: Text('Login', style: AuthFonts.authButtonText())
                                 ),

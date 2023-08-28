@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:review_app/features/authentication/presentation/pages/signup.dart';
+import 'package:review_app/utils/methods.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
@@ -62,6 +63,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: SignUpPage.verify, smsCode: opt);
 
       await auth.signInWithCredential(credential);
+
+      updateLoginStatus(true);
 
       return true;
 

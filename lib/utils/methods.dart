@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/features/reviews/presentation/widgets/bottom_sheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String suffixOfNumber(int number) {
     if (number % 100 >= 11 && number % 100 <= 13) {
@@ -46,4 +47,21 @@ void openBottomSheet(BuildContext context, int index){
       return false;
     }
     return double.tryParse(s) != null;
+  }
+
+  // Check login status on app start
+  Future<bool> checkLoginStatus() async {
+    bool isLoggedIn = false;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('isLoggedIn') != null){
+      isLoggedIn = prefs.getBool('isLoggedIn')!;
+    }
+    
+    return isLoggedIn;
+  }
+
+  // Update login status
+  Future<void> updateLoginStatus(bool status) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', status);
   }

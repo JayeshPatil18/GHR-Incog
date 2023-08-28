@@ -163,7 +163,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: ((context, state) {
                                 if (state is OtpCodeVerifiedState) {
-                                  Navigator.of(context).pushNamed('/');
+                                  Navigator.of(context).pushNamed('/landing');
                                 } else if(state is OtpCodeVerifiedFailedState){
                                    ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

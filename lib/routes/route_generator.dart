@@ -16,11 +16,17 @@ import '../features/authentication/presentation/pages/signup.dart';
 
 class RouteGenerator{
   Route<dynamic> generateRoute(RouteSettings settings){
+    
     final args = settings.arguments;
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const SignUpPage()
+          builder: (_) => const Splash()
+        );
+      
+      case 'landing':
+        return MaterialPageRoute(
+          builder: (_) => const LandingPage()
         );
 
       case 'upload':

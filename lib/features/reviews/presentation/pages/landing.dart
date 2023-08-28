@@ -4,6 +4,8 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
+import '../../../../utils/methods.dart';
+import '../../../authentication/presentation/pages/login.dart';
 import '../provider/bottom_nav_bar.dart';
 import '../widgets/bottom_nav_icons.dart';
 import 'home.dart';
@@ -19,12 +21,18 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  
   final screens = [
     HomePage(),
     LikedPage(),
     LeaderBoardPage(),
     ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
