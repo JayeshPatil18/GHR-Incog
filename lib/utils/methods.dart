@@ -39,3 +39,11 @@ void openBottomSheet(BuildContext context, int index){
           ),
         ));
   }
+
+  
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }

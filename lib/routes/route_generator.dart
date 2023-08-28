@@ -20,7 +20,7 @@ class RouteGenerator{
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const LandingPage()
+          builder: (_) => const SignUpPage()
         );
 
       case 'upload':
@@ -56,6 +56,11 @@ class RouteGenerator{
       case 'changephoneno':
         return MaterialPageRoute(
           builder: (_) => const ChangePhoneNo()
+        );
+      
+      case 'verifyphone':
+        return MaterialPageRoute(
+          builder: (_) => VerifyPhoneNo(phoneNo: settings.arguments.toString())
         );
 
       default:

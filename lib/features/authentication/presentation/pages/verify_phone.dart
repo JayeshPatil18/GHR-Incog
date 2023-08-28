@@ -1,7 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/helpers.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:review_app/features/authentication/presentation/bloc/bloc/signup_bloc.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -11,7 +13,12 @@ import '../../../../utils/fonts.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
-  const VerifyPhoneNo({super.key});
+
+  final String phoneNo;
+
+  const VerifyPhoneNo({super.key, 
+    required this.phoneNo,
+  });
 
   @override
   State<VerifyPhoneNo> createState() => _VerifyPhoneNoState();
@@ -153,21 +160,41 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                             SizedBox(height: 20),
                             Text('Verification code has been sent to your phone number, verify phone number to change password', style: AuthFonts.authMsgText(color: Colors.grey)),
                             SizedBox(height: 40),
-                            Container(
-                              height: 55,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.secondaryColor10,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
-                                      elevation: AppElevations.buttonElev,
-                                      ),
-                                  onPressed: () { 
-                                    _formKey.currentState!.validate();
-                                   },
-                                  child: Text('Verify Code', style: AuthFonts.authButtonText())
-                                ),
+                            BlocConsumer<SignupBloc, SignupState>(
+                              listener: ((context, state) {
+                                if (state is OtpCodeVerifiedState) {
+                                  Navigator.of(context).pushNamed('/');
+                                } else if(state is OtpCodeVerifiedFailedState){
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Invalid verification code.',
+                                              selectionColor:
+                                                  AppColors.textColor)));
+                                }
+                              }),
+                              builder: (context, state) {
+                                return Container(
+                                height: 55,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.secondaryColor10,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
+                                        elevation: AppElevations.buttonElev,
+                                        ),
+                                    onPressed: () { 
+                                      bool isValid = _formKey.currentState!.validate();
+                                      if(isValid){
+                                        BlocProvider.of<SignupBloc>(context)
+                                                .add(VerifyClickEvent(otpCode: codeController.text));
+                                      }
+                                     },
+                                    child: Text('Verify Code', style: AuthFonts.authButtonText())
+                                  ),
+                              );
+                              }
                             ),
                           ]),
                     )),
