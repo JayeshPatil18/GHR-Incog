@@ -11,6 +11,7 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -203,6 +204,65 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
                                   child: Text('Update Password',
+                                      style: MainFonts.settingLabel()),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                              color: AppColors.secondaryColor10,
+                            ),
+                          ],
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            contentPadding: EdgeInsets.all(10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            title: const Text('Want to Logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  updateLoginStatus(false);
+                                  Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
+                                  Navigator.of(context).pushReplacementNamed('login');
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                    },
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.lock_outlined,
+                                  size: 20,
+                                  color: AppColors.textColor,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                  child: Text('Logout',
                                       style: MainFonts.settingLabel()),
                                 ),
                               ],

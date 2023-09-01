@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/utils/methods.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
+import '../../../../constants/values.dart';
 import '../../../../utils/fonts.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
+import '../bloc/login_bloc/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +20,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final FocusNode _focusUsernameNode = FocusNode();
   bool _hasUsernameFocus = false;
 
@@ -29,6 +32,10 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _validateInput(String? input, int index) {
+    if(input != null){
+      input = input.trim();
+    }
+    
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
@@ -47,9 +54,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-    @override
+  @override
   void initState() {
-
     super.initState();
     _focusUsernameNode.addListener(() {
       setState(() {
@@ -100,8 +106,10 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Username', style: MainFonts.lableText()),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                              child: Text('Username',
+                                  style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -119,27 +127,33 @@ class _LoginPageState extends State<LoginPage> {
                                       top: 16, bottom: 16, left: 20, right: 20),
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
-                                  hintText:
-                                      _hasUsernameFocus ? 'Enter username' : null,
+                                  hintText: _hasUsernameFocus
+                                      ? 'Enter username'
+                                      : null,
                                   hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width:
+                                              AppBoarderWidth.reviewUploadWidth,
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width:
+                                              AppBoarderWidth.reviewUploadWidth,
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
                                           width: AppBoarderWidth.searchBarWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -151,8 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(height: 40),
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Password', style: MainFonts.lableText()),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                              child: Text('Password',
+                                  style: MainFonts.lableText()),
                             ),
                             Container(
                               child: TextFormField(
@@ -170,27 +186,33 @@ class _LoginPageState extends State<LoginPage> {
                                       top: 16, bottom: 16, left: 20, right: 20),
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
-                                  hintText:
-                                      _hasPasswordFocus ? 'Enter password' : null,
+                                  hintText: _hasPasswordFocus
+                                      ? 'Enter password'
+                                      : null,
                                   hintStyle: MainFonts.hintFieldText(),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width:
+                                              AppBoarderWidth.reviewUploadWidth,
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          width:
+                                              AppBoarderWidth.reviewUploadWidth,
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
                                       borderSide: BorderSide(
                                           width: AppBoarderWidth.searchBarWidth,
-                                          color: AppBoarderColor.searchBarColor)),
+                                          color:
+                                              AppBoarderColor.searchBarColor)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(
                                           AppBoarderRadius.reviewUploadRadius),
@@ -207,29 +229,98 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Row(
                                 children: [
-                                  Text('Haven\'t created account, ', style: AuthFonts.authMsgText()),
-                                  Text('Sign Up', style: AuthFonts.authMsgText(color: AppColors.secondaryColor10)),
+                                  Text('Haven\'t created account, ',
+                                      style: AuthFonts.authMsgText()),
+                                  Text('Sign Up',
+                                      style: AuthFonts.authMsgText(
+                                          color: AppColors.secondaryColor10)),
                                   Text(' now', style: AuthFonts.authMsgText()),
                                 ],
                               ),
                             ),
                             SizedBox(height: 40),
-                            Container(
-                              height: 55,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.secondaryColor10,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
-                                      elevation: AppElevations.buttonElev,
+                            BlocConsumer<LoginBloc, LoginState>(
+                              listener: (context, state) {
+                                if (state is LoginInvalidUsernameState) {
+                                  mySnackBarShow(context,
+                                      'Account not found with this username.');
+                                } else if (state is LoginSucessState) {
+                                  FocusScope.of(context).unfocus();
+                                  usernameController.text = '_';
+                                  passwordController.text = '_';
+                                  Future.delayed(
+                                      const Duration(milliseconds: 300), () {
+
+                                     Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('landing');
+                                  });                                 
+                                } else if (state is LoginInvalidPasswordState) {
+                                  mySnackBarShow(
+                                      context, 'Incorrect Password.');
+                                } else if (state is LoginFailedState) {
+                                  mySnackBarShow(
+                                      context, 'Something went wrong.');
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is LoginLoadingState) {
+                                  return Container(
+                                    height: 55,
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.secondaryColor10,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppBoarderRadius
+                                                          .buttonRadius)),
+                                          elevation: AppElevations.buttonElev,
+                                        ),
+                                        onPressed: () {},
+                                        child: SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        strokeWidth: AppValues
+                                                            .progresBarWidth,
+                                                        color: AppColors
+                                                            .primaryColor30)))),
+                                  );
+                                }
+                                return Container(
+                                  height: 55,
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            AppColors.secondaryColor10,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                AppBoarderRadius.buttonRadius)),
+                                        elevation: AppElevations.buttonElev,
                                       ),
-                                  onPressed: () { 
-                                    _formKey.currentState!.validate();
-                                    updateLoginStatus(true);
-                                   },
-                                  child: Text('Login', style: AuthFonts.authButtonText())
-                                ),
+                                      onPressed: () {
+                                        bool isValid =
+                                            _formKey.currentState!.validate();
+                                        if (isValid) {
+                                          BlocProvider.of<LoginBloc>(context)
+                                              .add(LoginClickEvent(
+                                                  username:
+                                                      usernameController.text,
+                                                  password:
+                                                      passwordController.text));
+                                        }
+                                      },
+                                      child: Text('Login',
+                                          style: AuthFonts.authButtonText())),
+                                );
+                              },
                             ),
                           ]),
                     )),

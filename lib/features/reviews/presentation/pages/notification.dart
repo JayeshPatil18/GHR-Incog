@@ -99,7 +99,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         profileUrl:
                             'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
                         name: 'Henry Tyson',
-                        ago: '');
+                        ago: '10 hours ago');
                   },
                 ),
               )

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/features/authentication/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart';
@@ -10,7 +11,7 @@ import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar
 import 'package:review_app/routes/route_generator.dart';
 import 'package:review_app/utils/methods.dart';
 
-import 'features/authentication/presentation/bloc/bloc/signup_bloc.dart';
+import 'features/authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
 import 'features/authentication/presentation/pages/login.dart';
 import 'features/reviews/presentation/pages/liked.dart';
 import 'features/reviews/presentation/pages/profile.dart';
@@ -32,16 +33,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: ((context) => BottomNavigationProvider()))
       ],
-      child: BlocProvider(
-        create: (context) => SignupBloc(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: ((context) => SignupBloc())),
+          BlocProvider(create: ((context) => LoginBloc())),
+        ], 
         child: MaterialApp(
           theme: ThemeData(primarySwatch: mainAppColor),
           debugShowCheckedModeBanner: false,
           title: 'Review Products',
           initialRoute: '/',
           onGenerateRoute: RouteGenerator().generateRoute,
-        ),
-      ),
+        ),)
     );
   }
 }
@@ -57,9 +60,9 @@ class _SplashState extends State<Splash> {
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
     if(!isLoggedIn){
-      Navigator.of(context).pushNamed('login');
+      Navigator.of(context).pushReplacementNamed('login');
     } else{
-      Navigator.of(context).pushNamed('landing');
+      Navigator.of(context).pushReplacementNamed('landing');
     }
   }
 

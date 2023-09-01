@@ -76,7 +76,7 @@ class _NotificationModelState extends State<NotificationModel> {
           ),
           Align(
              alignment: Alignment.bottomRight,
-            child: Icon(Icons.close, size: 16))
+            child: Icon(Icons.close, size: 16, color: AppColors.iconColor,))
         ],
       ),
     );

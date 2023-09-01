@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/helpers.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:review_app/features/authentication/presentation/bloc/bloc/signup_bloc.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -11,6 +11,7 @@ import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
+import '../bloc/signup_bloc/signup_bloc.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
 
@@ -163,14 +164,17 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: ((context, state) {
                                 if (state is OtpCodeVerifiedState) {
-                                  Navigator.of(context).pushNamed('/landing');
+                                  FocusScope.of(context).unfocus();
+                                  Future.delayed(
+                                      const Duration(milliseconds: 300), () {
+
+                                     Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('landing');
+                                  });
                                 } else if(state is OtpCodeVerifiedFailedState){
-                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Invalid verification code.',
-                                              selectionColor:
-                                                  AppColors.textColor)));
+                                  mySnackBarShow(context, 'Invalid verification code.');
                                 }
                               }),
                               builder: (context, state) {

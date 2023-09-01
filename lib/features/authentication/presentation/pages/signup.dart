@@ -5,13 +5,14 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/values.dart';
-import 'package:review_app/features/authentication/presentation/bloc/bloc/signup_bloc.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
+import '../bloc/signup_bloc/signup_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -402,7 +403,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 20),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, 'login');
+                                Navigator.of(context).pop();
                               },
                               child: Row(
                                 children: [
@@ -419,17 +420,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: (context, state) {
                                 if (state is SignupOtpSentState) {
-                                  Navigator.of(context).pushNamed(
-                                    'verifyphone',
-                                    arguments: state.phoneNo,
-                                  );
+                                  FocusScope.of(context).unfocus();
+                                  Future.delayed(
+                                      const Duration(milliseconds: 300), () {
+
+                                  Navigator.of(context).pushNamed('verifyphone',
+                                    arguments: state.phoneNo,);
+                                  });             
+                                  
                                 } else if (state is SignupOtpSentFailedState) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Something went wrong! Try again.',
-                                              selectionColor:
-                                                  AppColors.textColor)));
+                                  mySnackBarShow(context, 'Something went wrong! Try again.');
                                 }
                               },
                               builder: (context, state) {
@@ -437,8 +437,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   return Container(
                                     height: 55,
                                     width: double.infinity,
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               AppColors.secondaryColor10,
                                           shape: RoundedRectangleBorder(

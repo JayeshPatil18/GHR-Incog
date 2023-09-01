@@ -1,10 +1,5 @@
-import 'dart:ffi';
-import 'dart:isolate';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:review_app/constants/boarder.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
