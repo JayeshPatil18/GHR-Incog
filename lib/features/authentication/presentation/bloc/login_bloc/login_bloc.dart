@@ -18,18 +18,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is LoginClickEvent) {
         emit(LoginLoadingState());
         // Verify Login Cridentials
-        UserCredentialsRepo userCredentialsRepo = UserCredentialsRepo();
+        UsersRepo usersRepo = UsersRepo();
         try {
           List<Map<String, dynamic>> data =
-              await userCredentialsRepo.getUserCredentials();
+              await usersRepo.getUserCredentials();
 
           bool hasUsernameAlready = false;
           String password = '';
+          int userId = -1;
+          String phoneNo = '';
 
           for (var userMap in data) {
             if (userMap['username'] == event.username) {
               hasUsernameAlready = true;
               password = userMap['password'];
+              userId = userMap['uid'];
+              phoneNo = userMap['phoneno'];
               break;
             }
           }
@@ -40,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             emit(LoginInvalidPasswordState());
           } else if (password == event.password) {
             updateLoginStatus(true);
+            loginDetails(userId.toString(), event.username, phoneNo);
             emit(LoginSucessState());
           }
         } catch (e) {

@@ -39,7 +39,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       if (event is VerifyClickEvent) {
         bool isOtpVerified = await optVerify(event.otpCode);
         if (isOtpVerified) {
-          emit(OtpCodeVerifiedState());
+          UsersRepo usersRepo = UsersRepo();
+          int userId = await usersRepo.addUser(event.fullName, event.username, event.phoneNo, event.password);
+          if(userId != -1){
+            loginDetails(userId.toString(), event.username, event.phoneNo);
+            emit(OtpCodeVerifiedState());
+          } else{
+            emit(AddUserDataFailedState());
+          }
         } else {
           emit(OtpCodeVerifiedFailedState());
         }
@@ -86,10 +93,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   }
 
   Future<int> validUsernameCheck(String username) async {
-    UserCredentialsRepo userCredentialsRepo = UserCredentialsRepo();
+    UsersRepo usersRepo = UsersRepo();
     try {
       List<Map<String, dynamic>> data =
-          await userCredentialsRepo.getUserCredentials();
+          await usersRepo.getUserCredentials();
 
       bool hasUsernameAlready = false;
 

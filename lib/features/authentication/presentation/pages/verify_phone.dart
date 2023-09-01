@@ -16,9 +16,15 @@ import '../bloc/signup_bloc/signup_bloc.dart';
 class VerifyPhoneNo extends StatefulWidget {
 
   final String phoneNo;
+  final String fullname;
+  final String username;
+  final String password;
 
   const VerifyPhoneNo({super.key, 
     required this.phoneNo,
+    required this.fullname,
+    required this.username,
+    required this.password,
   });
 
   @override
@@ -175,6 +181,9 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                   });
                                 } else if(state is OtpCodeVerifiedFailedState){
                                   mySnackBarShow(context, 'Invalid verification code.');
+                                } else if(state is AddUserDataFailedState){
+                                  mySnackBarShow(context, 'Something went wrong.');
+                                  Navigator.pop(context);
                                 }
                               }),
                               builder: (context, state) {
@@ -192,7 +201,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                       bool isValid = _formKey.currentState!.validate();
                                       if(isValid){
                                         BlocProvider.of<SignupBloc>(context)
-                                                .add(VerifyClickEvent(otpCode: codeController.text));
+                                                .add(VerifyClickEvent(otpCode: codeController.text.trim(), fullName: widget.fullname.trim(), username: widget.username.trim(), phoneNo: widget.phoneNo.trim(), password: widget.password.trim()));
                                       }
                                      },
                                     child: Text('Verify Code', style: AuthFonts.authButtonText())

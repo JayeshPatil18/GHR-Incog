@@ -11,6 +11,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../../../reviews/domain/entities/VerifyArguments.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 import '../bloc/signup_bloc/signup_bloc.dart';
 
@@ -46,6 +47,10 @@ class _SignUpPageState extends State<SignUpPage> {
   String countryCode = "+91";
 
   String? _validateInput(String? input, int index) {
+    if(input != null){
+      input = input.trim();
+    }
+    
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
@@ -420,18 +425,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: (context, state) {
                                 if (state is SignUpInvalidUsernameState) {
-                                  mySnackBarShow(context, 'This username is already in use! Try Another.');
+                                  mySnackBarShow(context,
+                                      'This username is already in use! Try Another.');
                                 } else if (state is SignupOtpSentState) {
                                   FocusScope.of(context).unfocus();
                                   Future.delayed(
                                       const Duration(milliseconds: 300), () {
-
-                                  Navigator.of(context).pushNamed('verifyphone',
-                                    arguments: state.phoneNo,);
-                                  });             
-                                  
-                                } else if (state is SignupOtpSentFailedState || state is SignupFailedState) {
-                                  mySnackBarShow(context, 'Something went wrong! Try again.');
+                                    Navigator.of(context)
+                                        .pushNamed('verifyphone', arguments: VerifyArguments( nameController.text.trim(), usernameController.text.trim(), state.phoneNo.trim(), passwordController.text.trim()));
+                                  });
+                                } else if (state is SignupOtpSentFailedState ||
+                                    state is SignupFailedState) {
+                                  mySnackBarShow(context,
+                                      'Something went wrong! Try again.');
                                 }
                               },
                               builder: (context, state) {
@@ -483,7 +489,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                               .add(SignupClickEvent(
                                                   phoneNo: countryCode +
                                                       phoneNoController.text
-                                                          .toString(), username: usernameController.text));
+                                                          .toString().trim(),
+                                                  username:
+                                                      usernameController.text.trim()));
                                         }
                                       },
                                       child: Text('Sign Up',

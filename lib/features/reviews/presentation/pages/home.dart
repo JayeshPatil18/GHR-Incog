@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  updateLoginStatus(false);
+                                  clearSharedPrefs();
                                   Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
                                   Navigator.of(context).pushReplacementNamed('login');

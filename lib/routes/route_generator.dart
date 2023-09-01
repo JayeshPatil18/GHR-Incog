@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/authentication/presentation/pages/change_phone.dart';
+import 'package:review_app/features/reviews/domain/entities/VerifyArguments.dart';
 import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/notification.dart';
@@ -65,8 +66,16 @@ class RouteGenerator{
         );
       
       case 'verifyphone':
+
+        VerifyArguments verifyArguments = settings.arguments as VerifyArguments;
+
+        String fullName = verifyArguments.fullName;
+        String username = verifyArguments.username;
+        String phoneNo = verifyArguments.phoneNo;
+        String password = verifyArguments.password;
+
         return MaterialPageRoute(
-          builder: (_) => VerifyPhoneNo(phoneNo: settings.arguments.toString())
+          builder: (_) => VerifyPhoneNo(fullname: fullName, username: username, phoneNo: phoneNo, password: password)
         );
 
       default:

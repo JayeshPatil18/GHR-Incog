@@ -312,9 +312,9 @@ class _LoginPageState extends State<LoginPage> {
                                           BlocProvider.of<LoginBloc>(context)
                                               .add(LoginClickEvent(
                                                   username:
-                                                      usernameController.text,
+                                                      usernameController.text.trim(),
                                                   password:
-                                                      passwordController.text));
+                                                      passwordController.text.trim()));
                                         }
                                       },
                                       child: Text('Login',

@@ -22,3 +22,5 @@ class SignupOtpSentFailedState extends SignupState{}
 class OtpCodeVerifiedState extends SignupState{}
 
 class OtpCodeVerifiedFailedState extends SignupState{}
+
+class AddUserDataFailedState extends SignupState{}

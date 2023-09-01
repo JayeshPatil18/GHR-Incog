@@ -15,8 +15,16 @@ class SignupClickEvent extends SignupEvent{
 
 class VerifyClickEvent extends SignupEvent{
   final String otpCode;
+  final String fullName;
+  final String username;
+  final String phoneNo;
+  final String password;
 
   VerifyClickEvent({
     required this.otpCode,
+    required this.fullName,
+    required this.username,
+    required this.phoneNo,
+    required this.password,
   });
 }
