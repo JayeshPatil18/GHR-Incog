@@ -5,8 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:review_app/features/authentication/presentation/pages/signup.dart';
 import 'package:review_app/utils/methods.dart';
 
-import '../../../data/repositories/credentials_repo.dart';
-import '../../../domain/entities/user_credentials.dart';
+import '../../../data/repositories/users_repo.dart';
 import '../login_bloc/login_bloc.dart';
 
 part 'signup_event.dart';
@@ -20,28 +19,28 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
         int validUsername = await validUsernameCheck(event.username);
 
-        if(validUsername == 1){
+        if (validUsername == 1) {
           // Verification Code sending
           bool isOtpSent = await sendOtpToPhoneNumber(event.phoneNo);
-          if(isOtpSent){
+          if (isOtpSent) {
             emit(SignupOtpSentState(phoneNo: event.phoneNo));
-          } else{
+          } else {
             emit(SignupOtpSentFailedState());
           }
-        } else if(validUsername == -1){
+        } else if (validUsername == -1) {
           emit(SignUpInvalidUsernameState());
-        } else if(validUsername == 0){
+        } else if (validUsername == 0) {
           emit(SignupFailedState());
         }
       }
     });
 
-    on<VerifyClickEvent>((event, emit) async{
-      if(event is VerifyClickEvent){
+    on<VerifyClickEvent>((event, emit) async {
+      if (event is VerifyClickEvent) {
         bool isOtpVerified = await optVerify(event.otpCode);
-        if(isOtpVerified){
+        if (isOtpVerified) {
           emit(OtpCodeVerifiedState());
-        } else{
+        } else {
           emit(OtpCodeVerifiedFailedState());
         }
       }
@@ -60,11 +59,11 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         },
         codeSent: (String verificationId, int? resendToken) {
           SignUpPage.verify = verificationId;
-        }, codeAutoRetrievalTimeout: (String verificationId) {  },
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
       );
 
       return true;
-
     } catch (e) {
       return false;
     }
@@ -73,36 +72,41 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   Future<bool> optVerify(String opt) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: SignUpPage.verify, smsCode: opt);
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: SignUpPage.verify, smsCode: opt);
 
       await auth.signInWithCredential(credential);
 
       updateLoginStatus(true);
 
       return true;
-
     } catch (e) {
       return false;
     }
   }
-  
-  
+
   Future<int> validUsernameCheck(String username) async {
     UserCredentialsRepo userCredentialsRepo = UserCredentialsRepo();
-        try {
-          UserCredentials data = await userCredentialsRepo.getUserCredentials(username);
-          if(data == null || data.username.isEmpty){
-            return 1;
-          } if(data != null) {
-            return -1;
-          }
-        } catch (e) {
-          if(e.toString().toLowerCase().contains('no element')){
-            return 1;
-          } else{
-            return 0;
-          }
+    try {
+      List<Map<String, dynamic>> data =
+          await userCredentialsRepo.getUserCredentials();
+
+      bool hasUsernameAlready = false;
+
+      for (var userMap in data) {
+        if (userMap['username'] == username) {
+          hasUsernameAlready = true;
+          break;
         }
-        return 0;
+      }
+      if (!hasUsernameAlready) {
+        return 1;
+      } else if (hasUsernameAlready) {
+        return -1;
+      }
+    } on Exception catch (e) {
+      return 0;
+    }
+    return 0;
   }
 }
