@@ -419,7 +419,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 40),
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: (context, state) {
-                                if (state is SignupOtpSentState) {
+                                if (state is SignUpInvalidUsernameState) {
+                                  mySnackBarShow(context, 'This username is already in use! Try Another.');
+                                } else if (state is SignupOtpSentState) {
                                   FocusScope.of(context).unfocus();
                                   Future.delayed(
                                       const Duration(milliseconds: 300), () {
@@ -428,7 +430,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     arguments: state.phoneNo,);
                                   });             
                                   
-                                } else if (state is SignupOtpSentFailedState) {
+                                } else if (state is SignupOtpSentFailedState || state is SignupFailedState) {
                                   mySnackBarShow(context, 'Something went wrong! Try again.');
                                 }
                               },
@@ -481,7 +483,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                               .add(SignupClickEvent(
                                                   phoneNo: countryCode +
                                                       phoneNoController.text
-                                                          .toString()));
+                                                          .toString(), username: usernameController.text));
                                         }
                                       },
                                       child: Text('Sign Up',

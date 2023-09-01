@@ -4,9 +4,11 @@ part of 'signup_bloc.dart';
 abstract class SignupEvent {}
 
 class SignupClickEvent extends SignupEvent{
+  final String username;
   final String phoneNo;
 
   SignupClickEvent({
+    required this.username,
     required this.phoneNo,
   });
 }
