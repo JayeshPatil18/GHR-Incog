@@ -68,6 +68,13 @@ Future<void> loginDetails(String uId, String username, String phoneNo) async {
   prefs.setStringList('loginDetails', [uId, username, phoneNo]);
 }
 
+// get login status
+Future<List<String>?> getLoginDetails() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<String>? loginDetails = prefs.getStringList('loginDetails');
+  return loginDetails;
+}
+
 // Update login status
 Future<void> clearSharedPrefs() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();

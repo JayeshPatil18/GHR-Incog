@@ -5,9 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:review_app/constants/values.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/utils/dropdown_items.dart';
 
 import '../../../../constants/boarder.dart';
@@ -15,6 +17,8 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../bloc/upload_review/upload_review_bloc.dart';
+import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
@@ -44,6 +48,7 @@ class _UploadReviewState extends State<UploadReview> {
   bool _hasSummaryFocus = false;
 
   int rateIndex = -1;
+  int hasImagePicked = -1;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -57,6 +62,10 @@ class _UploadReviewState extends State<UploadReview> {
   String priceCurrency = '₹';
 
   String? _validateInput(String? input, int index) {
+    if(input != null){
+      input = input.trim();
+    }
+    
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
@@ -147,6 +156,7 @@ class _UploadReviewState extends State<UploadReview> {
     if (image == null) return;
 
     setState(() {
+      hasImagePicked = 1;
       _selectedImage = File(image!.path);
     });
   }
@@ -195,18 +205,63 @@ class _UploadReviewState extends State<UploadReview> {
           padding: EdgeInsets.only(bottom: 6, right: 6),
           width: 70,
           height: 70,
-          child: FloatingActionButton(
-            backgroundColor: AppColors.secondaryColor10,
-            onPressed: () {
-              if (rateIndex == -1) {
-                setState(() {
-                  rateIndex = -2;
+          child: BlocConsumer<UploadReviewBloc, UploadReviewState>(
+            listener: (context, state) {
+              if (state is UploadReviewFaild) {
+                mySnackBarShow(context, 'Something went wrong.');
+              } else if (state is UploadReviewSuccess) {
+                FocusScope.of(context).unfocus();
+                mySnackBarShow(context, 'Review Uploaded Successfully.');
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  Navigator.of(context).pop();
                 });
               }
-              _formKey.currentState!.validate();
             },
-            child: Icon(Icons.check_rounded,
-                color: AppColors.primaryColor30, size: 38),
+            builder: (context, state) {
+              if (state is UploadReviewLoading) {
+                return FloatingActionButton(
+                    backgroundColor: AppColors.secondaryColor10,
+                    onPressed: () {},
+                    child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                strokeWidth: AppValues.progresBarWidth,
+                                color: AppColors.primaryColor30))));
+              }
+              return FloatingActionButton(
+                  backgroundColor: AppColors.secondaryColor10,
+                  onPressed: () {
+                    if (rateIndex == -1) {
+                      setState(() {
+                        rateIndex = -2;
+                      });
+                    }
+                    if (hasImagePicked == -1) {
+                      setState(() {
+                        hasImagePicked = -2;
+                      });
+                      mySnackBarShow(context, 'Please Upload Image.');
+                    }
+                    bool isValid = _formKey.currentState!.validate();
+                    if (isValid && rateIndex > 0 && hasImagePicked == 1) {
+                      BlocProvider.of<UploadReviewBloc>(context)
+                          .add(UploadClickEvent(
+                        brand: brandController.text.trim(),
+                        category: categoryController.text.trim(),
+                        description: descController.text.trim(),
+                        imageSelected: _selectedImage!,
+                        name: nameController.text.trim(),
+                        price: priceCurrency + priceController.text.trim(),
+                        rating: rateIndex + 1,
+                        summary: summaryController.text.trim(),
+                      ));
+                    }
+                  },
+                  child: Icon(Icons.check_rounded,
+                      color: AppColors.primaryColor30, size: 38));
+            },
           ),
         ),
         appBar: PreferredSize(
@@ -246,8 +301,12 @@ class _UploadReviewState extends State<UploadReview> {
                         boxShadow: ContainerShadow.boxShadow,
                         color: AppColors.primaryColor30,
                         border: Border.all(
-                            color: AppBoarderColor.searchBarColor,
-                            width: AppBoarderWidth.reviewUploadWidth),
+                            color: hasImagePicked != -2
+                                ? AppColors.secondaryColor10
+                                : AppColors.errorColor,
+                            width: hasImagePicked != -2
+                                ? AppBoarderWidth.reviewUploadWidth
+                                : AppBoarderWidth.searchBarWidth),
                         borderRadius: BorderRadius.circular(
                             AppBoarderRadius.reviewUploadRadius),
                       ),
@@ -260,18 +319,20 @@ class _UploadReviewState extends State<UploadReview> {
                                   AppBoarderRadius.reviewUploadRadius),
                               child: Stack(
                                 children: [
-                                  Center(child: Image(image: FileImage(_selectedImage!))),
+                                  Center(
+                                      child: Image(
+                                          image: FileImage(_selectedImage!))),
                                   Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Container(
                                       margin: EdgeInsets.only(bottom: 20),
                                       decoration: BoxDecoration(
                                         color: AppColors.secondaryColor10,
-                                        borderRadius: BorderRadius.circular(
-                                            30),
+                                        borderRadius: BorderRadius.circular(30),
                                       ),
                                       padding: EdgeInsets.all(10),
-                                      child: Icon(Icons.file_upload_outlined, color: AppColors.primaryColor30),
+                                      child: Icon(Icons.file_upload_outlined,
+                                          color: AppColors.primaryColor30),
                                     ),
                                   )
                                 ],
@@ -323,6 +384,7 @@ class _UploadReviewState extends State<UploadReview> {
                             return _validateInput(value, 0);
                           }),
                           style: MainFonts.textFieldText(),
+                          controller: nameController,
                           focusNode: _focusNameNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -375,6 +437,7 @@ class _UploadReviewState extends State<UploadReview> {
                           }),
                           keyboardType: TextInputType.number,
                           style: MainFonts.textFieldText(),
+                          controller: priceController,
                           focusNode: _focusPriceNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -457,6 +520,7 @@ class _UploadReviewState extends State<UploadReview> {
                           }),
                           maxLines: 2,
                           style: MainFonts.textFieldText(),
+                          controller: descController,
                           focusNode: _focusDescNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
@@ -770,6 +834,7 @@ class _UploadReviewState extends State<UploadReview> {
                           }),
                           maxLines: 4,
                           style: MainFonts.textFieldText(),
+                          controller: summaryController,
                           focusNode: _focusSummaryNode,
                           cursorHeight: TextCursorHeight.cursorHeight,
                           decoration: InputDecoration(
