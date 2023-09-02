@@ -69,6 +69,8 @@ class _SignUpPageState extends State<SignUpPage> {
           return 'Username is too short';
         } else if (input.length > 30) {
           return 'Username is too long';
+        } else if(!doesNotContainSpaces(input)){
+          return 'Username should not contain any spaces';
         }
         break;
 

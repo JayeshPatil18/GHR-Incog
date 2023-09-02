@@ -45,6 +45,18 @@ bool isNumeric(String s) {
   return double.tryParse(s) != null;
 }
 
+bool doesNotContainSpaces(String input) {
+  return !input.contains(' ');
+}
+
+int getMaxRId(List<Map<String, dynamic>> data) {
+  return data.map((item) => item['rid'] as int).reduce((a, b) => a > b ? a : b);
+}
+
+int getMaxUId(List<Map<String, dynamic>> data) {
+  return data.map((item) => item['uid'] as int).reduce((a, b) => a > b ? a : b);
+}
+
 // Check login status on app start
 Future<bool> checkLoginStatus() async {
   bool isLoggedIn = false;

@@ -94,7 +94,7 @@ File? _selectedImage;
     if(image == null) return;
 
     setState(() {
-      _selectedImage = File(image!.path);
+      _selectedImage = File(image.path);
     });
   }
 

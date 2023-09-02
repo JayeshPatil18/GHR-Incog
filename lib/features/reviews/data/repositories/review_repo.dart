@@ -19,7 +19,7 @@ class ReviewRepo {
 
     try {
       List<Map<String, dynamic>> data = await getReviews();
-      int reviewId = data.length;
+      int reviewId = getMaxRId(data) + 1;
 
       List<String>? details = await getLoginDetails();
       int userId = -1;
@@ -33,7 +33,7 @@ class ReviewRepo {
       }
 
       // Upload Image
-      String imageUrl = await _uploadFile(userId, imageSelected);
+      String imageUrl = await _uploadFile(reviewId, imageSelected);
 
       uploadReviewModel.userId = userId;
       uploadReviewModel.username = username;
@@ -42,8 +42,8 @@ class ReviewRepo {
       uploadReviewModel.imageUrl = imageUrl;
 
 
-      final snapshot = await _db.collection('reviews');
-      await snapshot.add(uploadReviewModel.toMap());
+      final snapshot = await _db.collection('reviews').doc(reviewId.toString());
+      await snapshot.set(uploadReviewModel.toMap());
       return true;
     } catch (e) {
       return false;
@@ -51,10 +51,10 @@ class ReviewRepo {
   }
 
   Future<String> _uploadFile(int rId, File _imageFile) async {
+    try {
     final Reference storageRef =
       FirebaseStorage.instance.ref().child('review_images');
-    try {
-      UploadTask uploadTask = storageRef.child('${rId}').putFile(_imageFile!);
+      UploadTask uploadTask = storageRef.child(rId.toString()).putFile(_imageFile);
       TaskSnapshot taskSnapshot = await uploadTask;
 
       String url = await taskSnapshot.ref.getDownloadURL();

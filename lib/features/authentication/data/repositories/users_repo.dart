@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:review_app/utils/methods.dart';
 
 class UsersRepo {
   final _db = FirebaseFirestore.instance;
@@ -13,7 +14,7 @@ class UsersRepo {
   Future<int> addUser(String fullName, String username, String phoneNo, String password) async {
     try {
       List<Map<String, dynamic>> data = await getUserCredentials();
-      int length = data.length;
+      int length = getMaxUId(data) + 1;
 
       final snapshot = await _db.collection('users').doc('usersdoc');
       await snapshot.update({

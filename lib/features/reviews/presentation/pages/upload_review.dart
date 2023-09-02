@@ -77,6 +77,8 @@ class _UploadReviewState extends State<UploadReview> {
       case 1:
         if (input == null || input.isEmpty) {
           return 'Field empty';
+        } else if(!doesNotContainSpaces(input)){
+          return 'Price should not contain any spaces';
         }
         break;
 
@@ -169,7 +171,7 @@ class _UploadReviewState extends State<UploadReview> {
 
     setState(() {
       hasImagePicked = 1;
-      _selectedImage = File(image!.path);
+      _selectedImage = File(image.path);
     });
   }
 
