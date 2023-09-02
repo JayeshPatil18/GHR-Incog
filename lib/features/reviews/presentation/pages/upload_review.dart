@@ -17,6 +17,7 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../../data/repositories/category_brand_repo.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
@@ -116,9 +117,20 @@ class _UploadReviewState extends State<UploadReview> {
     }
   }
 
+  _setCatBrand() async {
+    CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
+    List<String> category = await categoryBrandsRepo.getCategorys();
+    List<String> brand = await categoryBrandsRepo.getBrands();
+    setState(() {
+      Items.categorys = category;
+      Items.brands = brand;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _setCatBrand();
     _focusNameNode.addListener(() {
       setState(() {
         _hasNameFocus = _focusNameNode.hasFocus;
