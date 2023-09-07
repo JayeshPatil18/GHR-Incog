@@ -48,4 +48,22 @@ class UploadReviewModel {
       'username': username,
     };
   }
+
+   factory UploadReviewModel.fromMap(Map<String, dynamic> map) {
+    return UploadReviewModel(
+      brand: map['brand'] ?? '',
+      category: map['category'] ?? '',
+      date: map['date'] ?? '',
+      description: map['description'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+      likedBy: map['likedBy'] ?? [],
+      name: map['name'] ?? '',
+      price: map['price'] ?? '',
+      rating: map['rating'] ?? 0,
+      rid: map['rid'] ?? 0,
+      summary: map['summary'] ?? '',
+      userId: map['userId'] ?? 0,
+      username: map['username'] ?? '',
+    );
+  }
 }

@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
+import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
@@ -12,6 +15,10 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../../domain/entities/upload_review.dart';
+import '../bloc/fetch_review/fetch_review_bloc.dart';
+import '../bloc/fetch_review/fetch_review_event.dart';
+import '../bloc/fetch_review/fetch_review_state.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,51 +34,10 @@ class _HomePageState extends State<HomePage> {
 
   String selectedItem = 'Option 1';
 
-  void _showDropdown() async {
-    await showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          child: Column(
-            children: [
-              ListTile(
-                title: Text('Option 1'),
-                onTap: () {
-                  setState(() {
-                    selectedItem = 'Option 1';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Option 2'),
-                onTap: () {
-                  setState(() {
-                    selectedItem = 'Option 2';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Option 3'),
-                onTap: () {
-                  setState(() {
-                    selectedItem = 'Option 3';
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -219,32 +185,33 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap: () {
                       showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            contentPadding: EdgeInsets.all(10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            title: const Text('Want to Logout?'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  clearSharedPrefs();
-                                  Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                                  Navigator.of(context).pushReplacementNamed('login');
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          contentPadding: EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                        );
+                          title: const Text('Want to Logout?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'Cancel');
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                clearSharedPrefs();
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                                Navigator.of(context)
+                                    .pushReplacementNamed('login');
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                     child: Container(
                         color: Colors.white,
@@ -387,7 +354,8 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('All',
-                          style: MainFonts.filterText(color: AppColors.primaryColor30)),
+                          style: MainFonts.filterText(
+                              color: AppColors.primaryColor30)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -400,7 +368,8 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Category',
-                          style: MainFonts.filterText(color: AppColors.textColor)),
+                          style:
+                              MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -413,7 +382,8 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Brand',
-                          style: MainFonts.filterText(color: AppColors.textColor)),
+                          style:
+                              MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     Container(
@@ -426,7 +396,8 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(
                           top: 10, bottom: 10, left: 13, right: 13),
                       child: Text('Rating',
-                          style: MainFonts.filterText(color: AppColors.textColor)),
+                          style:
+                              MainFonts.filterText(color: AppColors.textColor)),
                     ),
                     SizedBox(width: 12),
                     GestureDetector(
@@ -453,18 +424,38 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: GridView.builder(
-                    padding: EdgeInsets.only(top: 10, bottom: 100, left: 20, right: 20),
+                      padding: EdgeInsets.only(
+                          top: 10, bottom: 100, left: 20, right: 20),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                        crossAxisCount: 2,
-                        childAspectRatio: (100/158)
-                      ),
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20,
+                              crossAxisCount: 2,
+                              childAspectRatio: (100 / 158)),
                       scrollDirection: Axis.vertical,
                       itemCount: 10,
                       itemBuilder: (BuildContext context, int index) {
-                        return ReviewModel(imageUrl : 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', price : '100', isLiked : false, title : 'Apple iPhone 14 Pro', brand : 'Apple', category : 'Smart Phones', date : '12/04/2023', rating : 3);
+                        return BlocConsumer<FetchReviewBloc, FetchReviewState>(
+                          listener: (context, state) {
+                            // TODO: implement listener
+                          },
+                          builder: (context, state) {
+                            if(state is FetchSuccess){
+                              UploadReviewModel reviewModel = state.reviewList[index];
+                              print(reviewModel.imageUrl);
+                            }
+                            return ReviewModel(
+                                imageUrl:
+                                    'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
+                                price: '100',
+                                isLiked: false,
+                                title: 'Apple iPhone 14 Pro',
+                                brand: 'Apple',
+                                category: 'Smart Phones',
+                                date: '12/04/2023',
+                                rating: 3);
+                          },
+                        );
                       }),
                 ),
               ],
