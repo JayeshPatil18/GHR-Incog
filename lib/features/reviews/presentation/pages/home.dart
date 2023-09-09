@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
+import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
@@ -33,9 +35,12 @@ class _HomePageState extends State<HomePage> {
 
   String selectedItem = 'Option 1';
 
+  int userId = -1;
+
   @override
   void initState() {
     super.initState();
+    _getUserId();
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -52,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
+    _getUserId();
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -422,46 +428,46 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 Expanded(
-                  child: BlocConsumer<FetchReviewBloc, FetchReviewState>(
-                    listener: (context, state) {
-                      // TODO: implement listener
-                    },
-                    builder: (context, state) {
-                      if(state is FetchLoading || state is FetchReviewInitial){
-                        return Center(child: CircularProgressIndicator());
-                      } else if(state is FetchSuccess){
-                        return GridView.builder(
-                          padding: EdgeInsets.only(
-                              top: 10, bottom: 100, left: 20, right: 20),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: (100 / 158)),
-                          scrollDirection: Axis.vertical,
-                          itemCount: state.reviewList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            UploadReviewModel review =
-                                  state.reviewList[index];
-                              Future<int> userId = _getUserId();
-                              bool isLiked = review.likedBy.contains(userId) ? true : false;
-                              return ReviewModel(
-                                  imageUrl: review.imageUrl,
-                                  price: review.price,
-                                  isLiked: isLiked,
-                                  title: review.name,
-                                  brand: review.brand,
-                                  category: review.category,
-                                  date: review.date.substring(0, 10).replaceAll('-', '/'),
-                                  rating: review.rating);
-                          });
-                      } else{
-                        return Center(child: Text('Error'));
-                      }
-                    },
-                  ),
-                ),
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: ReviewRepo.reviewFireInstance,
+                        builder: (context, snapshot) {
+                          final documents;
+                          if (snapshot.data != null) {
+                            documents = snapshot.data!.docs;
+
+                            return GridView.builder(
+                                padding: EdgeInsets.only(
+                                    top: 10, bottom: 100, left: 20, right: 20),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: (100 / 158)),
+                                scrollDirection: Axis.vertical,
+                                itemCount: documents.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  UploadReviewModel review =
+                                      UploadReviewModel.fromMap(documents[index]
+                                          .data() as Map<String, dynamic>);
+
+                                  return ReviewModel(
+                                      reviewId: review.rid,
+                                      imageUrl: review.imageUrl,
+                                      price: review.price,
+                                      isLiked: review.likedBy.contains(userId),
+                                      title: review.name,
+                                      brand: review.brand,
+                                      category: review.category,
+                                      date: review.date
+                                          .substring(0, 10)
+                                          .replaceAll('-', '/'),
+                                      rating: review.rating);
+                                });
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        })),
               ],
             ),
           ),
@@ -470,13 +476,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<int> _getUserId() async{
+  _getUserId() async {
     List<String>? details = await getLoginDetails();
     if (details != null) {
-        int userId = int.parse(details[0]);
-        return userId;
-      }
-      return -1;
+      setState(() {
+        userId = int.parse(details[0]);
+      });
+    }
   }
 
   void showSortDialog(BuildContext context) {

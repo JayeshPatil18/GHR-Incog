@@ -2,12 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/boarder.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import 'package:review_app/utils/fonts.dart';
 
 import '../../../../constants/values.dart';
 
 class ReviewModel extends StatefulWidget {
+  final int reviewId;
   final String imageUrl;
   final String price;
   final bool isLiked;
@@ -18,6 +20,7 @@ class ReviewModel extends StatefulWidget {
   final int rating;
 
   const ReviewModel({
+    required this.reviewId,
     required this.imageUrl,
     required this.price,
     required this.isLiked,
@@ -72,17 +75,25 @@ class _ReviewModelState extends State<ReviewModel> {
                 Positioned(
                     top: 8,
                     right: 8,
-                    child: widget.isLiked
-                        ? Icon(
-                            Icons.favorite,
-                            color: AppColors.heartColor,
-                            shadows: [TextShadow.textShadow],
-                          )
-                        : Icon(
-                            Icons.favorite,
-                            color: AppColors.iconLightColor,
-                            shadows: [TextShadow.textShadow],
-                          ))
+                    child: GestureDetector(
+                      onTap: (() {
+                    ReviewRepo reviewRepo = ReviewRepo();
+                    reviewRepo.likeReview(widget.reviewId);
+                  }),
+                      child: SizedBox(
+                        child: widget.isLiked
+                            ? Icon(
+                                Icons.favorite,
+                                color: AppColors.heartColor,
+                                shadows: [TextShadow.textShadow],
+                              )
+                            : Icon(
+                                Icons.favorite,
+                                color: AppColors.iconLightColor,
+                                shadows: [TextShadow.textShadow],
+                              ),
+                      ),
+                    ))
               ],
             ),
           ),

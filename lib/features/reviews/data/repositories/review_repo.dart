@@ -8,6 +8,31 @@ import '../../domain/entities/upload_review.dart';
 
 class ReviewRepo {
   final _db = FirebaseFirestore.instance;
+  static final reviewFireInstance = FirebaseFirestore.instance
+                            .collection('reviews')
+                            .snapshots();
+
+  Future<bool> likeReview(int reviewId) async {
+
+    try {
+      List<String>? details = await getLoginDetails();
+      int userId = -1;
+
+      if (details != null) {
+        userId = int.parse(details[0]);
+      }
+
+      final snapshot = await _db.collection('reviews').doc(reviewId.toString());
+      await snapshot.update({
+        'likedBy': FieldValue.arrayUnion([
+          userId
+        ]),
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getReviews() async {
     final snapshot = await _db.collection('reviews').get();

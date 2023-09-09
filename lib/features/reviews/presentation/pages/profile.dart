@@ -64,6 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       itemCount: 10,
                       itemBuilder: (BuildContext context, int index) {
                         return ReviewModel(
+                            reviewId: 1,
                             imageUrl:
                                 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
                             price: '100',
