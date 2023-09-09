@@ -63,7 +63,7 @@ class _ReviewModelState extends State<ReviewModel> {
                           style: ReviewModelFonts.subReviewPrice(
                               color: AppColors.secondaryColor10,
                               boxShadow: TextShadow.textShadow)),
-                      Text(widget.price.substring(1),
+                      Text(widget.price.substring(1).length > 9 ? widget.price.substring(1, 9) + '...' : widget.price.substring(1),
                           style:
                               ReviewModelFonts.subReviewPrice(boxShadow: TextShadow.textShadow)),
                     ],
@@ -79,8 +79,8 @@ class _ReviewModelState extends State<ReviewModel> {
                             shadows: [TextShadow.textShadow],
                           )
                         : Icon(
-                            Icons.favorite_border,
-                            color: AppColors.primaryColor30,
+                            Icons.favorite,
+                            color: AppColors.iconLightColor,
                             shadows: [TextShadow.textShadow],
                           ))
               ],
@@ -94,18 +94,18 @@ class _ReviewModelState extends State<ReviewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 2),
-                    Text(widget.title, style: ReviewModelFonts.reviewTitle()),
+                    Text(widget.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.reviewTitle()),
                     SizedBox(height: 4),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(widget.brand, style: ReviewModelFonts.reviewSubTitle()),
+                        Text(widget.brand.length > 10 ? widget.brand.substring(0, 10)+'...' : widget.brand, style: ReviewModelFonts.reviewSubTitle()),
                         Text('  ○  ',
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textColor)),
-                        Text(widget.category, style: ReviewModelFonts.reviewSubTitle()),
+                        Text(widget.category.length > 10 ? widget.category.substring(0, 9)+'...' : widget.category, maxLines: 1, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.reviewSubTitle()),
                       ],
                     ),
                     SizedBox(height: 4),
@@ -119,7 +119,7 @@ class _ReviewModelState extends State<ReviewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.date, style: ReviewModelFonts.dateReview()),
+                Text(widget.date.length > 10 ? widget.date.substring(0, 9)+'...' : widget.date, maxLines: 1, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.dateReview()),
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerRight,
@@ -132,7 +132,7 @@ class _ReviewModelState extends State<ReviewModel> {
                         return Icon(Icons.star,
                             size: 16,
                             color: index < AppValues.maxRating - widget.rating
-                                ? AppColors.iconColor
+                                ? AppColors.iconLightColor
                                 : AppColors.starColor);
                       },
                     ),

@@ -7,6 +7,7 @@ class AppColors {
   static const textColor = Color(0xFF32395D);
   static const iconColor = Color(0xFFCDCDCD);
   static const iconLightColor = Color(0xFFe4e4e4);
+  static const iconLighterColor = Color.fromARGB(255, 243, 243, 243);
   static const starColor = Color(0xffd4af37);
   static const heartColor = Color(0xfff70059);
   static const errorColor = Color(0xFFff3333);
