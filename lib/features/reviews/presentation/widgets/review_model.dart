@@ -53,17 +53,17 @@ class _ReviewModelState extends State<ReviewModel> {
                         AppBoarderRadius.reviewModelImageRadius),
                     child: widget.imageUrl == null
                         ? SizedBox(width: 156, height: 156)
-                        : Image.network(widget.imageUrl, fit: BoxFit.cover)),
+                        : Image.network(widget.imageUrl, width: 156, height: 156)),
                 Positioned(
                   top: 8,
                   left: 8,
                   child: Row(
                     children: [
-                      Text('\u{20B9}',
+                      Text(widget.price[0],
                           style: ReviewModelFonts.subReviewPrice(
                               color: AppColors.secondaryColor10,
                               boxShadow: TextShadow.textShadow)),
-                      Text(widget.price,
+                      Text(widget.price.substring(1),
                           style:
                               ReviewModelFonts.subReviewPrice(boxShadow: TextShadow.textShadow)),
                     ],

@@ -11,7 +11,7 @@ import 'fetch_review_state.dart';
 class FetchReviewBloc extends Bloc<FetchReviewEvent, FetchReviewState> {
   FetchReviewBloc() : super(FetchReviewInitial()) {
     on<FetchReviewEvent>((event, emit) async {
-      if (state is FetchReview) {
+      if (event is FetchReview) {
         emit(FetchLoading());
         try {
           ReviewRepo reviewRepo = ReviewRepo();

@@ -56,7 +56,7 @@ class UploadReviewModel {
       date: map['date'] ?? '',
       description: map['description'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
-      likedBy: map['likedBy'] ?? [],
+      likedBy: (map['likedBy'] as List<dynamic>).map<int>((item) => item as int).toList(),
       name: map['name'] ?? '',
       price: map['price'] ?? '',
       rating: map['rating'] ?? 0,

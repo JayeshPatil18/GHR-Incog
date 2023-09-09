@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/authentication/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:review_app/features/reviews/presentation/bloc/fetch_review/fetch_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/bloc/upload_review/upload_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: ((context) => SignupBloc())),
           BlocProvider(create: ((context) => LoginBloc())),
           BlocProvider(create: ((context) => UploadReviewBloc())),
+          BlocProvider(create: ((context) => FetchReviewBloc())),
         ], 
         child: MaterialApp(
           theme: ThemeData(primarySwatch: mainAppColor),

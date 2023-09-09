@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -37,7 +36,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -53,6 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -423,40 +422,45 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 Expanded(
-                  child: GridView.builder(
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 100, left: 20, right: 20),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 20,
-                              mainAxisSpacing: 20,
-                              crossAxisCount: 2,
-                              childAspectRatio: (100 / 158)),
-                      scrollDirection: Axis.vertical,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return BlocConsumer<FetchReviewBloc, FetchReviewState>(
-                          listener: (context, state) {
-                            // TODO: implement listener
-                          },
-                          builder: (context, state) {
-                            if(state is FetchSuccess){
-                              UploadReviewModel reviewModel = state.reviewList[index];
-                              print(reviewModel.imageUrl);
-                            }
-                            return ReviewModel(
-                                imageUrl:
-                                    'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
-                                price: '100',
-                                isLiked: false,
-                                title: 'Apple iPhone 14 Pro',
-                                brand: 'Apple',
-                                category: 'Smart Phones',
-                                date: '12/04/2023',
-                                rating: 3);
-                          },
-                        );
-                      }),
+                  child: BlocConsumer<FetchReviewBloc, FetchReviewState>(
+                    listener: (context, state) {
+                      // TODO: implement listener
+                    },
+                    builder: (context, state) {
+                      if(state is FetchLoading || state is FetchReviewInitial){
+                        return Center(child: CircularProgressIndicator());
+                      } else if(state is FetchSuccess){
+                        return GridView.builder(
+                          padding: EdgeInsets.only(
+                              top: 10, bottom: 100, left: 20, right: 20),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: (100 / 158)),
+                          scrollDirection: Axis.vertical,
+                          itemCount: state.reviewList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            UploadReviewModel review =
+                                  state.reviewList[index];
+                              Future<int> userId = _getUserId();
+                              bool isLiked = review.likedBy.contains(userId) ? true : false;
+                              return ReviewModel(
+                                  imageUrl: review.imageUrl,
+                                  price: review.price,
+                                  isLiked: isLiked,
+                                  title: review.name,
+                                  brand: review.brand,
+                                  category: review.category,
+                                  date: review.date.substring(0, 10).replaceAll('-', '/'),
+                                  rating: review.rating);
+                          });
+                      } else{
+                        return Center(child: Text('Error'));
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -464,6 +468,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Future<int> _getUserId() async{
+    List<String>? details = await getLoginDetails();
+    if (details != null) {
+        int userId = int.parse(details[0]);
+        return userId;
+      }
+      return -1;
   }
 
   void showSortDialog(BuildContext context) {
