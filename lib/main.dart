@@ -27,6 +27,15 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static int userId = -1;
+
+  static initUserId() async {
+    List<String>? details = await getLoginDetails();
+    if (details != null) {
+        MyApp.userId = int.parse(details[0]);
+    }
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

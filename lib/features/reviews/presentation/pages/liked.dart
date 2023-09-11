@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
+import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
+import '../../data/repositories/review_repo.dart';
+import '../../domain/entities/upload_review.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
@@ -16,8 +21,16 @@ class LikedPage extends StatefulWidget {
 }
 
 class _LikedPageState extends State<LikedPage> {
+  
+  @override
+  void initState() {
+    MyApp.initUserId();
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
+    MyApp.initUserId();
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -76,21 +89,48 @@ class _LikedPageState extends State<LikedPage> {
               ),
             ),
                 Expanded(
-                  child: GridView.builder(
-                    padding: EdgeInsets.only(top: 10, bottom: 100, left: 20, right: 20),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                        crossAxisCount: 2,
-                        childAspectRatio: (100/158)
-                      ),
-                      scrollDirection: Axis.vertical,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ReviewModel(reviewId: 1, imageUrl : 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', price : '100', isLiked : true, title : 'Apple iPhone 14 Pro', brand : 'Apple', category : 'Smart Phones', date : '12/04/2023', rating : 3);
-                      }),
-                ),
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: ReviewRepo.reviewFireInstance.where('likedBy', arrayContains: MyApp.userId).snapshots(),
+                        builder: (context, snapshot) {
+                          final documents;
+                          if (snapshot.data != null) {
+                            documents = snapshot.data!.docs;
+                            if(documents.length < 1){
+                              return Center(child: Text('No Review Liked', style: MainFonts.filterText(color: AppColors.textColor)));
+                            }
+                            return GridView.builder(
+                                padding: EdgeInsets.only(
+                                    top: 10, bottom: 100, left: 20, right: 20),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: (100 / 158)),
+                                scrollDirection: Axis.vertical,
+                                itemCount: documents.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  UploadReviewModel review =
+                                      UploadReviewModel.fromMap(documents[index]
+                                          .data() as Map<String, dynamic>);
+
+                                  return ReviewModel(
+                                      reviewId: review.rid,
+                                      imageUrl: review.imageUrl,
+                                      price: review.price,
+                                      isLiked: review.likedBy.contains(MyApp.userId),
+                                      title: review.name,
+                                      brand: review.brand,
+                                      category: review.category,
+                                      date: review.date
+                                          .substring(0, 10)
+                                          .replaceAll('-', '/'),
+                                      rating: review.rating);
+                                });
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        })),
           ],
         ),
       )

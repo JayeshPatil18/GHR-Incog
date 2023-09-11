@@ -4,6 +4,7 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/shadow_color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
+import '../../../../main.dart';
 import '../../../../utils/methods.dart';
 import '../../../authentication/presentation/pages/login.dart';
 import '../provider/bottom_nav_bar.dart';
@@ -32,6 +33,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
+    MyApp.initUserId();
   }
 
   @override

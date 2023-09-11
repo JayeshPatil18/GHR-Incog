@@ -3,6 +3,8 @@ import 'package:review_app/utils/methods.dart';
 
 class UsersRepo {
   final _db = FirebaseFirestore.instance;
+  static final userFireInstance = FirebaseFirestore.instance
+                            .collection('users');
 
   Future<List<Map<String, dynamic>>> getUserCredentials() async {
     final snapshot = await _db.collection('users').doc('usersdoc').get();

@@ -52,7 +52,10 @@ class _UserModelState extends State<UserModel> {
                                   width: 1.5,
                                 ),
                               ),
-                              child: CircleAvatar(
+                              child: widget.profileUrl == 'null' ? CircleAvatar(
+                                backgroundImage: AssetImage("assets/icons/user.png"),
+                                radius: 40,
+                              ) : CircleAvatar(
                                 backgroundImage: NetworkImage(widget.profileUrl),
                                 radius: 40,
                               )

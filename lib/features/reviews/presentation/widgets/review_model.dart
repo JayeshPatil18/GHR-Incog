@@ -54,8 +54,8 @@ class _ReviewModelState extends State<ReviewModel> {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(
                         AppBoarderRadius.reviewModelImageRadius),
-                    child: widget.imageUrl == null
-                        ? SizedBox(width: 156, height: 156)
+                    child: widget.imageUrl == 'null'
+                        ? const SizedBox(width: 156, height: 156)
                         : Image.network(widget.imageUrl, width: 156, height: 156)),
                 Positioned(
                   top: 8,
@@ -78,7 +78,7 @@ class _ReviewModelState extends State<ReviewModel> {
                     child: GestureDetector(
                       onTap: (() {
                     ReviewRepo reviewRepo = ReviewRepo();
-                    reviewRepo.likeReview(widget.reviewId);
+                    reviewRepo.likeReview(widget.reviewId, widget.isLiked);
                   }),
                       child: SizedBox(
                         child: widget.isLiked

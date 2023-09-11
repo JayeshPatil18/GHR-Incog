@@ -11,6 +11,7 @@ import 'package:review_app/features/reviews/presentation/widgets/circle_button.d
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
+import 'package:review_app/main.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
@@ -35,12 +36,10 @@ class _HomePageState extends State<HomePage> {
 
   String selectedItem = 'Option 1';
 
-  int userId = -1;
-
   @override
   void initState() {
     super.initState();
-    _getUserId();
+    MyApp.initUserId();
     _focusNode.addListener(() {
       setState(() {
         _hasFocus = _focusNode.hasFocus;
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
-    _getUserId();
+    MyApp.initUserId();
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -429,12 +428,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                        stream: ReviewRepo.reviewFireInstance,
+                        stream: ReviewRepo.reviewFireInstance.snapshots(),
                         builder: (context, snapshot) {
                           final documents;
                           if (snapshot.data != null) {
                             documents = snapshot.data!.docs;
-
+                            if(documents.length < 1){
+                              return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
+                            }
                             return GridView.builder(
                                 padding: EdgeInsets.only(
                                     top: 10, bottom: 100, left: 20, right: 20),
@@ -453,9 +454,9 @@ class _HomePageState extends State<HomePage> {
 
                                   return ReviewModel(
                                       reviewId: review.rid,
-                                      imageUrl: review.imageUrl,
+                                      imageUrl: 'null',
                                       price: review.price,
-                                      isLiked: review.likedBy.contains(userId),
+                                      isLiked: review.likedBy.contains(MyApp.userId),
                                       title: review.name,
                                       brand: review.brand,
                                       category: review.category,
@@ -474,15 +475,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  _getUserId() async {
-    List<String>? details = await getLoginDetails();
-    if (details != null) {
-      setState(() {
-        userId = int.parse(details[0]);
-      });
-    }
   }
 
   void showSortDialog(BuildContext context) {
