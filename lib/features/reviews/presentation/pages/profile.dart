@@ -41,23 +41,34 @@ class _ProfilePageState extends State<ProfilePage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               StreamBuilder<QuerySnapshot>(
-                stream: UsersRepo.userFireInstance.snapshots(),
+                  stream: UsersRepo.userFireInstance.snapshots(),
                   builder: (context, snapshot) {
                     final documents;
                     if (snapshot != null) {
-                      // documents = snapshot.data!.docs;
-                      // List<Map<String, dynamic>> usersData =
-                      //     List<Map<String, dynamic>>.from(
-                      //         documents[0].data()['userslist']);
+                      documents = snapshot.data?.docs;
+                      List<Map<String, dynamic>> usersData = [];
 
-                      // List<User> usersList = usersData
-                      //     .map((userData) => User.fromMap(userData))
-                      //     .toList();
+                      if (documents != null && documents.isNotEmpty) {
+                        final firstDocument = documents[0];
 
-                      // List<User> users = usersList
-                      //     .where((user) => user.uid == MyApp.userId)
-                      //     .toList();
-                      // User user = users[0];
+                        if (firstDocument != null &&
+                            firstDocument.data() != null &&
+                            firstDocument.data().containsKey('userslist')) {
+                          usersData = List<Map<String, dynamic>>.from(
+                              firstDocument.data()['userslist']);
+
+                              List<User> usersList = usersData
+                          .map((userData) => User.fromMap(userData))
+                          .toList();
+
+                      List<User> users = usersList
+                          .where((user) => user.uid == MyApp.userId)
+                          .toList();
+                      User user = users.first;
+
+                        }
+                      }
+                      
                       return SliverStickyHeader(
                           sticky: false,
                           header: UserProfileModel(
