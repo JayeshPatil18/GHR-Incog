@@ -49,24 +49,24 @@ int scrollIndex = -1;
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Ranking', style: MainFonts.pageTitleText()),
-                    GestureDetector(
-                      onTap: () async{
-                        // scrollToIndex(scrollIndex);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: ContainerShadow.boxShadow,
-                          color: AppColors.textColor,
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius.filterRadius),
-                        ),
-                        padding: EdgeInsets.only(
-                            top: 10, bottom: 10, left: 13, right: 13),
-                        child: Text('My Rank',
-                            style: MainFonts.filterText(
-                                color: AppColors.primaryColor30)),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () async{
+                    //     // scrollToIndex(scrollIndex);
+                    //   },
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //       boxSh  adow: ContainerShadow.boxShadow,
+                    //       color: AppColors.textColor,
+                    //       borderRadius: BorderRadius.circular(
+                    //           AppBoarderRadius.filterRadius),
+                    //     ),
+                    //     padding: EdgeInsets.only(
+                    //         top: 10, bottom: 10, left: 13, right: 13),
+                    //     child: Text('My Rank',
+                    //         style: MainFonts.filterText(
+                    //             color: AppColors.primaryColor30)),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

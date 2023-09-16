@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:review_app/features/reviews/presentation/widgets/user_profile_model.dart';
+import 'package:review_app/main.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
+import '../../../authentication/data/repositories/users_repo.dart';
+import '../../domain/entities/user.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
@@ -24,28 +28,55 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70),
-          child: SafeArea(
-            child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin:
-                        EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                    child: Text('Profile', style: MainFonts.pageTitleText()),
-                  ),
-          )
-        ),
+            preferredSize: Size.fromHeight(70),
+            child: SafeArea(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin:
+                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+                child: Text('Profile', style: MainFonts.pageTitleText()),
+              ),
+            )),
         body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverStickyHeader(
-                  sticky: false,
-                  header: UserProfileModel(
-                      profileUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'Henry Tyson', username: 'henrytyson', rank: 1, points : 400, bio : 'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'
-                    )
-                ),
-              ];
-            },
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              StreamBuilder<QuerySnapshot>(
+                stream: UsersRepo.userFireInstance.snapshots(),
+                  builder: (context, snapshot) {
+                    final documents;
+                    if (snapshot != null) {
+                      // documents = snapshot.data!.docs;
+                      // List<Map<String, dynamic>> usersData =
+                      //     List<Map<String, dynamic>>.from(
+                      //         documents[0].data()['userslist']);
+
+                      // List<User> usersList = usersData
+                      //     .map((userData) => User.fromMap(userData))
+                      //     .toList();
+
+                      // List<User> users = usersList
+                      //     .where((user) => user.uid == MyApp.userId)
+                      //     .toList();
+                      // User user = users[0];
+                      return SliverStickyHeader(
+                          sticky: false,
+                          header: UserProfileModel(
+                              profileUrl:
+                                  'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                              name: 'Henry Tyson',
+                              username: 'henrytyson',
+                              rank: 1,
+                              points: 400,
+                              bio:
+                                  'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'));
+                    } else {
+                      return Container(
+                          height: 400,
+                          child: Center(child: CircularProgressIndicator()));
+                    }
+                  }),
+            ];
+          },
           body: SafeArea(
             bottom: false,
             child: Column(

@@ -44,47 +44,47 @@ class _LikedPageState extends State<LikedPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Liked', style: MainFonts.pageTitleText()),
-                  GestureDetector(
-                    onTap: (() {
-                      showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            title: const Text('Clear all'),
-                            content: const Text(
-                                'All Likes will be removed.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'OK');
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-                    }),
-                    child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: ContainerShadow.boxShadow,
-                            color: AppColors.textColor,
-                            borderRadius: BorderRadius.circular(
-                                AppBoarderRadius.filterRadius),
-                          ),
-                          padding: EdgeInsets.only(
-                              top: 10, bottom: 10, left: 13, right: 13),
-                          child: Text('Clear All',
-                              style: MainFonts.filterText(color: AppColors.primaryColor30)),
-                        ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: (() {
+                  //     showDialog<String>(
+                  //         context: context,
+                  //         builder: (BuildContext context) => AlertDialog(
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(30),
+                  //           ),
+                  //           title: const Text('Clear all'),
+                  //           content: const Text(
+                  //               'All Likes will be removed.'),
+                  //           actions: <Widget>[
+                  //             TextButton(
+                  //               onPressed: () {
+                  //                 Navigator.pop(context, 'Cancel');
+                  //               },
+                  //               child: const Text('Cancel'),
+                  //             ),
+                  //             TextButton(
+                  //               onPressed: () {
+                  //                 Navigator.pop(context, 'OK');
+                  //               },
+                  //               child: const Text('OK'),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       );
+                  //   }),
+                  //   child: Container(
+                  //         decoration: BoxDecoration(
+                  //           boxShadow: ContainerShadow.boxShadow,
+                  //           color: AppColors.textColor,
+                  //           borderRadius: BorderRadius.circular(
+                  //               AppBoarderRadius.filterRadius),
+                  //         ),
+                  //         padding: EdgeInsets.only(
+                  //             top: 10, bottom: 10, left: 13, right: 13),
+                  //         child: Text('Clear All',
+                  //             style: MainFonts.filterText(color: AppColors.primaryColor30)),
+                  //       ),
+                  // ),
                 ],
               ),
             ),
