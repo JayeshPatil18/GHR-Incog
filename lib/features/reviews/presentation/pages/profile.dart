@@ -11,6 +11,8 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
+import '../../data/repositories/review_repo.dart';
+import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
@@ -47,6 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (snapshot != null) {
                       documents = snapshot.data?.docs;
                       List<Map<String, dynamic>> usersData = [];
+                      User? user;
 
                       if (documents != null && documents.isNotEmpty) {
                         final firstDocument = documents[0];
@@ -64,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       List<User> users = usersList
                           .where((user) => user.uid == MyApp.userId)
                           .toList();
-                      User user = users.first;
+                      user = users.first;
 
                         }
                       }
@@ -72,14 +75,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       return SliverStickyHeader(
                           sticky: false,
                           header: UserProfileModel(
-                              profileUrl:
-                                  'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-                              name: 'Henry Tyson',
-                              username: 'henrytyson',
-                              rank: 1,
-                              points: 400,
-                              bio:
-                                  'I Bring innovative ideas to life as a Mobile App Developer. Android & Flutter developer Programming Enthusiast CSE Student'));
+                              profileUrl: user?.profileUrl ?? 'null',
+                              name: user?.fullName ?? '',
+                              username: user?.username ?? '',
+                              rank: user?.rank ?? -1,
+                              points: user?.points ?? -1,
+                              bio: user?.bio ?? '',));
                     } else {
                       return Container(
                           height: 400,
@@ -93,30 +94,48 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 Expanded(
-                  child: GridView.builder(
-                      padding: EdgeInsets.only(
-                          top: 20, bottom: 100, left: 20, right: 20),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 20,
-                              mainAxisSpacing: 20,
-                              crossAxisCount: 2,
-                              childAspectRatio: (100 / 158)),
-                      scrollDirection: Axis.vertical,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ReviewModel(
-                            reviewId: 1,
-                            imageUrl:
-                                'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
-                            price: '100',
-                            isLiked: true,
-                            title: 'Apple iPhone 14 Pro',
-                            brand: 'Apple',
-                            category: 'Smart Phones',
-                            date: '12/04/2023',
-                            rating: 3);
-                      }),
+                  child: StreamBuilder<QuerySnapshot>(
+                        stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: MyApp.userId).snapshots(),
+                        builder: (context, snapshot) {
+                          final documents;
+                          if (snapshot.data != null) {
+                            documents = snapshot.data!.docs;
+                            if(documents.length < 1){
+                              return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
+                            }
+                            return GridView.builder(
+                                padding: EdgeInsets.only(
+                                    top: 10, bottom: 100, left: 20, right: 20),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: (100 / 158)),
+                                scrollDirection: Axis.vertical,
+                                itemCount: documents.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  UploadReviewModel review =
+                                      UploadReviewModel.fromMap(documents[index]
+                                          .data() as Map<String, dynamic>);
+
+                                  return ReviewModel(
+                                      reviewId: review.rid,
+                                      imageUrl: review.imageUrl,
+                                      price: review.price,
+                                      isLiked: review.likedBy.contains(MyApp.userId),
+                                      title: review.name,
+                                      brand: review.brand,
+                                      category: review.category,
+                                      date: review.date
+                                          .substring(0, 10)
+                                          .replaceAll('-', '/'),
+                                      rating: review.rating);
+                                });
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        }),
                 ),
               ],
             ),

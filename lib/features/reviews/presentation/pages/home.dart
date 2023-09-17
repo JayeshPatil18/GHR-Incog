@@ -454,7 +454,7 @@ class _HomePageState extends State<HomePage> {
 
                                   return ReviewModel(
                                       reviewId: review.rid,
-                                      imageUrl: 'null',
+                                      imageUrl: review.imageUrl,
                                       price: review.price,
                                       isLiked: review.likedBy.contains(MyApp.userId),
                                       title: review.name,

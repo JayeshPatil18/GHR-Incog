@@ -30,6 +30,7 @@ class UserProfileModel extends StatefulWidget {
 }
 
 class _UserProfileModelState extends State<UserProfileModel> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,9 +55,8 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                     width: 2,
                                   ),
                                 ),
-                                child: widget.profileUrl == 'null' ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      widget.profileUrl),
+                                child: widget.profileUrl == null || widget.profileUrl == 'null' ? CircleAvatar(
+                                  backgroundImage: AssetImage("assets/icons/user.png"),
                                   radius: 50,
                                 ) : CircleAvatar(
                                   backgroundImage: NetworkImage(
