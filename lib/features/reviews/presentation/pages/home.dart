@@ -7,6 +7,7 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
 import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
+import 'package:review_app/features/reviews/presentation/widgets/brand_filter.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
@@ -15,12 +16,15 @@ import 'package:review_app/main.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
+import '../../../../utils/dropdown_items.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../../data/repositories/category_brand_repo.dart';
 import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
+import '../widgets/category_filter.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,11 +38,23 @@ class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
 
-  String selectedItem = 'Option 1';
+  static String selectedCategory = '';
+  static String selectedBrand = '';
+
+  _setCatBrand() async {
+    CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
+    List<String> category = await categoryBrandsRepo.getCategorys();
+    List<String> brand = await categoryBrandsRepo.getBrands();
+    setState(() {
+      Items.categorys = category;
+      Items.brands = brand;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _setCatBrand();
     MyApp.initUserId();
     _focusNode.addListener(() {
       setState(() {
@@ -346,69 +362,88 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: ContainerShadow.boxShadow,
-                        color: AppColors.textColor,
-                        borderRadius: BorderRadius.circular(
-                            AppBoarderRadius.filterRadius),
-                      ),
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('All',
-                          style: MainFonts.filterText(
-                              color: AppColors.primaryColor30)),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
+                              boxShadow: ContainerShadow.boxShadow,
+                              color: AppColors.textColor,
+                              borderRadius: BorderRadius.circular(
+                                  AppBoarderRadius.filterRadius),
+                            ),
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10, left: 13, right: 13),
+                            child: Text('All',
+                                style: MainFonts.filterText(
+                                    color: AppColors.primaryColor30)),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        GestureDetector(
+                          onTap: () {
+                            showCategoryDialog(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: ContainerShadow.boxShadow,
+                              color: AppColors.primaryColor30,
+                              borderRadius: BorderRadius.circular(
+                                  AppBoarderRadius.filterRadius),
+                            ),
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10, left: 13, right: 13),
+                            child: Text('Category',
+                                style:
+                                    MainFonts.filterText(color: AppColors.textColor)),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        GestureDetector(
+                          onTap: () {
+                            showBrandDialog(context, _HomePageState.selectedBrand);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: ContainerShadow.boxShadow,
+                              color: AppColors.primaryColor30,
+                              borderRadius: BorderRadius.circular(
+                                  AppBoarderRadius.filterRadius),
+                            ),
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10, left: 13, right: 13),
+                            child: Text('Brand',
+                                style:
+                                    MainFonts.filterText(color: AppColors.textColor)),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: ContainerShadow.boxShadow,
-                        color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(
-                            AppBoarderRadius.filterRadius),
-                      ),
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Category',
-                          style:
-                              MainFonts.filterText(color: AppColors.textColor)),
-                    ),
-                    SizedBox(width: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: ContainerShadow.boxShadow,
-                        color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(
-                            AppBoarderRadius.filterRadius),
-                      ),
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Brand',
-                          style:
-                              MainFonts.filterText(color: AppColors.textColor)),
-                    ),
-                    SizedBox(width: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: ContainerShadow.boxShadow,
-                        color: AppColors.primaryColor30,
-                        borderRadius: BorderRadius.circular(
-                            AppBoarderRadius.filterRadius),
-                      ),
-                      padding: EdgeInsets.only(
-                          top: 10, bottom: 10, left: 13, right: 13),
-                      child: Text('Rating',
-                          style:
-                              MainFonts.filterText(color: AppColors.textColor)),
-                    ),
-                    SizedBox(width: 12),
+                    // SizedBox(width: 12),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     boxShadow: ContainerShadow.boxShadow,
+                    //     color: AppColors.primaryColor30,
+                    //     borderRadius: BorderRadius.circular(
+                    //         AppBoarderRadius.filterRadius),
+                    //   ),
+                    //   padding: EdgeInsets.only(
+                    //       top: 10, bottom: 10, left: 13, right: 13),
+                    //   child: Text('Rating',
+                    //       style:
+                    //           MainFonts.filterText(color: AppColors.textColor)),
+                    // ),
+                    // SizedBox(width: 12),
                     GestureDetector(
                       onTap: () {
                         showSortDialog(context);
                       },
                       child: Container(
+                        margin: EdgeInsets.only(right: 20),
                         decoration: BoxDecoration(
                           boxShadow: ContainerShadow.boxShadow,
                           color: AppColors.backgroundColor60,
@@ -489,6 +524,38 @@ class _HomePageState extends State<HomePage> {
             maxChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
                   child: SortCard(),
+                )));
+  }
+
+  void showBrandDialog(BuildContext context, String brand) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        builder: (context) => DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.80,
+          maxChildSize: 0.90,
+          minChildSize: 0.60,
+            builder: (context, scrollContoller) => SingleChildScrollView(
+                  child: BrandFilter(),
+                )));
+  }
+
+  void showCategoryDialog(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        builder: (context) => DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.80,
+          maxChildSize: 0.90,
+          minChildSize: 0.60,
+            builder: (context, scrollContoller) => SingleChildScrollView(
+                  child: CategoryFilter(),
                 )));
   }
 }
