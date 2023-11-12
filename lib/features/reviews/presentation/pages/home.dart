@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -36,8 +38,9 @@ class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
 
-  String selectedCategory = 'null';
-  String selectedBrand = 'null';
+  static String selectedCategory = 'null';
+  static String selectedBrand = 'null';
+  static String selectedSort = 'date_des';
 
   _setCatBrand() async {
     CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
@@ -50,9 +53,9 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  static Stream reviewStream = ReviewRepo.reviewFireInstance.snapshots();
+  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'rid' , descending: selectedSort.contains('asc') ? false : true).snapshots();
 
-  changeReviewInstance(String selectedCategory, String selectedBrand) {
+  changeReviewInstance(String selectedCategory, String selectedBrand, String selectedSort) {
     setState(() {
       if(Items.categorys.contains(selectedCategory) && Items.brands.contains(selectedBrand)){
         reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).where('brand', isEqualTo: selectedBrand).snapshots();
@@ -61,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       } else if(!(Items.categorys.contains(selectedCategory)) && Items.brands.contains(selectedBrand)){
         reviewStream = ReviewRepo.reviewFireInstance.where('brand', isEqualTo: selectedBrand).snapshots();
       } else{
-        reviewStream = ReviewRepo.reviewFireInstance.snapshots();
+        reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'rid' , descending: selectedSort.contains('asc') ? false : true).snapshots();
       }
     });
   }
@@ -387,7 +390,7 @@ class _HomePageState extends State<HomePage> {
                               selectedCategory = 'null';
                               selectedBrand = 'null';
                             });
-                            changeReviewInstance('null', 'null');
+                            changeReviewInstance('null', 'null', selectedSort);
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 20),
@@ -533,7 +536,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int closeDelay = 400;
+
   void showSortDialog(BuildContext context) {
+
+    void updateSelectedValue(String value) {
+      setState(() {
+        selectedSort = value;
+      });
+    }
+    
     showModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -544,14 +556,148 @@ class _HomePageState extends State<HomePage> {
             initialChildSize: 0.60,
             maxChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: SortCard(),
-                )));
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Newest Uploads"),
+                              Radio(
+                                value: 'date_des',
+                                groupValue: selectedSort,
+                                onChanged: (value) {
+                                  setState(() {
+                                    updateSelectedValue(value!);
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: AppColors.iconColor,
+                          height: 1,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Oldest Uploads"),
+                              Radio(
+                                value: 'date_asc',
+                                groupValue: selectedSort,
+                                onChanged: (value) {
+                                  setState(() {
+                                    updateSelectedValue(value!);
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: AppColors.iconColor,
+                          height: 1,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Highest Rating"),
+                              Radio(
+                                value: 'rate_des',
+                                groupValue: selectedSort,
+                                onChanged: (value) {
+                                  setState(() {
+                                    updateSelectedValue(value!);
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: AppColors.iconColor,
+                          height: 1,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Lowest Rating"),
+                              Radio(
+                                value: 'rate_asc',
+                                groupValue: selectedSort,
+                                onChanged: (value) {
+                                  setState(() {
+                                    updateSelectedValue(value!);
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            updateSelectedValue('date_des');
+                            Timer(Duration(milliseconds: closeDelay), () {
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0xffffffff),
+                                  offset: Offset(-6, -6),
+                                  blurRadius: 10,
+                                  spreadRadius: 0.0,
+                                ),
+                                BoxShadow(
+                                  color: Color(0x224e4e4e),
+                                  offset: Offset(6, 6),
+                                  blurRadius: 10,
+                                  spreadRadius: 0.0,
+                                ),
+                              ],
+                              color: AppColors.primaryColor30,
+                              borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
+                              ),
+                            ),
+                            padding: EdgeInsets.only(top: 10, bottom: 10, left: 11, right: 11),
+                            child: Icon(Icons.restart_alt_outlined, color: AppColors.textColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ))).whenComplete(_onBottomSheetClosed);
   }
 
   void showBrandDialog(BuildContext context) {
     TextEditingController brandController = TextEditingController();
 
-    FocusNode _focusBrandNode = FocusNode();
+    FocusNode focusBrandNode = FocusNode();
 
     showModalBottomSheet(
         context: context,
@@ -632,7 +778,7 @@ class _HomePageState extends State<HomePage> {
                               fieldViewBuilder:
                                   (context, textEditingController, focusNode, onFieldSubmitted) {
                                 brandController = textEditingController;
-                                _focusBrandNode = focusNode;
+                                focusBrandNode = focusNode;
 
                                 return Container(
                                   decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
@@ -647,7 +793,7 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     }),
                                     controller: brandController,
-                                    focusNode: _focusBrandNode,
+                                    focusNode: focusBrandNode,
                                     onEditingComplete: onFieldSubmitted,
                                     style: MainFonts.textFieldText(),
                                     cursorHeight: TextCursorHeight.cursorHeight,
@@ -703,7 +849,7 @@ class _HomePageState extends State<HomePage> {
   void showCategoryDialog(BuildContext context) {
     TextEditingController categoryController = TextEditingController();
 
-    FocusNode _focusCategoryNode = FocusNode();
+    FocusNode focusCategoryNode = FocusNode();
 
     showModalBottomSheet(
         context: context,
@@ -784,7 +930,7 @@ class _HomePageState extends State<HomePage> {
                               fieldViewBuilder:
                                   (context, textEditingController, focusNode, onFieldSubmitted) {
                                 categoryController = textEditingController;
-                                _focusCategoryNode = focusNode;
+                                focusCategoryNode = focusNode;
 
                                 return Container(
                                   decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
@@ -799,7 +945,7 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     }),
                                     controller: categoryController,
-                                    focusNode: _focusCategoryNode,
+                                    focusNode: focusCategoryNode,
                                     onEditingComplete: onFieldSubmitted,
                                     style: MainFonts.textFieldText(),
                                     cursorHeight: TextCursorHeight.cursorHeight,
@@ -853,7 +999,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onBottomSheetClosed() {
-    print('${selectedCategory} ##### ${selectedBrand}');
-    changeReviewInstance(selectedCategory, selectedBrand);
+    Timer(Duration(milliseconds: closeDelay), () {
+      changeReviewInstance(selectedCategory, selectedBrand, selectedSort);
+    });
   }
 }
