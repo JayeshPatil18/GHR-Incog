@@ -262,8 +262,8 @@ class _UploadReviewState extends State<UploadReview> {
                     if (isValid && rateIndex > 0 && hasImagePicked == 1) {
                       BlocProvider.of<UploadReviewBloc>(context)
                           .add(UploadClickEvent(
-                        brand: brandController.text.trim(),
-                        category: categoryController.text.trim(),
+                        brand: brandController.text.trim().toLowerCase(),
+                        category: categoryController.text.trim().toLowerCase(),
                         description: descController.text.trim(),
                         imageSelected: _selectedImage!,
                         name: nameController.text.trim(),

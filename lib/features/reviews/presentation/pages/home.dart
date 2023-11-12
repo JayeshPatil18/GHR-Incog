@@ -7,7 +7,6 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
 import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
-import 'package:review_app/features/reviews/presentation/widgets/brand_filter.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
@@ -24,7 +23,6 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
-import '../widgets/category_filter.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,16 +36,33 @@ class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
 
-  static String selectedCategory = '';
-  static String selectedBrand = '';
+  String selectedCategory = 'null';
+  String selectedBrand = 'null';
 
   _setCatBrand() async {
     CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
     List<String> category = await categoryBrandsRepo.getCategorys();
     List<String> brand = await categoryBrandsRepo.getBrands();
+
     setState(() {
       Items.categorys = category;
       Items.brands = brand;
+    });
+  }
+
+  static Stream reviewStream = ReviewRepo.reviewFireInstance.snapshots();
+
+  changeReviewInstance(String selectedCategory, String selectedBrand) {
+    setState(() {
+      if(Items.categorys.contains(selectedCategory) && Items.brands.contains(selectedBrand)){
+        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).where('brand', isEqualTo: selectedBrand).snapshots();
+      } else if(Items.categorys.contains(selectedCategory) && !(Items.brands.contains(selectedBrand))){
+        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).snapshots();
+      } else if(!(Items.categorys.contains(selectedCategory)) && Items.brands.contains(selectedBrand)){
+        reviewStream = ReviewRepo.reviewFireInstance.where('brand', isEqualTo: selectedBrand).snapshots();
+      } else{
+        reviewStream = ReviewRepo.reviewFireInstance.snapshots();
+      }
     });
   }
 
@@ -367,12 +382,18 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            setState(() {
+                              selectedCategory = 'null';
+                              selectedBrand = 'null';
+                            });
+                            changeReviewInstance('null', 'null');
+                          },
                           child: Container(
                             margin: EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: AppColors.textColor,
+                              color: Items.categorys.contains(selectedCategory) || Items.brands.contains(selectedBrand) ? AppColors.primaryColor30 : AppColors.textColor,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
@@ -380,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('All',
                                 style: MainFonts.filterText(
-                                    color: AppColors.primaryColor30)),
+                                    color: Items.categorys.contains(selectedCategory) || Items.brands.contains(selectedBrand) ? AppColors.textColor : AppColors.primaryColor30)),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -391,7 +412,7 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: AppColors.primaryColor30,
+                              color: Items.categorys.contains(selectedCategory) ? AppColors.textColor : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
@@ -399,18 +420,18 @@ class _HomePageState extends State<HomePage> {
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('Category',
                                 style:
-                                    MainFonts.filterText(color: AppColors.textColor)),
+                                    MainFonts.filterText(color: Items.categorys.contains(selectedCategory) ? AppColors.primaryColor30 : AppColors.textColor)),
                           ),
                         ),
                         SizedBox(width: 12),
                         GestureDetector(
                           onTap: () {
-                            showBrandDialog(context, _HomePageState.selectedBrand);
+                            showBrandDialog(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: AppColors.primaryColor30,
+                              color: Items.brands.contains(selectedBrand) ? AppColors.textColor : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
@@ -418,7 +439,7 @@ class _HomePageState extends State<HomePage> {
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('Brand',
                                 style:
-                                    MainFonts.filterText(color: AppColors.textColor)),
+                                    MainFonts.filterText(color: Items.brands.contains(selectedBrand) ? AppColors.primaryColor30 : AppColors.textColor)),
                           ),
                         ),
                       ],
@@ -462,8 +483,8 @@ class _HomePageState extends State<HomePage> {
                   height: 10,
                 ),
                 Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: ReviewRepo.reviewFireInstance.snapshots(),
+                    child: StreamBuilder(
+                        stream: reviewStream,
                         builder: (context, snapshot) {
                           final documents;
                           if (snapshot.data != null) {
@@ -527,7 +548,11 @@ class _HomePageState extends State<HomePage> {
                 )));
   }
 
-  void showBrandDialog(BuildContext context, String brand) {
+  void showBrandDialog(BuildContext context) {
+    TextEditingController brandController = TextEditingController();
+
+    FocusNode _focusBrandNode = FocusNode();
+
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -539,11 +564,147 @@ class _HomePageState extends State<HomePage> {
           maxChildSize: 0.90,
           minChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: BrandFilter(),
-                )));
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(10),
+                          width: 60,
+                          height: 7,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppColors.iconLightColor),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10, left: 5),
+                              child: Text('Brand', style: MainFonts.lableText()),
+                            ),
+                            Autocomplete(
+                              initialValue: TextEditingValue(text: Items.brands.contains(selectedBrand) ? selectedBrand : ''),
+                              optionsBuilder: (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == "") {
+                                  return Items.brands;
+                                }
+                                return Items.brands.where((String element) {
+                                  return element
+                                      .toLowerCase()
+                                      .contains(textEditingValue.text.toLowerCase());
+                                });
+                              },
+                              onSelected: (String item) {},
+                              optionsViewBuilder: ((context, onSelected, options) {
+                                return Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    child: Container(
+                                      width: (MediaQuery.of(context).size.width) - 40,
+                                      height: (MediaQuery.of(context).size.height) - 340,
+                                      color: AppColors.primaryColor30,
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.all(6),
+                                        itemCount: options.length,
+                                        itemBuilder: (context, index) {
+                                          final String option = options.elementAt(index);
+
+                                          return InkWell(
+                                            onTap: () {
+                                              onSelected(option);
+                                            },
+                                            child: ListTile(
+                                              tileColor: AppColors.primaryColor30,
+                                              title:
+                                              Text(option, style: MainFonts.suggestionText()),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              fieldViewBuilder:
+                                  (context, textEditingController, focusNode, onFieldSubmitted) {
+                                brandController = textEditingController;
+                                _focusBrandNode = focusNode;
+
+                                return Container(
+                                  decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
+                                  child: TextFormField(
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: ((value) {
+                                      selectedBrand = value.toString().toLowerCase().trim();
+                                      if (value == null || value.isEmpty) {
+                                        return 'Field empty';
+                                      } else if (!(Items.brands.contains(value))) {
+                                        return 'Brand not exist';
+                                      }
+                                    }),
+                                    controller: brandController,
+                                    focusNode: _focusBrandNode,
+                                    onEditingComplete: onFieldSubmitted,
+                                    style: MainFonts.textFieldText(),
+                                    cursorHeight: TextCursorHeight.cursorHeight,
+                                    decoration: InputDecoration(
+                                      suffixIcon: InkWell(
+                                          onTap: () {
+                                            brandController.text = '';
+                                          },
+                                          child: Icon(Icons.clear_rounded)),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16, bottom: 16, left: 20, right: 20),
+                                      fillColor: AppColors.primaryColor30,
+                                      filled: true,
+                                      hintText: 'Select Brand',
+                                      hintStyle: MainFonts.hintFieldText(),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.reviewUploadWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.reviewUploadWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.searchBarWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.searchBarWidth,
+                                              color: AppBoarderColor.errorColor)),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ))).whenComplete(_onBottomSheetClosed);
   }
 
   void showCategoryDialog(BuildContext context) {
+    TextEditingController categoryController = TextEditingController();
+
+    FocusNode _focusCategoryNode = FocusNode();
+
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -555,7 +716,144 @@ class _HomePageState extends State<HomePage> {
           maxChildSize: 0.90,
           minChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: CategoryFilter(),
-                )));
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(10),
+                          width: 60,
+                          height: 7,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppColors.iconLightColor),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10, left: 5),
+                              child: Text('Category', style: MainFonts.lableText()),
+                            ),
+                            Autocomplete(
+                              initialValue: TextEditingValue(text: Items.categorys.contains(selectedCategory) ? selectedCategory : ''),
+                              optionsBuilder: (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == "") {
+                                  return Items.categorys;
+                                }
+                                return Items.categorys.where((String element) {
+                                  return element
+                                      .toLowerCase()
+                                      .contains(textEditingValue.text.toLowerCase());
+                                });
+                              },
+                              onSelected: (String item) {},
+                              optionsViewBuilder: ((context, onSelected, options) {
+                                return Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    child: Container(
+                                      width: (MediaQuery.of(context).size.width) - 40,
+                                      height: (MediaQuery.of(context).size.height) - 340,
+                                      color: AppColors.primaryColor30,
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.all(6),
+                                        itemCount: options.length,
+                                        itemBuilder: (context, index) {
+                                          final String option = options.elementAt(index);
+
+                                          return InkWell(
+                                            onTap: () {
+                                              onSelected(option);
+                                            },
+                                            child: ListTile(
+                                              tileColor: AppColors.primaryColor30,
+                                              title:
+                                              Text(option, style: MainFonts.suggestionText()),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              fieldViewBuilder:
+                                  (context, textEditingController, focusNode, onFieldSubmitted) {
+                                categoryController = textEditingController;
+                                _focusCategoryNode = focusNode;
+
+                                return Container(
+                                  decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
+                                  child: TextFormField(
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: ((value) {
+                                      selectedCategory = value.toString().toLowerCase().trim();
+                                      if (value == null || value.isEmpty) {
+                                        return 'Field empty';
+                                      } else if (!(Items.categorys.contains(value))) {
+                                        return 'Category not exist';
+                                      }
+                                    }),
+                                    controller: categoryController,
+                                    focusNode: _focusCategoryNode,
+                                    onEditingComplete: onFieldSubmitted,
+                                    style: MainFonts.textFieldText(),
+                                    cursorHeight: TextCursorHeight.cursorHeight,
+                                    decoration: InputDecoration(
+                                      suffixIcon: InkWell(
+                                          onTap: () {
+                                            categoryController.text = '';
+                                          },
+                                          child: Icon(Icons.clear_rounded)),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16, bottom: 16, left: 20, right: 20),
+                                      fillColor: AppColors.primaryColor30,
+                                      filled: true,
+                                      hintText: 'Select Category',
+                                      hintStyle: MainFonts.hintFieldText(),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.reviewUploadWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.reviewUploadWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.searchBarWidth,
+                                              color: AppBoarderColor.searchBarColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius.reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth.searchBarWidth,
+                                              color: AppBoarderColor.errorColor)),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ))).whenComplete(_onBottomSheetClosed);
+  }
+
+  void _onBottomSheetClosed() {
+    print('${selectedCategory} ##### ${selectedBrand}');
+    changeReviewInstance(selectedCategory, selectedBrand);
   }
 }
