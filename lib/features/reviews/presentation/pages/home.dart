@@ -25,7 +25,6 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
-import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
