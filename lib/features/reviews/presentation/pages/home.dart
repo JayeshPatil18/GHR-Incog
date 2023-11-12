@@ -17,6 +17,7 @@ import 'package:review_app/main.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
+import '../../../../constants/values.dart';
 import '../../../../utils/dropdown_items.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
@@ -25,9 +26,11 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
+import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  static String selectedSort = 'date_des';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,7 +42,6 @@ class _HomePageState extends State<HomePage> {
 
   static String selectedCategory = 'null';
   static String selectedBrand = 'null';
-  static String selectedSort = 'date_des';
 
   _setCatBrand() async {
     CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
@@ -52,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
+  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(HomePage.selectedSort.contains('date') ? 'date' : HomePage.selectedSort.contains('rate') ? 'rating' : 'date' , descending: HomePage.selectedSort.contains('asc') ? false : true).snapshots();
 
   changeReviewInstance(String selectedCategory, String selectedBrand, String selectedSort) {
     setState(() {
@@ -395,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                               selectedCategory = 'null';
                               selectedBrand = 'null';
                             });
-                            changeReviewInstance('null', 'null', selectedSort);
+                            changeReviewInstance('null', 'null', HomePage.selectedSort);
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 20),
@@ -541,15 +543,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  int closeDelay = 400;
-
   void showSortDialog(BuildContext context) {
-
-    void updateSelectedValue(String value) {
-      setState(() {
-        selectedSort = value;
-      });
-    }
     
     showModalBottomSheet(
         context: context,
@@ -561,161 +555,7 @@ class _HomePageState extends State<HomePage> {
             initialChildSize: 0.60,
             maxChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(left: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              GestureDetector(
-                                  onTap: () {
-                                    updateSelectedValue('date_des');
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Text("Newest Uploads")),
-                              Radio(
-                                value: 'date_des',
-                                groupValue: selectedSort,
-                                onChanged: (value) {
-                                  updateSelectedValue(value!);
-                                  Timer(Duration(milliseconds: closeDelay), () {
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: AppColors.iconColor,
-                          height: 1,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              GestureDetector(
-                                  onTap: () {
-                                    updateSelectedValue('date_asc');
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Text("Oldest Uploads")),
-                              Radio(
-                                value: 'date_asc',
-                                groupValue: selectedSort,
-                                onChanged: (value) {
-                                  updateSelectedValue(value!);
-                                  Timer(Duration(milliseconds: closeDelay), () {
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: AppColors.iconColor,
-                          height: 1,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              GestureDetector(
-                                  onTap: () {
-                                    updateSelectedValue('rate_des');
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Text("Highest Rating")),
-                              Radio(
-                                value: 'rate_des',
-                                groupValue: selectedSort,
-                                onChanged: (value) {
-                                  updateSelectedValue(value!);
-                                  Timer(Duration(milliseconds: closeDelay), () {
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: AppColors.iconColor,
-                          height: 1,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              GestureDetector(
-                                  onTap: () {
-                                    updateSelectedValue('rate_asc');
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Text("Lowest Rating")),
-                              Radio(
-                                value: 'rate_asc',
-                                groupValue: selectedSort,
-                                onChanged: (value) {
-                                  updateSelectedValue(value!);
-                                  Timer(Duration(milliseconds: closeDelay), () {
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            updateSelectedValue('date_des');
-                            Timer(Duration(milliseconds: closeDelay), () {
-                              Navigator.pop(context);
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xffffffff),
-                                  offset: Offset(-6, -6),
-                                  blurRadius: 10,
-                                  spreadRadius: 0.0,
-                                ),
-                                BoxShadow(
-                                  color: Color(0x224e4e4e),
-                                  offset: Offset(6, 6),
-                                  blurRadius: 10,
-                                  spreadRadius: 0.0,
-                                ),
-                              ],
-                              color: AppColors.primaryColor30,
-                              borderRadius: BorderRadius.circular(AppBoarderRadius.filterRadius
-                              ),
-                            ),
-                            padding: EdgeInsets.only(top: 10, bottom: 10, left: 11, right: 11),
-                            child: Icon(Icons.restart_alt_outlined, color: AppColors.textColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: SortCard(),
                 ))).whenComplete(_onBottomSheetClosed);
   }
 
@@ -1024,8 +864,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onBottomSheetClosed() {
-    Timer(Duration(milliseconds: closeDelay), () {
-      changeReviewInstance(selectedCategory, selectedBrand, selectedSort);
+    Timer(Duration(milliseconds: AppValues.closeDelay), () {
+      changeReviewInstance(selectedCategory, selectedBrand, HomePage.selectedSort);
     });
   }
 }
