@@ -53,18 +53,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'rid' , descending: selectedSort.contains('asc') ? false : true).snapshots();
+  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
 
   changeReviewInstance(String selectedCategory, String selectedBrand, String selectedSort) {
     setState(() {
       if(Items.categorys.contains(selectedCategory) && Items.brands.contains(selectedBrand)){
-        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).where('brand', isEqualTo: selectedBrand).snapshots();
+        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).where('brand', isEqualTo: selectedBrand).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
       } else if(Items.categorys.contains(selectedCategory) && !(Items.brands.contains(selectedBrand))){
-        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).snapshots();
+        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
       } else if(!(Items.categorys.contains(selectedCategory)) && Items.brands.contains(selectedBrand)){
-        reviewStream = ReviewRepo.reviewFireInstance.where('brand', isEqualTo: selectedBrand).snapshots();
+        reviewStream = ReviewRepo.reviewFireInstance.where('brand', isEqualTo: selectedBrand).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
       } else{
-        reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'rid' , descending: selectedSort.contains('asc') ? false : true).snapshots();
+        reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
       }
     });
   }
@@ -219,6 +219,12 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    color: AppColors.iconLightColor,
+                    width: double.infinity,
+                    height: 1,
                   ),
                   InkWell(
                     onTap: () {
@@ -566,16 +572,21 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Newest Uploads"),
+                              GestureDetector(
+                                  onTap: () {
+                                    updateSelectedValue('date_des');
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Text("Newest Uploads")),
                               Radio(
                                 value: 'date_des',
                                 groupValue: selectedSort,
                                 onChanged: (value) {
-                                  setState(() {
-                                    updateSelectedValue(value!);
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
+                                  updateSelectedValue(value!);
+                                  Timer(Duration(milliseconds: closeDelay), () {
+                                    Navigator.pop(context);
                                   });
                                 },
                               ),
@@ -591,16 +602,21 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Oldest Uploads"),
+                              GestureDetector(
+                                  onTap: () {
+                                    updateSelectedValue('date_asc');
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Text("Oldest Uploads")),
                               Radio(
                                 value: 'date_asc',
                                 groupValue: selectedSort,
                                 onChanged: (value) {
-                                  setState(() {
-                                    updateSelectedValue(value!);
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
+                                  updateSelectedValue(value!);
+                                  Timer(Duration(milliseconds: closeDelay), () {
+                                    Navigator.pop(context);
                                   });
                                 },
                               ),
@@ -616,16 +632,21 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Highest Rating"),
+                              GestureDetector(
+                                  onTap: () {
+                                    updateSelectedValue('rate_des');
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Text("Highest Rating")),
                               Radio(
                                 value: 'rate_des',
                                 groupValue: selectedSort,
                                 onChanged: (value) {
-                                  setState(() {
-                                    updateSelectedValue(value!);
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
+                                  updateSelectedValue(value!);
+                                  Timer(Duration(milliseconds: closeDelay), () {
+                                    Navigator.pop(context);
                                   });
                                 },
                               ),
@@ -641,16 +662,21 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("Lowest Rating"),
+                              GestureDetector(
+                                  onTap: () {
+                                    updateSelectedValue('rate_asc');
+                                    Timer(Duration(milliseconds: closeDelay), () {
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Text("Lowest Rating")),
                               Radio(
                                 value: 'rate_asc',
                                 groupValue: selectedSort,
                                 onChanged: (value) {
-                                  setState(() {
-                                    updateSelectedValue(value!);
-                                    Timer(Duration(milliseconds: closeDelay), () {
-                                      Navigator.pop(context);
-                                    });
+                                  updateSelectedValue(value!);
+                                  Timer(Duration(milliseconds: closeDelay), () {
+                                    Navigator.pop(context);
                                   });
                                 },
                               ),
