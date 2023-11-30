@@ -31,6 +31,7 @@ import '../widgets/sort_card.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   static String selectedSort = 'date_des';
+  static String searchText = '';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -340,6 +341,11 @@ class _HomePageState extends State<HomePage> {
                                 style: MainFonts.textFieldText(),
                                 focusNode: _focusNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
+                                onChanged: (value) {
+                                    setState(() {
+                                      HomePage.searchText = value.trim().toLowerCase();
+                                    });
+                                },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
                                       top: 16, bottom: 16, left: 20, right: 80),
