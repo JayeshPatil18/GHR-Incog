@@ -1,10 +1,11 @@
-
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/boarder.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import 'package:review_app/utils/fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/values.dart';
 
@@ -42,7 +43,7 @@ class _ReviewModelState extends State<ReviewModel> {
       decoration: BoxDecoration(
           color: AppColors.primaryColor30,
           borderRadius:
-              BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
+          BorderRadius.circular(AppBoarderRadius.reviewModelRadius),
           boxShadow: ContainerShadow.boxShadow),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,8 +56,29 @@ class _ReviewModelState extends State<ReviewModel> {
                     borderRadius: BorderRadius.circular(
                         AppBoarderRadius.reviewModelImageRadius),
                     child: widget.imageUrl == 'null'
-                        ? const SizedBox(width: 156, height: 156)
-                        : Image.network(widget.imageUrl, width: 156, height: 156)),
+                        ? SizedBox(
+                      height: 156,
+                      width: 156,
+                      child: Shimmer.fromColors(
+                        baseColor: Color(0xFFe4e4e4),
+                        highlightColor: Color(0xFFCDCDCD),
+                        child: Container(
+                          height: 156,
+                          width: 156,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                        : FancyShimmerImage(
+                      boxFit: BoxFit.contain,
+                      width: 156,
+                      height: 156,
+                      shimmerBaseColor: Color(0xFFe4e4e4),
+                      shimmerHighlightColor: Color(0xFFCDCDCD),
+                      shimmerBackColor:
+                      Color.fromARGB(255, 243, 243, 243),
+                      imageUrl: widget.imageUrl,
+                    )),
                 Positioned(
                   top: 8,
                   left: 8,
@@ -66,9 +88,12 @@ class _ReviewModelState extends State<ReviewModel> {
                           style: ReviewModelFonts.subReviewPrice(
                               color: AppColors.secondaryColor10,
                               boxShadow: TextShadow.textShadow)),
-                      Text(widget.price.substring(1).length > 9 ? widget.price.substring(1, 9) + '...' : widget.price.substring(1),
-                          style:
-                              ReviewModelFonts.subReviewPrice(boxShadow: TextShadow.textShadow)),
+                      Text(
+                          widget.price.substring(1).length > 9
+                              ? widget.price.substring(1, 9) + '...'
+                              : widget.price.substring(1),
+                          style: ReviewModelFonts.subReviewPrice(
+                              boxShadow: TextShadow.textShadow)),
                     ],
                   ),
                 ),
@@ -77,21 +102,21 @@ class _ReviewModelState extends State<ReviewModel> {
                     right: 8,
                     child: GestureDetector(
                       onTap: (() {
-                    ReviewRepo reviewRepo = ReviewRepo();
-                    reviewRepo.likeReview(widget.reviewId, widget.isLiked);
-                  }),
+                        ReviewRepo reviewRepo = ReviewRepo();
+                        reviewRepo.likeReview(widget.reviewId, widget.isLiked);
+                      }),
                       child: SizedBox(
                         child: widget.isLiked
                             ? Icon(
-                                Icons.favorite,
-                                color: AppColors.heartColor,
-                                shadows: [TextShadow.textShadow],
-                              )
+                          Icons.favorite,
+                          color: AppColors.heartColor,
+                          shadows: [TextShadow.textShadow],
+                        )
                             : Icon(
-                                Icons.favorite,
-                                color: AppColors.iconLightColor,
-                                shadows: [TextShadow.textShadow],
-                              ),
+                          Icons.favorite,
+                          color: AppColors.iconLightColor,
+                          shadows: [TextShadow.textShadow],
+                        ),
                       ),
                     ))
               ],
@@ -105,18 +130,31 @@ class _ReviewModelState extends State<ReviewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 2),
-                    Text(widget.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.reviewTitle()),
+                    Text(widget.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: ReviewModelFonts.reviewTitle()),
                     SizedBox(height: 4),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(widget.brand.length > 10 ? widget.brand.substring(0, 10)+'...' : widget.brand, style: ReviewModelFonts.reviewSubTitle()),
+                        Text(
+                            widget.brand.length > 10
+                                ? widget.brand.substring(0, 10) + '...'
+                                : widget.brand,
+                            style: ReviewModelFonts.reviewSubTitle()),
                         Text('  ○  ',
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textColor)),
-                        Text(widget.category.length > 10 ? widget.category.substring(0, 9)+'...' : widget.category, maxLines: 1, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.reviewSubTitle()),
+                        Text(
+                            widget.category.length > 10
+                                ? widget.category.substring(0, 9) + '...'
+                                : widget.category,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: ReviewModelFonts.reviewSubTitle()),
                       ],
                     ),
                     SizedBox(height: 4),
@@ -126,11 +164,17 @@ class _ReviewModelState extends State<ReviewModel> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 10, right: 10,bottom: 10),
+            margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.date.length > 10 ? widget.date.substring(0, 9)+'...' : widget.date, maxLines: 1, overflow: TextOverflow.ellipsis, style: ReviewModelFonts.dateReview()),
+                Text(
+                    widget.date.length > 10
+                        ? widget.date.substring(0, 9) + '...'
+                        : widget.date,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: ReviewModelFonts.dateReview()),
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerRight,

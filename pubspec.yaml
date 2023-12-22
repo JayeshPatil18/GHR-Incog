@@ -53,6 +53,8 @@ dependencies:
   firebase_core: ^2.15.1
   shared_preferences: ^2.2.0
   firebase_storage: ^11.2.6
+  fancy_shimmer_image: ^2.0.3
+  shimmer: ^3.0.0
   # scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
