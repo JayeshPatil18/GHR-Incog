@@ -7,6 +7,7 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import 'image_shimmer.dart';
 
 class UserModel extends StatefulWidget {
 
@@ -56,8 +57,10 @@ class _UserModelState extends State<UserModel> {
                                 backgroundImage: AssetImage("assets/icons/user.png"),
                                 radius: 40,
                               ) : CircleAvatar(
-                                backgroundImage: NetworkImage(widget.profileUrl),
                                 radius: 40,
+                                child: ClipOval(
+                                    child: CustomImageShimmer(imageUrl: widget.profileUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover)
+                                ),
                               )
                             ),
                             SizedBox(width: 20),

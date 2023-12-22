@@ -6,6 +6,7 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import 'image_shimmer.dart';
 
 class UserProfileModel extends StatefulWidget {
 
@@ -59,9 +60,10 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                   backgroundImage: AssetImage("assets/icons/user.png"),
                                   radius: 50,
                                 ) : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      widget.profileUrl),
                                   radius: 50,
+                                  child: ClipOval(
+                                      child: CustomImageShimmer(imageUrl: widget.profileUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover)
+                                  ),
                                 )),
                             Container(
                               margin: EdgeInsets.only(left: 20),

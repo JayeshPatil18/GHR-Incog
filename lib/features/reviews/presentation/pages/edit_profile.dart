@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
+import '../widgets/image_shimmer.dart';
 import '../widgets/shadow.dart';
 
 class EditProfile extends StatefulWidget {
@@ -199,8 +202,10 @@ File? _selectedImage;
                                 radius: 60,
                               ) :
                         CircleAvatar(
-                                backgroundImage: NetworkImage('https://media.wired.com/photos/5c57c3e3ce277c2cb23d575b/1:1/w_1666,h_1666,c_limit/Culture_Facebook_TheSocialNetwork.jpg'),
                                 radius: 60,
+                          child: ClipOval(
+                            child: CustomImageShimmer(imageUrl: 'https://media.wired.com/photos/5c57c3e3ce277c2cb23d575b/1:1/w_1666,h_1666,c_limit/Culture_Facebook_TheSocialNetwork.jpg', width: double.infinity, height: double.infinity, fit: BoxFit.cover)
+                          )
                               ),
                         Positioned(
                           bottom: 0,

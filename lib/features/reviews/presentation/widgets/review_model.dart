@@ -8,6 +8,7 @@ import 'package:review_app/utils/fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/values.dart';
+import 'image_shimmer.dart';
 
 class ReviewModel extends StatefulWidget {
   final int reviewId;
@@ -69,16 +70,7 @@ class _ReviewModelState extends State<ReviewModel> {
                         ),
                       ),
                     )
-                        : FancyShimmerImage(
-                      boxFit: BoxFit.contain,
-                      width: 156,
-                      height: 156,
-                      shimmerBaseColor: Color(0xFFe4e4e4),
-                      shimmerHighlightColor: Color(0xFFCDCDCD),
-                      shimmerBackColor:
-                      Color.fromARGB(255, 243, 243, 243),
-                      imageUrl: widget.imageUrl,
-                    )),
+                        : CustomImageShimmer(imageUrl: widget.imageUrl, width: 156, height: 156, fit: BoxFit.contain,)),
                 Positioned(
                   top: 8,
                   left: 8,

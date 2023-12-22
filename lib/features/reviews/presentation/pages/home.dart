@@ -405,8 +405,7 @@ class _HomePageState extends State<HomePage> {
                                       top: 16, bottom: 16, left: 20, right: 45),
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
-                                  hintText:
-                                  _hasFocus ? 'Search Products' : null,
+                                  hintText: 'Search Products',
                                   hintStyle: MainFonts.hintFieldText(),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(
@@ -428,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Positioned(
                                 right: 8,
-                                child: GestureDetector(
+                                child: searchTextController.text != '' ? GestureDetector(
                                   onTap: () {
                                     searchTextController.text = '';
                                     setState(() {
@@ -440,6 +439,10 @@ class _HomePageState extends State<HomePage> {
                                     child: Icon(Icons.close,
                                         color: AppColors.iconColor),
                                   ),
+                                ) : Container(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Icon(Icons.search,
+                                      color: AppColors.iconColor),
                                 )),
 
                             // Positioned(
