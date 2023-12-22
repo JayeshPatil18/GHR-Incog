@@ -30,6 +30,7 @@ import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
   static String selectedSort = 'date_des';
   static String searchText = '';
 
@@ -55,18 +56,66 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  static Stream reviewStream = ReviewRepo.reviewFireInstance.orderBy(HomePage.selectedSort.contains('date') ? 'date' : HomePage.selectedSort.contains('rate') ? 'rating' : 'date' , descending: HomePage.selectedSort.contains('asc') ? false : true).snapshots();
+  static Stream reviewStream = ReviewRepo.reviewFireInstance
+      .orderBy(
+          HomePage.selectedSort.contains('date')
+              ? 'date'
+              : HomePage.selectedSort.contains('rate')
+                  ? 'rating'
+                  : 'date',
+          descending: HomePage.selectedSort.contains('asc') ? false : true)
+      .snapshots();
 
-  changeReviewInstance(String selectedCategory, String selectedBrand, String selectedSort) {
+  changeReviewInstance(
+      String selectedCategory, String selectedBrand, String selectedSort) {
     setState(() {
-      if(Items.categorys.contains(selectedCategory) && Items.brands.contains(selectedBrand)){
-        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).where('brand', isEqualTo: selectedBrand).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
-      } else if(Items.categorys.contains(selectedCategory) && !(Items.brands.contains(selectedBrand))){
-        reviewStream = ReviewRepo.reviewFireInstance.where('category', isEqualTo: selectedCategory).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
-      } else if(!(Items.categorys.contains(selectedCategory)) && Items.brands.contains(selectedBrand)){
-        reviewStream = ReviewRepo.reviewFireInstance.where('brand', isEqualTo: selectedBrand).orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
-      } else{
-        reviewStream = ReviewRepo.reviewFireInstance.orderBy(selectedSort.contains('date') ? 'date' : selectedSort.contains('rate') ? 'rating' : 'date' , descending: selectedSort.contains('asc') ? false : true).snapshots();
+      if (Items.categorys.contains(selectedCategory) &&
+          Items.brands.contains(selectedBrand)) {
+        reviewStream = ReviewRepo.reviewFireInstance
+            .where('category', isEqualTo: selectedCategory)
+            .where('brand', isEqualTo: selectedBrand)
+            .orderBy(
+                selectedSort.contains('date')
+                    ? 'date'
+                    : selectedSort.contains('rate')
+                        ? 'rating'
+                        : 'date',
+                descending: selectedSort.contains('asc') ? false : true)
+            .snapshots();
+      } else if (Items.categorys.contains(selectedCategory) &&
+          !(Items.brands.contains(selectedBrand))) {
+        reviewStream = ReviewRepo.reviewFireInstance
+            .where('category', isEqualTo: selectedCategory)
+            .orderBy(
+                selectedSort.contains('date')
+                    ? 'date'
+                    : selectedSort.contains('rate')
+                        ? 'rating'
+                        : 'date',
+                descending: selectedSort.contains('asc') ? false : true)
+            .snapshots();
+      } else if (!(Items.categorys.contains(selectedCategory)) &&
+          Items.brands.contains(selectedBrand)) {
+        reviewStream = ReviewRepo.reviewFireInstance
+            .where('brand', isEqualTo: selectedBrand)
+            .orderBy(
+                selectedSort.contains('date')
+                    ? 'date'
+                    : selectedSort.contains('rate')
+                        ? 'rating'
+                        : 'date',
+                descending: selectedSort.contains('asc') ? false : true)
+            .snapshots();
+      } else {
+        reviewStream = ReviewRepo.reviewFireInstance
+            .orderBy(
+                selectedSort.contains('date')
+                    ? 'date'
+                    : selectedSort.contains('rate')
+                        ? 'rating'
+                        : 'date',
+                descending: selectedSort.contains('asc') ? false : true)
+            .snapshots();
       }
     });
   }
@@ -342,9 +391,10 @@ class _HomePageState extends State<HomePage> {
                                 focusNode: _focusNode,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 onChanged: (value) {
-                                    setState(() {
-                                      HomePage.searchText = value.trim().toLowerCase();
-                                    });
+                                  setState(() {
+                                    HomePage.searchText =
+                                        value.trim().toLowerCase();
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
@@ -403,13 +453,18 @@ class _HomePageState extends State<HomePage> {
                               selectedCategory = 'null';
                               selectedBrand = 'null';
                             });
-                            changeReviewInstance('null', 'null', HomePage.selectedSort);
+                            changeReviewInstance(
+                                'null', 'null', HomePage.selectedSort);
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: Items.categorys.contains(selectedCategory) || Items.brands.contains(selectedBrand) ? AppColors.primaryColor30 : AppColors.textColor,
+                              color:
+                                  Items.categorys.contains(selectedCategory) ||
+                                          Items.brands.contains(selectedBrand)
+                                      ? AppColors.primaryColor30
+                                      : AppColors.textColor,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
@@ -417,7 +472,11 @@ class _HomePageState extends State<HomePage> {
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('All',
                                 style: MainFonts.filterText(
-                                    color: Items.categorys.contains(selectedCategory) || Items.brands.contains(selectedBrand) ? AppColors.textColor : AppColors.primaryColor30)),
+                                    color: Items.categorys
+                                                .contains(selectedCategory) ||
+                                            Items.brands.contains(selectedBrand)
+                                        ? AppColors.textColor
+                                        : AppColors.primaryColor30)),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -428,15 +487,20 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: Items.categorys.contains(selectedCategory) ? AppColors.textColor : AppColors.primaryColor30,
+                              color: Items.categorys.contains(selectedCategory)
+                                  ? AppColors.textColor
+                                  : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
                             padding: EdgeInsets.only(
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('Category',
-                                style:
-                                    MainFonts.filterText(color: Items.categorys.contains(selectedCategory) ? AppColors.primaryColor30 : AppColors.textColor)),
+                                style: MainFonts.filterText(
+                                    color: Items.categorys
+                                            .contains(selectedCategory)
+                                        ? AppColors.primaryColor30
+                                        : AppColors.textColor)),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -447,15 +511,19 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: Items.brands.contains(selectedBrand) ? AppColors.textColor : AppColors.primaryColor30,
+                              color: Items.brands.contains(selectedBrand)
+                                  ? AppColors.textColor
+                                  : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
                             padding: EdgeInsets.only(
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('Brand',
-                                style:
-                                    MainFonts.filterText(color: Items.brands.contains(selectedBrand) ? AppColors.primaryColor30 : AppColors.textColor)),
+                                style: MainFonts.filterText(
+                                    color: Items.brands.contains(selectedBrand)
+                                        ? AppColors.primaryColor30
+                                        : AppColors.textColor)),
                           ),
                         ),
                       ],
@@ -505,8 +573,11 @@ class _HomePageState extends State<HomePage> {
                           final documents;
                           if (snapshot.data != null) {
                             documents = snapshot.data!.docs;
-                            if(documents.length < 1){
-                              return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
+                            if (documents.length < 1) {
+                              return Center(
+                                  child: Text('No Reviews',
+                                      style: MainFonts.filterText(
+                                          color: AppColors.textColor)));
                             }
                             return GridView.builder(
                                 padding: EdgeInsets.only(
@@ -524,18 +595,42 @@ class _HomePageState extends State<HomePage> {
                                       UploadReviewModel.fromMap(documents[index]
                                           .data() as Map<String, dynamic>);
 
-                                  return ReviewModel(
-                                      reviewId: review.rid,
-                                      imageUrl: review.imageUrl,
-                                      price: review.price,
-                                      isLiked: review.likedBy.contains(MyApp.userId),
-                                      title: review.name,
-                                      brand: review.brand,
-                                      category: review.category,
-                                      date: review.date
-                                          .substring(0, 10)
-                                          .replaceAll('-', '/'),
-                                      rating: review.rating);
+                                  if (HomePage.searchText.isEmpty) {
+                                    return ReviewModel(
+                                        reviewId: review.rid,
+                                        imageUrl: review.imageUrl,
+                                        price: review.price,
+                                        isLiked: review.likedBy
+                                            .contains(MyApp.userId),
+                                        title: review.name,
+                                        brand: review.brand,
+                                        category: review.category,
+                                        date: review.date
+                                            .substring(0, 10)
+                                            .replaceAll('-', '/'),
+                                        rating: review.rating);
+                                  } else if (review.name
+                                      .toLowerCase()
+                                      .startsWith(
+                                          HomePage.searchText.toLowerCase())) {
+                                    return ReviewModel(
+                                        reviewId: review.rid,
+                                        imageUrl: review.imageUrl,
+                                        price: review.price,
+                                        isLiked: review.likedBy
+                                            .contains(MyApp.userId),
+                                        title: review.name,
+                                        brand: review.brand,
+                                        category: review.category,
+                                        date: review.date
+                                            .substring(0, 10)
+                                            .replaceAll('-', '/'),
+                                        rating: review.rating);
+                                  }
+                                  return Visibility(
+                                    child: Text("Gone"),
+                                    visible: false,
+                                  );
                                 });
                           } else {
                             return Center(child: CircularProgressIndicator());
@@ -550,7 +645,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showSortDialog(BuildContext context) {
-    
     showModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -578,8 +672,8 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => DraggableScrollableSheet(
             expand: false,
             initialChildSize: 0.80,
-          maxChildSize: 0.90,
-          minChildSize: 0.60,
+            maxChildSize: 0.90,
+            minChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
                   child: Container(
                     padding: EdgeInsets.only(left: 20, right: 20),
@@ -600,44 +694,57 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             SizedBox(height: 20),
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Brand', style: MainFonts.lableText()),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                              child:
+                                  Text('Brand', style: MainFonts.lableText()),
                             ),
                             Autocomplete(
-                              initialValue: TextEditingValue(text: Items.brands.contains(selectedBrand) ? selectedBrand : ''),
-                              optionsBuilder: (TextEditingValue textEditingValue) {
+                              initialValue: TextEditingValue(
+                                  text: Items.brands.contains(selectedBrand)
+                                      ? selectedBrand
+                                      : ''),
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text == "") {
                                   return Items.brands;
                                 }
                                 return Items.brands.where((String element) {
-                                  return element
-                                      .toLowerCase()
-                                      .contains(textEditingValue.text.toLowerCase());
+                                  return element.toLowerCase().contains(
+                                      textEditingValue.text.toLowerCase());
                                 });
                               },
                               onSelected: (String item) {},
-                              optionsViewBuilder: ((context, onSelected, options) {
+                              optionsViewBuilder:
+                                  ((context, onSelected, options) {
                                 return Align(
                                   alignment: Alignment.topLeft,
                                   child: Material(
                                     child: Container(
-                                      width: (MediaQuery.of(context).size.width) - 40,
-                                      height: (MediaQuery.of(context).size.height) - 340,
+                                      width:
+                                          (MediaQuery.of(context).size.width) -
+                                              40,
+                                      height:
+                                          (MediaQuery.of(context).size.height) -
+                                              340,
                                       color: AppColors.primaryColor30,
                                       child: ListView.builder(
                                         padding: EdgeInsets.all(6),
                                         itemCount: options.length,
                                         itemBuilder: (context, index) {
-                                          final String option = options.elementAt(index);
+                                          final String option =
+                                              options.elementAt(index);
 
                                           return InkWell(
                                             onTap: () {
                                               onSelected(option);
                                             },
                                             child: ListTile(
-                                              tileColor: AppColors.primaryColor30,
-                                              title:
-                                              Text(option, style: MainFonts.suggestionText()),
+                                              tileColor:
+                                                  AppColors.primaryColor30,
+                                              title: Text(option,
+                                                  style: MainFonts
+                                                      .suggestionText()),
                                             ),
                                           );
                                         },
@@ -646,20 +753,24 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               }),
-                              fieldViewBuilder:
-                                  (context, textEditingController, focusNode, onFieldSubmitted) {
+                              fieldViewBuilder: (context, textEditingController,
+                                  focusNode, onFieldSubmitted) {
                                 brandController = textEditingController;
                                 focusBrandNode = focusNode;
 
                                 return Container(
-                                  decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
+                                  decoration: BoxDecoration(
+                                      boxShadow: ContainerShadow.boxShadow),
                                   child: TextFormField(
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     validator: ((value) {
-                                      selectedBrand = value.toString().toLowerCase().trim();
+                                      selectedBrand =
+                                          value.toString().toLowerCase().trim();
                                       if (value == null || value.isEmpty) {
                                         return 'Field empty';
-                                      } else if (!(Items.brands.contains(value))) {
+                                      } else if (!(Items.brands
+                                          .contains(value))) {
                                         return 'Brand not exist';
                                       }
                                     }),
@@ -675,35 +786,50 @@ class _HomePageState extends State<HomePage> {
                                           },
                                           child: Icon(Icons.clear_rounded)),
                                       contentPadding: EdgeInsets.only(
-                                          top: 16, bottom: 16, left: 20, right: 20),
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 20,
+                                          right: 20),
                                       fillColor: AppColors.primaryColor30,
                                       filled: true,
                                       hintText: 'Select Brand',
                                       hintStyle: MainFonts.hintFieldText(),
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.reviewUploadWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.reviewUploadWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.searchBarWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.searchBarWidth,
-                                              color: AppBoarderColor.errorColor)),
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color:
+                                                  AppBoarderColor.errorColor)),
                                     ),
                                   ),
                                 );
@@ -730,8 +856,8 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => DraggableScrollableSheet(
             expand: false,
             initialChildSize: 0.80,
-          maxChildSize: 0.90,
-          minChildSize: 0.60,
+            maxChildSize: 0.90,
+            minChildSize: 0.60,
             builder: (context, scrollContoller) => SingleChildScrollView(
                   child: Container(
                     padding: EdgeInsets.only(left: 20, right: 20),
@@ -752,44 +878,58 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             SizedBox(height: 20),
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Category', style: MainFonts.lableText()),
+                              padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                              child: Text('Category',
+                                  style: MainFonts.lableText()),
                             ),
                             Autocomplete(
-                              initialValue: TextEditingValue(text: Items.categorys.contains(selectedCategory) ? selectedCategory : ''),
-                              optionsBuilder: (TextEditingValue textEditingValue) {
+                              initialValue: TextEditingValue(
+                                  text:
+                                      Items.categorys.contains(selectedCategory)
+                                          ? selectedCategory
+                                          : ''),
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text == "") {
                                   return Items.categorys;
                                 }
                                 return Items.categorys.where((String element) {
-                                  return element
-                                      .toLowerCase()
-                                      .contains(textEditingValue.text.toLowerCase());
+                                  return element.toLowerCase().contains(
+                                      textEditingValue.text.toLowerCase());
                                 });
                               },
                               onSelected: (String item) {},
-                              optionsViewBuilder: ((context, onSelected, options) {
+                              optionsViewBuilder:
+                                  ((context, onSelected, options) {
                                 return Align(
                                   alignment: Alignment.topLeft,
                                   child: Material(
                                     child: Container(
-                                      width: (MediaQuery.of(context).size.width) - 40,
-                                      height: (MediaQuery.of(context).size.height) - 340,
+                                      width:
+                                          (MediaQuery.of(context).size.width) -
+                                              40,
+                                      height:
+                                          (MediaQuery.of(context).size.height) -
+                                              340,
                                       color: AppColors.primaryColor30,
                                       child: ListView.builder(
                                         padding: EdgeInsets.all(6),
                                         itemCount: options.length,
                                         itemBuilder: (context, index) {
-                                          final String option = options.elementAt(index);
+                                          final String option =
+                                              options.elementAt(index);
 
                                           return InkWell(
                                             onTap: () {
                                               onSelected(option);
                                             },
                                             child: ListTile(
-                                              tileColor: AppColors.primaryColor30,
-                                              title:
-                                              Text(option, style: MainFonts.suggestionText()),
+                                              tileColor:
+                                                  AppColors.primaryColor30,
+                                              title: Text(option,
+                                                  style: MainFonts
+                                                      .suggestionText()),
                                             ),
                                           );
                                         },
@@ -798,20 +938,24 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               }),
-                              fieldViewBuilder:
-                                  (context, textEditingController, focusNode, onFieldSubmitted) {
+                              fieldViewBuilder: (context, textEditingController,
+                                  focusNode, onFieldSubmitted) {
                                 categoryController = textEditingController;
                                 focusCategoryNode = focusNode;
 
                                 return Container(
-                                  decoration: BoxDecoration(boxShadow: ContainerShadow.boxShadow),
+                                  decoration: BoxDecoration(
+                                      boxShadow: ContainerShadow.boxShadow),
                                   child: TextFormField(
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     validator: ((value) {
-                                      selectedCategory = value.toString().toLowerCase().trim();
+                                      selectedCategory =
+                                          value.toString().toLowerCase().trim();
                                       if (value == null || value.isEmpty) {
                                         return 'Field empty';
-                                      } else if (!(Items.categorys.contains(value))) {
+                                      } else if (!(Items.categorys
+                                          .contains(value))) {
                                         return 'Category not exist';
                                       }
                                     }),
@@ -827,35 +971,50 @@ class _HomePageState extends State<HomePage> {
                                           },
                                           child: Icon(Icons.clear_rounded)),
                                       contentPadding: EdgeInsets.only(
-                                          top: 16, bottom: 16, left: 20, right: 20),
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 20,
+                                          right: 20),
                                       fillColor: AppColors.primaryColor30,
                                       filled: true,
                                       hintText: 'Select Category',
                                       hintStyle: MainFonts.hintFieldText(),
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.reviewUploadWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.reviewUploadWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.searchBarWidth,
-                                              color: AppBoarderColor.searchBarColor)),
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
                                       errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius.reviewUploadRadius),
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
                                           borderSide: BorderSide(
-                                              width: AppBoarderWidth.searchBarWidth,
-                                              color: AppBoarderColor.errorColor)),
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color:
+                                                  AppBoarderColor.errorColor)),
                                     ),
                                   ),
                                 );
@@ -871,7 +1030,8 @@ class _HomePageState extends State<HomePage> {
 
   void _onBottomSheetClosed() {
     Timer(Duration(milliseconds: AppValues.closeDelay), () {
-      changeReviewInstance(selectedCategory, selectedBrand, HomePage.selectedSort);
+      changeReviewInstance(
+          selectedCategory, selectedBrand, HomePage.selectedSort);
     });
   }
 }
