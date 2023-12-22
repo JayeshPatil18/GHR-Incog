@@ -35,6 +35,11 @@ class RouteGenerator{
           builder: (_) => const UploadReview()
         );
 
+      case 'view_review':
+        return MaterialPageRoute(
+            builder: (_) => const ViewReview()
+        );
+
       case 'signup':
         return MaterialPageRoute(
           builder: (_) => const SignUpPage()
