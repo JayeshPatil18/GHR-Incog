@@ -45,6 +45,8 @@ class _HomePageState extends State<HomePage> {
   static String selectedCategory = 'null';
   static String selectedBrand = 'null';
 
+  TextEditingController searchTextController = TextEditingController();
+
   _setCatBrand() async {
     CategoryBrandsRepo categoryBrandsRepo = CategoryBrandsRepo();
     List<String> category = await categoryBrandsRepo.getCategorys();
@@ -58,16 +60,16 @@ class _HomePageState extends State<HomePage> {
 
   static Stream reviewStream = ReviewRepo.reviewFireInstance
       .orderBy(
-          HomePage.selectedSort.contains('date')
-              ? 'date'
-              : HomePage.selectedSort.contains('rate')
-                  ? 'rating'
-                  : 'date',
-          descending: HomePage.selectedSort.contains('asc') ? false : true)
+      HomePage.selectedSort.contains('date')
+          ? 'date'
+          : HomePage.selectedSort.contains('rate')
+          ? 'rating'
+          : 'date',
+      descending: HomePage.selectedSort.contains('asc') ? false : true)
       .snapshots();
 
-  changeReviewInstance(
-      String selectedCategory, String selectedBrand, String selectedSort) {
+  changeReviewInstance(String selectedCategory, String selectedBrand,
+      String selectedSort) {
     setState(() {
       if (Items.categorys.contains(selectedCategory) &&
           Items.brands.contains(selectedBrand)) {
@@ -75,46 +77,46 @@ class _HomePageState extends State<HomePage> {
             .where('category', isEqualTo: selectedCategory)
             .where('brand', isEqualTo: selectedBrand)
             .orderBy(
-                selectedSort.contains('date')
-                    ? 'date'
-                    : selectedSort.contains('rate')
-                        ? 'rating'
-                        : 'date',
-                descending: selectedSort.contains('asc') ? false : true)
+            selectedSort.contains('date')
+                ? 'date'
+                : selectedSort.contains('rate')
+                ? 'rating'
+                : 'date',
+            descending: selectedSort.contains('asc') ? false : true)
             .snapshots();
       } else if (Items.categorys.contains(selectedCategory) &&
           !(Items.brands.contains(selectedBrand))) {
         reviewStream = ReviewRepo.reviewFireInstance
             .where('category', isEqualTo: selectedCategory)
             .orderBy(
-                selectedSort.contains('date')
-                    ? 'date'
-                    : selectedSort.contains('rate')
-                        ? 'rating'
-                        : 'date',
-                descending: selectedSort.contains('asc') ? false : true)
+            selectedSort.contains('date')
+                ? 'date'
+                : selectedSort.contains('rate')
+                ? 'rating'
+                : 'date',
+            descending: selectedSort.contains('asc') ? false : true)
             .snapshots();
       } else if (!(Items.categorys.contains(selectedCategory)) &&
           Items.brands.contains(selectedBrand)) {
         reviewStream = ReviewRepo.reviewFireInstance
             .where('brand', isEqualTo: selectedBrand)
             .orderBy(
-                selectedSort.contains('date')
-                    ? 'date'
-                    : selectedSort.contains('rate')
-                        ? 'rating'
-                        : 'date',
-                descending: selectedSort.contains('asc') ? false : true)
+            selectedSort.contains('date')
+                ? 'date'
+                : selectedSort.contains('rate')
+                ? 'rating'
+                : 'date',
+            descending: selectedSort.contains('asc') ? false : true)
             .snapshots();
       } else {
         reviewStream = ReviewRepo.reviewFireInstance
             .orderBy(
-                selectedSort.contains('date')
-                    ? 'date'
-                    : selectedSort.contains('rate')
-                        ? 'rating'
-                        : 'date',
-                descending: selectedSort.contains('asc') ? false : true)
+            selectedSort.contains('date')
+                ? 'date'
+                : selectedSort.contains('rate')
+                ? 'rating'
+                : 'date',
+            descending: selectedSort.contains('asc') ? false : true)
             .snapshots();
       }
     });
@@ -281,31 +283,32 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       showDialog<String>(
                         context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          contentPadding: EdgeInsets.all(10),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          title: const Text('Want to Logout?'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context, 'Cancel');
-                              },
-                              child: const Text('Cancel'),
+                        builder: (BuildContext context) =>
+                            AlertDialog(
+                              contentPadding: EdgeInsets.all(10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              title: const Text('Want to Logout?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'Cancel');
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    clearSharedPrefs();
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('login');
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
                             ),
-                            TextButton(
-                              onPressed: () {
-                                clearSharedPrefs();
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                                Navigator.of(context)
-                                    .pushReplacementNamed('login');
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
                       );
                     },
                     child: Container(
@@ -389,6 +392,7 @@ class _HomePageState extends State<HomePage> {
                               child: TextField(
                                 style: MainFonts.textFieldText(),
                                 focusNode: _focusNode,
+                                controller: searchTextController,
                                 cursorHeight: TextCursorHeight.cursorHeight,
                                 onChanged: (value) {
                                   setState(() {
@@ -398,11 +402,11 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
-                                      top: 16, bottom: 16, left: 20, right: 80),
+                                      top: 16, bottom: 16, left: 20, right: 45),
                                   fillColor: AppColors.primaryColor30,
                                   filled: true,
                                   hintText:
-                                      _hasFocus ? 'Search Products' : null,
+                                  _hasFocus ? 'Search Products' : null,
                                   hintStyle: MainFonts.hintFieldText(),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(
@@ -418,17 +422,33 @@ class _HomePageState extends State<HomePage> {
                                       borderSide: BorderSide(
                                           width: AppBoarderWidth.searchBarWidth,
                                           color:
-                                              AppBoarderColor.searchBarColor)),
+                                          AppBoarderColor.searchBarColor)),
                                 ),
                               ),
                             ),
                             Positioned(
                                 right: 8,
-                                child: CircleIconContainer(
-                                    icon: const Icon(Icons.search,
-                                        color: AppColors.primaryColor30),
-                                    containerColor: AppColors.secondaryColor10,
-                                    containerSize: 40)),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    searchTextController.text = '';
+                                    setState(() {
+                                      HomePage.searchText = '';
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 4),
+                                    child: Icon(Icons.close,
+                                        color: AppColors.iconColor),
+                                  ),
+                                )),
+
+                            // Positioned(
+                            //     right: 8,
+                            //     child: CircleIconContainer(
+                            //         icon: const Icon(Icons.search,
+                            //             color: AppColors.primaryColor30),
+                            //         containerColor: AppColors.secondaryColor10,
+                            //         containerSize: 40)),
                           ],
                         ),
                       ],
@@ -461,10 +481,10 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
                               color:
-                                  Items.categorys.contains(selectedCategory) ||
-                                          Items.brands.contains(selectedBrand)
-                                      ? AppColors.primaryColor30
-                                      : AppColors.textColor,
+                              Items.categorys.contains(selectedCategory) ||
+                                  Items.brands.contains(selectedBrand)
+                                  ? AppColors.primaryColor30
+                                  : AppColors.textColor,
                               borderRadius: BorderRadius.circular(
                                   AppBoarderRadius.filterRadius),
                             ),
@@ -473,8 +493,8 @@ class _HomePageState extends State<HomePage> {
                             child: Text('All',
                                 style: MainFonts.filterText(
                                     color: Items.categorys
-                                                .contains(selectedCategory) ||
-                                            Items.brands.contains(selectedBrand)
+                                        .contains(selectedCategory) ||
+                                        Items.brands.contains(selectedBrand)
                                         ? AppColors.textColor
                                         : AppColors.primaryColor30)),
                           ),
@@ -498,7 +518,7 @@ class _HomePageState extends State<HomePage> {
                             child: Text('Category',
                                 style: MainFonts.filterText(
                                     color: Items.categorys
-                                            .contains(selectedCategory)
+                                        .contains(selectedCategory)
                                         ? AppColors.primaryColor30
                                         : AppColors.textColor)),
                           ),
@@ -579,23 +599,34 @@ class _HomePageState extends State<HomePage> {
                                       style: MainFonts.filterText(
                                           color: AppColors.textColor)));
                             }
+
+                            List<UploadReviewModel> reviewsList = [];
+                            for(int i = 0; i < documents.length; i++){
+                              UploadReviewModel review = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                              reviewsList.add(review);
+                            }
                             return GridView.builder(
                                 padding: EdgeInsets.only(
                                     top: 10, bottom: 100, left: 20, right: 20),
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisSpacing: 20,
-                                        mainAxisSpacing: 20,
-                                        crossAxisCount: 2,
-                                        childAspectRatio: (100 / 158)),
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20,
+                                    crossAxisCount: 2,
+                                    childAspectRatio: (100 / 158)),
                                 scrollDirection: Axis.vertical,
-                                itemCount: documents.length,
+                                itemCount: reviewsList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  UploadReviewModel review =
-                                      UploadReviewModel.fromMap(documents[index]
-                                          .data() as Map<String, dynamic>);
 
-                                  if (HomePage.searchText.isEmpty) {
+                                  if(reviewsList.isNotEmpty){
+                                    reviewsList.sort((a, b) {
+                                      int relevanceA = calculateSubstringRelevance(HomePage.searchText, a.name);
+                                      int relevanceB = calculateSubstringRelevance(HomePage.searchText, b.name);
+                                      return relevanceB.compareTo(relevanceA); // Change to relevanceA.compareTo(relevanceB) for ascending order
+                                    });
+
+                                    UploadReviewModel review = reviewsList[index];
+
                                     return ReviewModel(
                                         reviewId: review.rid,
                                         imageUrl: review.imageUrl,
@@ -609,28 +640,9 @@ class _HomePageState extends State<HomePage> {
                                             .substring(0, 10)
                                             .replaceAll('-', '/'),
                                         rating: review.rating);
-                                  } else if (review.name
-                                      .toLowerCase()
-                                      .startsWith(
-                                          HomePage.searchText.toLowerCase())) {
-                                    return ReviewModel(
-                                        reviewId: review.rid,
-                                        imageUrl: review.imageUrl,
-                                        price: review.price,
-                                        isLiked: review.likedBy
-                                            .contains(MyApp.userId),
-                                        title: review.name,
-                                        brand: review.brand,
-                                        category: review.category,
-                                        date: review.date
-                                            .substring(0, 10)
-                                            .replaceAll('-', '/'),
-                                        rating: review.rating);
+                                  } else{
+                                    return Center(child: Text('No Review Liked', style: MainFonts.filterText(color: AppColors.textColor)));
                                   }
-                                  return Visibility(
-                                    child: Text("Gone"),
-                                    visible: false,
-                                  );
                                 });
                           } else {
                             return Center(child: CircularProgressIndicator());
@@ -650,13 +662,15 @@ class _HomePageState extends State<HomePage> {
         isScrollControlled: false,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-        builder: (context) => DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.60,
-            maxChildSize: 0.60,
-            builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: SortCard(),
-                ))).whenComplete(_onBottomSheetClosed);
+        builder: (context) =>
+            DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.60,
+                maxChildSize: 0.60,
+                builder: (context, scrollContoller) =>
+                    SingleChildScrollView(
+                      child: SortCard(),
+                    ))).whenComplete(_onBottomSheetClosed);
   }
 
   void showBrandDialog(BuildContext context) {
@@ -669,178 +683,194 @@ class _HomePageState extends State<HomePage> {
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-        builder: (context) => DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.80,
-            maxChildSize: 0.90,
-            minChildSize: 0.60,
-            builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(10),
-                          width: 60,
-                          height: 7,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.iconLightColor),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        builder: (context) =>
+            DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.80,
+                maxChildSize: 0.90,
+                minChildSize: 0.60,
+                builder: (context, scrollContoller) =>
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 10, left: 5),
-                              child:
-                                  Text('Brand', style: MainFonts.lableText()),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(10),
+                              width: 60,
+                              height: 7,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.iconLightColor),
                             ),
-                            Autocomplete(
-                              initialValue: TextEditingValue(
-                                  text: Items.brands.contains(selectedBrand)
-                                      ? selectedBrand
-                                      : ''),
-                              optionsBuilder:
-                                  (TextEditingValue textEditingValue) {
-                                if (textEditingValue.text == "") {
-                                  return Items.brands;
-                                }
-                                return Items.brands.where((String element) {
-                                  return element.toLowerCase().contains(
-                                      textEditingValue.text.toLowerCase());
-                                });
-                              },
-                              onSelected: (String item) {},
-                              optionsViewBuilder:
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                                  child:
+                                  Text('Brand', style: MainFonts.lableText()),
+                                ),
+                                Autocomplete(
+                                  initialValue: TextEditingValue(
+                                      text: Items.brands.contains(selectedBrand)
+                                          ? selectedBrand
+                                          : ''),
+                                  optionsBuilder:
+                                      (TextEditingValue textEditingValue) {
+                                    if (textEditingValue.text == "") {
+                                      return Items.brands;
+                                    }
+                                    return Items.brands.where((String element) {
+                                      return element.toLowerCase().contains(
+                                          textEditingValue.text.toLowerCase());
+                                    });
+                                  },
+                                  onSelected: (String item) {},
+                                  optionsViewBuilder:
                                   ((context, onSelected, options) {
-                                return Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Material(
-                                    child: Container(
-                                      width:
-                                          (MediaQuery.of(context).size.width) -
+                                    return Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Material(
+                                        child: Container(
+                                          width:
+                                          (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width) -
                                               40,
-                                      height:
-                                          (MediaQuery.of(context).size.height) -
+                                          height:
+                                          (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height) -
                                               340,
-                                      color: AppColors.primaryColor30,
-                                      child: ListView.builder(
-                                        padding: EdgeInsets.all(6),
-                                        itemCount: options.length,
-                                        itemBuilder: (context, index) {
-                                          final String option =
+                                          color: AppColors.primaryColor30,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.all(6),
+                                            itemCount: options.length,
+                                            itemBuilder: (context, index) {
+                                              final String option =
                                               options.elementAt(index);
 
-                                          return InkWell(
-                                            onTap: () {
-                                              onSelected(option);
-                                            },
-                                            child: ListTile(
-                                              tileColor:
+                                              return InkWell(
+                                                onTap: () {
+                                                  onSelected(option);
+                                                },
+                                                child: ListTile(
+                                                  tileColor:
                                                   AppColors.primaryColor30,
-                                              title: Text(option,
-                                                  style: MainFonts
-                                                      .suggestionText()),
-                                            ),
-                                          );
-                                        },
+                                                  title: Text(option,
+                                                      style: MainFonts
+                                                          .suggestionText()),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                              fieldViewBuilder: (context, textEditingController,
-                                  focusNode, onFieldSubmitted) {
-                                brandController = textEditingController;
-                                focusBrandNode = focusNode;
+                                    );
+                                  }),
+                                  fieldViewBuilder: (context,
+                                      textEditingController,
+                                      focusNode, onFieldSubmitted) {
+                                    brandController = textEditingController;
+                                    focusBrandNode = focusNode;
 
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      boxShadow: ContainerShadow.boxShadow),
-                                  child: TextFormField(
-                                    autovalidateMode:
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          boxShadow: ContainerShadow.boxShadow),
+                                      child: TextFormField(
+                                        autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    validator: ((value) {
-                                      selectedBrand =
-                                          value.toString().toLowerCase().trim();
-                                      if (value == null || value.isEmpty) {
-                                        return 'Field empty';
-                                      } else if (!(Items.brands
-                                          .contains(value))) {
-                                        return 'Brand not exist';
-                                      }
-                                    }),
-                                    controller: brandController,
-                                    focusNode: focusBrandNode,
-                                    onEditingComplete: onFieldSubmitted,
-                                    style: MainFonts.textFieldText(),
-                                    cursorHeight: TextCursorHeight.cursorHeight,
-                                    decoration: InputDecoration(
-                                      suffixIcon: InkWell(
-                                          onTap: () {
-                                            brandController.text = '';
-                                          },
-                                          child: Icon(Icons.clear_rounded)),
-                                      contentPadding: EdgeInsets.only(
-                                          top: 16,
-                                          bottom: 16,
-                                          left: 20,
-                                          right: 20),
-                                      fillColor: AppColors.primaryColor30,
-                                      filled: true,
-                                      hintText: 'Select Brand',
-                                      hintStyle: MainFonts.hintFieldText(),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .reviewUploadWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .reviewUploadWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .searchBarWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .searchBarWidth,
-                                              color:
+                                        validator: ((value) {
+                                          selectedBrand =
+                                              value.toString()
+                                                  .toLowerCase()
+                                                  .trim();
+                                          if (value == null || value.isEmpty) {
+                                            return 'Field empty';
+                                          } else if (!(Items.brands
+                                              .contains(value))) {
+                                            return 'Brand not exist';
+                                          }
+                                        }),
+                                        controller: brandController,
+                                        focusNode: focusBrandNode,
+                                        onEditingComplete: onFieldSubmitted,
+                                        style: MainFonts.textFieldText(),
+                                        cursorHeight: TextCursorHeight
+                                            .cursorHeight,
+                                        decoration: InputDecoration(
+                                          suffixIcon: InkWell(
+                                              onTap: () {
+                                                brandController.text = '';
+                                              },
+                                              child: Icon(Icons.clear_rounded)),
+                                          contentPadding: EdgeInsets.only(
+                                              top: 16,
+                                              bottom: 16,
+                                              left: 20,
+                                              right: 20),
+                                          fillColor: AppColors.primaryColor30,
+                                          filled: true,
+                                          hintText: 'Select Brand',
+                                          hintStyle: MainFonts.hintFieldText(),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .reviewUploadWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .reviewUploadWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .searchBarWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .searchBarWidth,
+                                                  color:
                                                   AppBoarderColor.errorColor)),
-                                    ),
-                                  ),
-                                );
-                              },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ))).whenComplete(_onBottomSheetClosed);
+                      ),
+                    ))).whenComplete(_onBottomSheetClosed);
   }
 
   void showCategoryDialog(BuildContext context) {
@@ -853,179 +883,196 @@ class _HomePageState extends State<HomePage> {
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-        builder: (context) => DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.80,
-            maxChildSize: 0.90,
-            minChildSize: 0.60,
-            builder: (context, scrollContoller) => SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(10),
-                          width: 60,
-                          height: 7,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: AppColors.iconLightColor),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        builder: (context) =>
+            DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.80,
+                maxChildSize: 0.90,
+                minChildSize: 0.60,
+                builder: (context, scrollContoller) =>
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Category',
-                                  style: MainFonts.lableText()),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(10),
+                              width: 60,
+                              height: 7,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.iconLightColor),
                             ),
-                            Autocomplete(
-                              initialValue: TextEditingValue(
-                                  text:
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.only(bottom: 10, left: 5),
+                                  child: Text('Category',
+                                      style: MainFonts.lableText()),
+                                ),
+                                Autocomplete(
+                                  initialValue: TextEditingValue(
+                                      text:
                                       Items.categorys.contains(selectedCategory)
                                           ? selectedCategory
                                           : ''),
-                              optionsBuilder:
-                                  (TextEditingValue textEditingValue) {
-                                if (textEditingValue.text == "") {
-                                  return Items.categorys;
-                                }
-                                return Items.categorys.where((String element) {
-                                  return element.toLowerCase().contains(
-                                      textEditingValue.text.toLowerCase());
-                                });
-                              },
-                              onSelected: (String item) {},
-                              optionsViewBuilder:
+                                  optionsBuilder:
+                                      (TextEditingValue textEditingValue) {
+                                    if (textEditingValue.text == "") {
+                                      return Items.categorys;
+                                    }
+                                    return Items.categorys.where((
+                                        String element) {
+                                      return element.toLowerCase().contains(
+                                          textEditingValue.text.toLowerCase());
+                                    });
+                                  },
+                                  onSelected: (String item) {},
+                                  optionsViewBuilder:
                                   ((context, onSelected, options) {
-                                return Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Material(
-                                    child: Container(
-                                      width:
-                                          (MediaQuery.of(context).size.width) -
+                                    return Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Material(
+                                        child: Container(
+                                          width:
+                                          (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width) -
                                               40,
-                                      height:
-                                          (MediaQuery.of(context).size.height) -
+                                          height:
+                                          (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height) -
                                               340,
-                                      color: AppColors.primaryColor30,
-                                      child: ListView.builder(
-                                        padding: EdgeInsets.all(6),
-                                        itemCount: options.length,
-                                        itemBuilder: (context, index) {
-                                          final String option =
+                                          color: AppColors.primaryColor30,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.all(6),
+                                            itemCount: options.length,
+                                            itemBuilder: (context, index) {
+                                              final String option =
                                               options.elementAt(index);
 
-                                          return InkWell(
-                                            onTap: () {
-                                              onSelected(option);
-                                            },
-                                            child: ListTile(
-                                              tileColor:
+                                              return InkWell(
+                                                onTap: () {
+                                                  onSelected(option);
+                                                },
+                                                child: ListTile(
+                                                  tileColor:
                                                   AppColors.primaryColor30,
-                                              title: Text(option,
-                                                  style: MainFonts
-                                                      .suggestionText()),
-                                            ),
-                                          );
-                                        },
+                                                  title: Text(option,
+                                                      style: MainFonts
+                                                          .suggestionText()),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                              fieldViewBuilder: (context, textEditingController,
-                                  focusNode, onFieldSubmitted) {
-                                categoryController = textEditingController;
-                                focusCategoryNode = focusNode;
+                                    );
+                                  }),
+                                  fieldViewBuilder: (context,
+                                      textEditingController,
+                                      focusNode, onFieldSubmitted) {
+                                    categoryController = textEditingController;
+                                    focusCategoryNode = focusNode;
 
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      boxShadow: ContainerShadow.boxShadow),
-                                  child: TextFormField(
-                                    autovalidateMode:
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          boxShadow: ContainerShadow.boxShadow),
+                                      child: TextFormField(
+                                        autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    validator: ((value) {
-                                      selectedCategory =
-                                          value.toString().toLowerCase().trim();
-                                      if (value == null || value.isEmpty) {
-                                        return 'Field empty';
-                                      } else if (!(Items.categorys
-                                          .contains(value))) {
-                                        return 'Category not exist';
-                                      }
-                                    }),
-                                    controller: categoryController,
-                                    focusNode: focusCategoryNode,
-                                    onEditingComplete: onFieldSubmitted,
-                                    style: MainFonts.textFieldText(),
-                                    cursorHeight: TextCursorHeight.cursorHeight,
-                                    decoration: InputDecoration(
-                                      suffixIcon: InkWell(
-                                          onTap: () {
-                                            categoryController.text = '';
-                                          },
-                                          child: Icon(Icons.clear_rounded)),
-                                      contentPadding: EdgeInsets.only(
-                                          top: 16,
-                                          bottom: 16,
-                                          left: 20,
-                                          right: 20),
-                                      fillColor: AppColors.primaryColor30,
-                                      filled: true,
-                                      hintText: 'Select Category',
-                                      hintStyle: MainFonts.hintFieldText(),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .reviewUploadWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .reviewUploadWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .searchBarWidth,
-                                              color: AppBoarderColor
-                                                  .searchBarColor)),
-                                      errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppBoarderRadius
-                                                  .reviewUploadRadius),
-                                          borderSide: BorderSide(
-                                              width: AppBoarderWidth
-                                                  .searchBarWidth,
-                                              color:
+                                        validator: ((value) {
+                                          selectedCategory =
+                                              value.toString()
+                                                  .toLowerCase()
+                                                  .trim();
+                                          if (value == null || value.isEmpty) {
+                                            return 'Field empty';
+                                          } else if (!(Items.categorys
+                                              .contains(value))) {
+                                            return 'Category not exist';
+                                          }
+                                        }),
+                                        controller: categoryController,
+                                        focusNode: focusCategoryNode,
+                                        onEditingComplete: onFieldSubmitted,
+                                        style: MainFonts.textFieldText(),
+                                        cursorHeight: TextCursorHeight
+                                            .cursorHeight,
+                                        decoration: InputDecoration(
+                                          suffixIcon: InkWell(
+                                              onTap: () {
+                                                categoryController.text = '';
+                                              },
+                                              child: Icon(Icons.clear_rounded)),
+                                          contentPadding: EdgeInsets.only(
+                                              top: 16,
+                                              bottom: 16,
+                                              left: 20,
+                                              right: 20),
+                                          fillColor: AppColors.primaryColor30,
+                                          filled: true,
+                                          hintText: 'Select Category',
+                                          hintStyle: MainFonts.hintFieldText(),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .reviewUploadWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .reviewUploadWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .searchBarWidth,
+                                                  color: AppBoarderColor
+                                                      .searchBarColor)),
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  AppBoarderRadius
+                                                      .reviewUploadRadius),
+                                              borderSide: BorderSide(
+                                                  width: AppBoarderWidth
+                                                      .searchBarWidth,
+                                                  color:
                                                   AppBoarderColor.errorColor)),
-                                    ),
-                                  ),
-                                );
-                              },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ))).whenComplete(_onBottomSheetClosed);
+                      ),
+                    ))).whenComplete(_onBottomSheetClosed);
   }
 
   void _onBottomSheetClosed() {
@@ -1033,5 +1080,20 @@ class _HomePageState extends State<HomePage> {
       changeReviewInstance(
           selectedCategory, selectedBrand, HomePage.selectedSort);
     });
+  }
+
+  int calculateSubstringRelevance(String target, String input) {
+    // Calculate the length of the common substring
+    int maxLength = 0;
+    for (int i = 0; i < target.length; i++) {
+      for (int j = 0; j < input.length; j++) {
+        int k = 0;
+        while (i + k < target.length && j + k < input.length && target[i + k] == input[j + k]) {
+          k++;
+        }
+        maxLength = maxLength < k ? k : maxLength;
+      }
+    }
+    return maxLength;
   }
 }
