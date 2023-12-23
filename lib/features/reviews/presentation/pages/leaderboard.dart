@@ -7,6 +7,7 @@ import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/domain/entities/user.dart';
 import 'package:review_app/features/reviews/presentation/widgets/user_model.dart';
 import 'package:review_app/main.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -23,15 +24,18 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPageState extends State<LeaderBoardPage> {
-  
-  // final itemController = ItemScrollController();
-  
-  // void scrollToIndex(int index) => itemController.scrollTo(
-  //   index: index,
-  //   duration: Duration(milliseconds: 600),
-  // );
+  static final itemController = ItemScrollController();
 
-int scrollIndex = -1;
+  static void scrollToIndex(int index) => itemController.scrollTo(
+    index: index,
+    duration: Duration(milliseconds: 600),
+  );
+
+  int scrollIndex = -1;
+
+  _setScrollIndex(int index) {
+    scrollIndex = index;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,24 +53,24 @@ int scrollIndex = -1;
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Ranking', style: MainFonts.pageTitleText()),
-                    // GestureDetector(
-                    //   onTap: () async{
-                    //     // scrollToIndex(scrollIndex);
-                    //   },
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       boxSh  adow: ContainerShadow.boxShadow,
-                    //       color: AppColors.textColor,
-                    //       borderRadius: BorderRadius.circular(
-                    //           AppBoarderRadius.filterRadius),
-                    //     ),
-                    //     padding: EdgeInsets.only(
-                    //         top: 10, bottom: 10, left: 13, right: 13),
-                    //     child: Text('My Rank',
-                    //         style: MainFonts.filterText(
-                    //             color: AppColors.primaryColor30)),
-                    //   ),
-                    // ),
+                    GestureDetector(
+                      onTap: () async {
+                        scrollToIndex(scrollIndex);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: ContainerShadow.boxShadow,
+                          color: AppColors.textColor,
+                          borderRadius: BorderRadius.circular(
+                              AppBoarderRadius.filterRadius),
+                        ),
+                        padding: EdgeInsets.only(
+                            top: 10, bottom: 10, left: 13, right: 13),
+                        child: Text('My Rank',
+                            style: MainFonts.filterText(
+                                color: AppColors.primaryColor30)),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -85,24 +89,25 @@ int scrollIndex = -1;
                             .map((userData) => User.fromMap(userData))
                             .toList();
 
-                            usersList.sort((a, b) => a.rank.compareTo(b.rank));
-                            
+                        usersList.sort((a, b) => a.rank.compareTo(b.rank));
+
                         if (usersList.length < 1) {
                           return Center(
                               child: Text('No Users',
                                   style: MainFonts.filterText(
                                       color: AppColors.textColor)));
                         }
-                        return ListView.builder(
+                        return ScrollablePositionedList.builder(
                           padding: EdgeInsets.only(
                               top: 10, left: 14, right: 14, bottom: 90),
+                          itemScrollController: itemController,
                           itemCount: usersList.length,
                           itemBuilder: (context, index) {
                             User user = usersList[index];
 
-                            // if(user.uid == MyApp.userId){
-                            //   scrollIndex = user.rank;
-                            // }
+                            if (user.uid == MyApp.userId) {
+                              _setScrollIndex(user.uid);
+                            }
                             return UserModel(
                                 uId: user.uid,
                                 profileUrl: user.profileUrl,
