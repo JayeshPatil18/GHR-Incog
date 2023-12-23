@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/authentication/presentation/pages/change_phone.dart';
-import 'package:review_app/features/reviews/domain/entities/VerifyArguments.dart';
+import 'package:review_app/features/reviews/domain/entities/verify_arguments.dart';
 import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/notification.dart';
 import 'package:review_app/features/authentication/presentation/pages/update_password.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/authentication/presentation/pages/verify_phone.dart';
+import 'package:review_app/features/reviews/presentation/pages/view_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_review.dart';
 import 'package:review_app/main.dart';
 
 import '../features/authentication/presentation/pages/signup.dart';
+import '../features/reviews/domain/entities/id_argument.dart';
 
 class RouteGenerator{
   Route<dynamic> generateRoute(RouteSettings settings){
@@ -36,8 +38,19 @@ class RouteGenerator{
         );
 
       case 'view_review':
+        IdArguments idArguments = settings.arguments as IdArguments;
+
+        int reviewId = idArguments.id;
         return MaterialPageRoute(
-            builder: (_) => const ViewReview()
+            builder: (_) => ViewReview(reviewId: reviewId)
+        );
+
+      case 'view_profile':
+        IdArguments idArguments = settings.arguments as IdArguments;
+
+        int userId = idArguments.id;
+        return MaterialPageRoute(
+            builder: (_) => ViewProfile(userId: userId)
         );
 
       case 'signup':

@@ -11,7 +11,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
-import '../../../reviews/domain/entities/VerifyArguments.dart';
+import '../../../reviews/domain/entities/verify_arguments.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 import '../bloc/signup_bloc/signup_bloc.dart';
 

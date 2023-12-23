@@ -104,6 +104,7 @@ int scrollIndex = -1;
                             //   scrollIndex = user.rank;
                             // }
                             return UserModel(
+                                uId: user.uid,
                                 profileUrl: user.profileUrl,
                                 name: user.fullName,
                                 username: user.username,

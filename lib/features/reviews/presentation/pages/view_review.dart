@@ -10,7 +10,8 @@ import '../widgets/circle_button.dart';
 import '../widgets/image_shimmer.dart';
 
 class ViewReview extends StatefulWidget {
-  const ViewReview({super.key});
+  final int reviewId;
+  const ViewReview({super.key, required this.reviewId});
 
   @override
   State<ViewReview> createState() => _ViewReviewState();

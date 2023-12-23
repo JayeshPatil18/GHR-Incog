@@ -8,6 +8,7 @@ import 'package:review_app/utils/fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/values.dart';
+import '../../domain/entities/id_argument.dart';
 import 'image_shimmer.dart';
 
 class ReviewModel extends StatefulWidget {
@@ -42,7 +43,7 @@ class _ReviewModelState extends State<ReviewModel> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'view_review');
+        Navigator.pushNamed(context, 'view_review', arguments: IdArguments(widget.reviewId));
       },
       child: Container(
         decoration: BoxDecoration(

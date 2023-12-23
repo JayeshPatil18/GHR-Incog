@@ -17,26 +17,39 @@ import '../../domain/entities/user.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ViewProfile extends StatefulWidget {
+  final int userId;
+  const ViewProfile({super.key, required this.userId});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ViewProfile> createState() => _ViewProfileState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ViewProfileState extends State<ViewProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backgroundColor60,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: SafeArea(
               child: Container(
                 alignment: Alignment.centerLeft,
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                child: Text('Profile', style: MainFonts.pageTitleText()),
+                EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back_ios,
+                          color: AppColors.textColor, size: 26),
+                    ),
+                    SizedBox(width: 10),
+                    Text('Profile', style: MainFonts.pageTitleText()),
+                  ],
+                ),
               ),
             )),
         body: NestedScrollView(
@@ -65,9 +78,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               .toList();
 
                           List<User> users = usersList
-                              .where((user) => user.uid == MyApp.userId)
+                              .where((user) => user.uid == widget.userId)
                               .toList();
                           user = users.first;
+
                         }
                       }
 
@@ -79,8 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             username: user?.username ?? '',
                             rank: user?.rank ?? -1,
                             points: user?.points ?? -1,
-                            bio: user?.bio ?? '',
-                          ));
+                            bio: user?.bio ?? '',));
                     } else {
                       return Container(
                           height: 400,
@@ -95,41 +108,35 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: ReviewRepo.reviewFireInstance
-                          .where('userId', isEqualTo: MyApp.userId)
-                          .snapshots(),
+                      stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: widget.userId).snapshots(),
                       builder: (context, snapshot) {
                         final documents;
                         if (snapshot.data != null) {
                           documents = snapshot.data!.docs;
-                          if (documents.length < 1) {
-                            return Center(
-                                child: Text('No Reviews',
-                                    style: MainFonts.filterText(
-                                        color: AppColors.textColor)));
+                          if(documents.length < 1){
+                            return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
                           }
                           return GridView.builder(
                               padding: EdgeInsets.only(
                                   top: 20, bottom: 100, left: 20, right: 20),
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 20,
-                                      crossAxisCount: 2,
-                                      childAspectRatio: (100 / 158)),
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: (100 / 158)),
                               scrollDirection: Axis.vertical,
                               itemCount: documents.length,
                               itemBuilder: (BuildContext context, int index) {
                                 UploadReviewModel review =
-                                    UploadReviewModel.fromMap(documents[index]
-                                        .data() as Map<String, dynamic>);
+                                UploadReviewModel.fromMap(documents[index]
+                                    .data() as Map<String, dynamic>);
 
                                 return ReviewModel(
                                     reviewId: review.rid,
                                     imageUrl: review.imageUrl,
                                     price: review.price,
-                                    isLiked:
-                                        review.likedBy.contains(MyApp.userId),
+                                    isLiked: review.likedBy.contains(MyApp.userId),
                                     title: review.name,
                                     brand: review.brand,
                                     category: review.category,
