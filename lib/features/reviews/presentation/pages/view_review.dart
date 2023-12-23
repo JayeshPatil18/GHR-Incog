@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../constants/boarder.dart';
 import '../../../../constants/icon_size.dart';
 import '../../../../constants/values.dart';
+import '../../../../main.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/circle_button.dart';
@@ -118,20 +119,36 @@ class _ViewReviewState extends State<ViewReview> {
                                             color: AppColors.textColor,
                                             size: 26),
                                       ),
-                                      CircleIconContainer(
-                                        containerColor:
+                                      GestureDetector(
+                                        onTap: () {
+                                          ReviewRepo reviewRepo = ReviewRepo();
+                                          reviewRepo.likeReview(widget.reviewId, (review?.likedBy ?? []).contains(MyApp.userId));
+                                        },
+                                        child: Container(
+                                          child: (review?.likedBy ?? []).contains(MyApp.userId) ? CircleIconContainer(
+                                            containerColor:
                                             AppColors.backgroundColor60,
-                                        containerSize: 44,
-                                        icon: Icon(Icons.favorite_border,
-                                            color: AppColors.primaryColor30,
-                                            size: 28),
+                                            containerSize: 44,
+                                            icon: Icon(Icons.favorite,
+                                                color: AppColors.heartColor,
+                                                size: 28),
+                                          ) : CircleIconContainer(
+                                            containerColor:
+                                            AppColors.backgroundColor60,
+                                            containerSize: 44,
+                                            icon: Icon(Icons.favorite_border,
+                                                color: AppColors.primaryColor30,
+                                                size: 28),
+                                          ),
+                                        ),
                                       )
                                     ],
                                   ),
                                   SizedBox(height: 14),
                                   Container(
                                     decoration: BoxDecoration(
-                                        boxShadow: ContainerShadow.boxShadow),
+                                        boxShadow: ContainerShadow.boxShadow,
+                                    ),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(
                                             AppBoarderRadius
@@ -156,18 +173,21 @@ class _ViewReviewState extends State<ViewReview> {
                                             ),
                                           ),
                                         )
-                                            : CustomImageShimmer(
+                                            : Container(
+                                          color: AppColors.primaryColor30,
+                                              child: CustomImageShimmer(
                                           imageUrl: review?.imageUrl ?? '',
                                           width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) -
-                                              110,
+                                                    .size
+                                                    .width) -
+                                                110,
                                           height: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) -
-                                              110,
+                                                    .size
+                                                    .width) -
+                                                110,
                                           fit: BoxFit.contain,
-                                        )),
+                                        ),
+                                            )),
                                   ),
                                 ],
                               ),
@@ -177,146 +197,190 @@ class _ViewReviewState extends State<ViewReview> {
                       }),
                 ];
               },
-              body: SingleChildScrollView(
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [ContainerShadow.boxShadow[1]],
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                          AppBoarderRadius.reviewUploadRadius + 10),
-                      topRight: Radius.circular(
-                          AppBoarderRadius.reviewUploadRadius + 10),
-                    ),
-                    color: AppColors.primaryColor30,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 10, bottom: 10),
-                        width: 60,
-                        height: 7,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: ReviewRepo.reviewFireInstance
+                          .where('rid', isEqualTo: widget.reviewId)
+                          .snapshots(),
+                    builder: (context, snapshot) {
+
+                      final documents = snapshot.data?.docs;
+                      UploadReviewModel? review;
+
+                      if (documents != null && documents.isNotEmpty) {
+                        final firstDocument = documents[0];
+                        review = UploadReviewModel.fromMap(
+                            firstDocument.data() as Map<String, dynamic>);
+                      }
+
+                      return Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: AppColors.iconLightColor),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('boAt Rockerz 558',
-                                    style: ViewReviewFonts.titleText()),
-                                Row(children: [
-                                  Text('\$',
-                                      style: ViewReviewFonts.titleText(
-                                          color: AppColors.secondaryColor10)),
-                                  Text('1000',
-                                      style: ViewReviewFonts.titleText())
-                                ]),
-                              ],
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text('Boat',
-                                          style:
-                                              ViewReviewFonts.subTitleText()),
-                                      Text('  ○  ',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.textColor)),
-                                      Text('Headphones',
-                                          style:
-                                              ViewReviewFonts.subTitleText()),
-                                    ],
-                                  ),
-                                  Text('12/04/2023',
-                                      style: ViewReviewFonts.subTitleText())
-                                ]),
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    height: 24,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: AppValues.maxRating,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Row(
-                                          children: [
-                                            Icon(Icons.star,
-                                                size: 24,
-                                                color: index < 4
-                                                    ? AppColors.starColor
-                                                    : AppColors.iconLightColor),
-                                            SizedBox(width: 2)
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                Text('@harrymarsh',
-                                    style: ViewReviewFonts.reviewUserText())
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            Text('Description',
-                                style: ViewReviewFonts.contentLabelText()),
-                            SizedBox(height: 8),
-                            Text(
-                              'The details that you provide for a product affect the way that the product is displayed to customers, make it easier for you to organize your products',
-                              style: ViewReviewFonts.contentText(),
-                            ),
-                            SizedBox(height: 20),
-                            Text('Summary',
-                                style: ViewReviewFonts.contentLabelText()),
-                            SizedBox(height: 8),
-                            Text(
-                              'Well Protected Good experience soundPacking also goodIt will be more better When it work on price should approx 1700.Overall its a Good Product',
-                              style: ViewReviewFonts.contentText(),
-                            ),
-                          ],
+                          boxShadow: [ContainerShadow.boxShadow[1]],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                AppBoarderRadius.reviewUploadRadius + 10),
+                            topRight: Radius.circular(
+                                AppBoarderRadius.reviewUploadRadius + 10),
+                          ),
+                          color: AppColors.primaryColor30,
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: 20, left: 20, right: 20, bottom: 40),
                         child: Column(
                           children: [
                             Container(
+                              margin: EdgeInsets.only(top: 10, bottom: 10),
+                              width: 60,
+                              height: 7,
                               decoration: BoxDecoration(
-                                  boxShadow: ContainerShadow.boxShadow),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      AppBoarderRadius.reviewUploadRadius),
-                                  child: CustomImageShimmer(
-                                    imageUrl:
-                                        'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
-                                    width: (MediaQuery.of(context).size.width) -
-                                        80,
-                                    height:
-                                        (MediaQuery.of(context).size.width) -
-                                            80,
-                                    fit: BoxFit.contain,
-                                  )),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.iconLightColor),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(review?.name ?? '',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: ViewReviewFonts.titleText()),
+                                      Row(children: [
+                                        Text(review?.price[0] ?? '',
+                                            style: ViewReviewFonts.titleText(
+                                                color: AppColors.secondaryColor10)),
+                                        Text((review?.price ?? '').substring(1).length > 11
+                                            ? (review?.price ?? '').substring(1, 9) + '...'
+                                            : (review?.price ?? '').substring(1),
+                                            style: ViewReviewFonts.titleText())
+                                      ]),
+                                    ],
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text((review?.brand ?? '').length > 34
+                                      ? (review?.brand ?? '').substring(0, 33) + '...'
+                                      : (review?.brand ?? ''),
+                                      style:
+                                      ViewReviewFonts.subTitleText(fontSize: 14)),
+                                  SizedBox(height: 4),
+                                  Text((review?.category ?? '').length > 34
+                                      ? (review?.category ?? '').substring(0, 33) + '...'
+                                      : (review?.category ?? ''),
+                                      style:
+                                      ViewReviewFonts.subTitleText(fontSize: 14)),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          height: 24,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: AppValues.maxRating,
+                                            itemBuilder:
+                                                (BuildContext context, int index) {
+                                              return Row(
+                                                children: [
+                                                  Icon(Icons.star,
+                                                      size: 24,
+                                                      color: index < (review?.rating ?? 0)
+                                                          ? AppColors.starColor
+                                                          : AppColors.iconLightColor),
+                                                  SizedBox(width: 2)
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Text(('@${review?.username ?? ''}').length > 20
+                                          ? ('@${review?.username ?? ''}').substring(0, 19) + '...'
+                                          : ('@${review?.username ?? ''}'),
+                                          style: ViewReviewFonts.reviewUserText())
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text('Description',
+                                      style: ViewReviewFonts.contentLabelText()),
+                                  SizedBox(height: 8),
+                                  Text((review?.description ?? ''),
+                                    maxLines: 6,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: ViewReviewFonts.contentText(),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text('Summary',
+                                      style: ViewReviewFonts.contentLabelText()),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    (review?.summary ?? ''),
+                                    maxLines: 36,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: ViewReviewFonts.contentText(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: 20, left: 20, right: 20, bottom: 40),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: ContainerShadow.boxShadow,
+                                    ),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            AppBoarderRadius
+                                                .reviewUploadRadius),
+                                        child: review?.imageUrl == 'null'
+                                            ? SizedBox(
+                                          width: (MediaQuery.of(context)
+                                              .size
+                                              .width) -
+                                              80,
+                                          height: (MediaQuery.of(context)
+                                              .size
+                                              .width) -
+                                              80,
+                                          child: Shimmer.fromColors(
+                                            baseColor: Color(0xFFe4e4e4),
+                                            highlightColor: Color(0xFFCDCDCD),
+                                            child: Container(
+                                              height: 156,
+                                              width: 156,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                            : Container(
+                                          color: AppColors.primaryColor30,
+                                              child: CustomImageShimmer(
+                                          imageUrl: review?.imageUrl ?? '',
+                                          width: (MediaQuery.of(context)
+                                                .size
+                                                .width) -
+                                                80,
+                                          height: (MediaQuery.of(context)
+                                                .size
+                                                .width) -
+                                                80,
+                                          fit: BoxFit.contain,
+                                        ),
+                                            )),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    }
                   ),
                 ),
               )),

@@ -22,9 +22,9 @@ class ViewReviewFonts {
     return TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: color);
   }
 
-  static TextStyle subTitleText() {
+  static TextStyle subTitleText({double fontSize = 17.0}) {
     return TextStyle(
-        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+        fontSize: fontSize, fontWeight: FontWeight.w400, color: AppColors.textColor);
   }
 
   static TextStyle contentLabelText({Color color = AppColors.textColor}) {
