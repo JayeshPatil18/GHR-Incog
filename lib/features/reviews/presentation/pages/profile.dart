@@ -14,6 +14,7 @@ import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
+import '../widgets/image_shimmer.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
@@ -25,10 +26,40 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  ScrollController _scrollController = ScrollController();
+  bool lastStatus = true;
+  double height = 200;
+
+  bool get _isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_isShrink != lastStatus) {
+      setState(() {
+        lastStatus = _isShrink;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backgroundColor60,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: SafeArea(
@@ -40,6 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             )),
         body: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               StreamBuilder<QuerySnapshot>(
@@ -71,16 +103,23 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                       }
 
-                      return SliverStickyHeader(
-                          sticky: false,
-                          header: UserProfileModel(
+                      return SliverAppBar(
+                        elevation: 0.0,
+                          pinned: false,
+                          floating: false,
+                          automaticallyImplyLeading: false,
+                          expandedHeight: height,
+                          backgroundColor: AppColors.backgroundColor60,
+                          flexibleSpace: FlexibleSpaceBar(
+                            title: const SizedBox(),
+                          background: UserProfileModel(
                             profileUrl: user?.profileUrl ?? 'null',
                             name: user?.fullName ?? '',
                             username: user?.username ?? '',
                             rank: user?.rank ?? -1,
                             points: user?.points ?? -1,
                             bio: user?.bio ?? '',
-                          ));
+                          )));
                     } else {
                       return Container(
                           height: 400,
@@ -110,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           return GridView.builder(
                               padding: EdgeInsets.only(
-                                  top: 20, bottom: 100, left: 20, right: 20),
+                                  top: 10, bottom: 100, left: 20, right: 20),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisSpacing: 20,

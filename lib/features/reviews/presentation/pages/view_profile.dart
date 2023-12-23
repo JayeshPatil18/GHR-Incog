@@ -26,6 +26,36 @@ class ViewProfile extends StatefulWidget {
 }
 
 class _ViewProfileState extends State<ViewProfile> {
+
+  ScrollController _scrollController = ScrollController();
+  bool lastStatus = true;
+  double height = 200;
+
+  bool get _isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_isShrink != lastStatus) {
+      setState(() {
+        lastStatus = _isShrink;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,15 +115,23 @@ class _ViewProfileState extends State<ViewProfile> {
                         }
                       }
 
-                      return SliverStickyHeader(
-                          sticky: false,
-                          header: UserProfileModel(
-                            profileUrl: user?.profileUrl ?? 'null',
-                            name: user?.fullName ?? '',
-                            username: user?.username ?? '',
-                            rank: user?.rank ?? -1,
-                            points: user?.points ?? -1,
-                            bio: user?.bio ?? '',));
+                      return SliverAppBar(
+                          elevation: 0.0,
+                          pinned: false,
+                          floating: false,
+                          automaticallyImplyLeading: false,
+                          expandedHeight: height,
+                          backgroundColor: AppColors.backgroundColor60,
+                          flexibleSpace: FlexibleSpaceBar(
+                              title: const SizedBox(),
+                              background: UserProfileModel(
+                                profileUrl: user?.profileUrl ?? 'null',
+                                name: user?.fullName ?? '',
+                                username: user?.username ?? '',
+                                rank: user?.rank ?? -1,
+                                points: user?.points ?? -1,
+                                bio: user?.bio ?? '',
+                              )));
                     } else {
                       return Container(
                           height: 400,
@@ -118,7 +156,7 @@ class _ViewProfileState extends State<ViewProfile> {
                           }
                           return GridView.builder(
                               padding: EdgeInsets.only(
-                                  top: 20, bottom: 100, left: 20, right: 20),
+                                  top: 10, bottom: 100, left: 20, right: 20),
                               gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisSpacing: 20,

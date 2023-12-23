@@ -73,7 +73,7 @@ class _ViewReviewState extends State<ViewReview> {
                                   alignment: Alignment.centerLeft,
                                   margin: EdgeInsets.only(
                                       left: 20, right: 20, top: 20, bottom: 20),
-                                  child: Text('Profile',
+                                  child: Text('Review',
                                       style: MainFonts.pageTitleText()),
                                 ),
                               ))
