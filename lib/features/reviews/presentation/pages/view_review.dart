@@ -251,9 +251,9 @@ class _ViewReviewState extends State<ViewReview> {
                                         Text(review?.price[0] ?? '',
                                             style: ViewReviewFonts.titleText(
                                                 color: AppColors.secondaryColor10)),
-                                        Text((review?.price ?? '').substring(1).length > 11
-                                            ? (review?.price ?? '').substring(1, 9) + '...'
-                                            : (review?.price ?? '').substring(1),
+                                        Text((review?.price.substring(1) ?? '').length > 11
+                                            ? (review?.price.substring(1, 9) ?? '') + '...'
+                                            : (review?.price.substring(1) ?? ''),
                                             style: ViewReviewFonts.titleText())
                                       ]),
                                     ],
