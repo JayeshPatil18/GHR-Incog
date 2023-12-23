@@ -83,6 +83,7 @@ class _ViewProfileState extends State<ViewProfile> {
               ),
             )),
         body: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               StreamBuilder<QuerySnapshot>(
