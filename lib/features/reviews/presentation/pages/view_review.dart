@@ -16,6 +16,7 @@ import '../widgets/image_shimmer.dart';
 
 class ViewReview extends StatefulWidget {
   final int reviewId;
+
   const ViewReview({super.key, required this.reviewId});
 
   @override
@@ -63,15 +64,17 @@ class _ViewReviewState extends State<ViewReview> {
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   StreamBuilder<QuerySnapshot>(
-                      stream: ReviewRepo.reviewFireInstance.where('rid', isEqualTo: widget.reviewId).snapshots(),
+                      stream: ReviewRepo.reviewFireInstance
+                          .where('rid', isEqualTo: widget.reviewId)
+                          .snapshots(),
                       builder: (context, snapshot) {
-                        final documents;
-                        documents = snapshot.data?.docs;
+                        final documents = snapshot.data?.docs;
+                        UploadReviewModel? review;
 
                         if (documents != null && documents.isNotEmpty) {
                           final firstDocument = documents[0];
-                          UploadReviewModel review =
-                          UploadReviewModel.fromMap(firstDocument.data() as Map<String, dynamic>);
+                          review = UploadReviewModel.fromMap(
+                              firstDocument.data() as Map<String, dynamic>);
                         }
 
                         return SliverAppBar(
@@ -84,33 +87,40 @@ class _ViewReviewState extends State<ViewReview> {
                           flexibleSpace: FlexibleSpaceBar(
                             title: _isShrink
                                 ? PreferredSize(
-                                preferredSize: Size.fromHeight(70),
-                                child: SafeArea(
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    margin: EdgeInsets.only(
-                                        left: 20, right: 20, top: 20, bottom: 20),
-                                    child: Text('Review',
-                                        style: MainFonts.pageTitleText()),
-                                  ),
-                                ))
+                                    preferredSize: Size.fromHeight(70),
+                                    child: SafeArea(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        margin: EdgeInsets.only(
+                                            left: 20,
+                                            right: 20,
+                                            top: 20,
+                                            bottom: 20),
+                                        child: Text('Review',
+                                            style: MainFonts.pageTitleText()),
+                                      ),
+                                    ))
                                 : const SizedBox(),
                             background: Container(
-                              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                              margin:
+                                  EdgeInsets.only(top: 20, left: 20, right: 20),
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
                                         child: Icon(Icons.arrow_back_ios,
-                                            color: AppColors.textColor, size: 26),
+                                            color: AppColors.textColor,
+                                            size: 26),
                                       ),
                                       CircleIconContainer(
-                                        containerColor: AppColors.backgroundColor60,
+                                        containerColor:
+                                            AppColors.backgroundColor60,
                                         containerSize: 44,
                                         icon: Icon(Icons.favorite_border,
                                             color: AppColors.primaryColor30,
@@ -124,10 +134,40 @@ class _ViewReviewState extends State<ViewReview> {
                                         boxShadow: ContainerShadow.boxShadow),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(
-                                            AppBoarderRadius.reviewUploadRadius),
-                                        child: CustomImageShimmer(imageUrl: 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', width: (MediaQuery.of(context).size.width) -
-                                            110, height: (MediaQuery.of(context).size.width) -
-                                            110, fit: BoxFit.contain,)),
+                                            AppBoarderRadius
+                                                .reviewUploadRadius),
+                                        child: review?.imageUrl == 'null'
+                                            ? SizedBox(
+                                          width: (MediaQuery.of(context)
+                                              .size
+                                              .width) -
+                                              110,
+                                          height: (MediaQuery.of(context)
+                                              .size
+                                              .width) -
+                                              110,
+                                          child: Shimmer.fromColors(
+                                            baseColor: Color(0xFFe4e4e4),
+                                            highlightColor: Color(0xFFCDCDCD),
+                                            child: Container(
+                                              height: 156,
+                                              width: 156,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                            : CustomImageShimmer(
+                                          imageUrl: review?.imageUrl ?? '',
+                                          width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width) -
+                                              110,
+                                          height: (MediaQuery.of(context)
+                                                  .size
+                                                  .width) -
+                                              110,
+                                          fit: BoxFit.contain,
+                                        )),
                                   ),
                                 ],
                               ),
@@ -142,10 +182,10 @@ class _ViewReviewState extends State<ViewReview> {
                   decoration: BoxDecoration(
                     boxShadow: [ContainerShadow.boxShadow[1]],
                     borderRadius: BorderRadius.only(
-                      topLeft:
-                          Radius.circular(AppBoarderRadius.reviewUploadRadius + 10),
-                      topRight:
-                          Radius.circular(AppBoarderRadius.reviewUploadRadius + 10),
+                      topLeft: Radius.circular(
+                          AppBoarderRadius.reviewUploadRadius + 10),
+                      topRight: Radius.circular(
+                          AppBoarderRadius.reviewUploadRadius + 10),
                     ),
                     color: AppColors.primaryColor30,
                   ),
@@ -252,7 +292,8 @@ class _ViewReviewState extends State<ViewReview> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 40),
+                        margin: EdgeInsets.only(
+                            top: 20, left: 20, right: 20, bottom: 40),
                         child: Column(
                           children: [
                             Container(
@@ -261,9 +302,16 @@ class _ViewReviewState extends State<ViewReview> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
                                       AppBoarderRadius.reviewUploadRadius),
-                                  child: CustomImageShimmer(imageUrl: 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', width: (MediaQuery.of(context).size.width) -
-                                      80, height: (MediaQuery.of(context).size.width) -
-                                      80, fit: BoxFit.contain,)),
+                                  child: CustomImageShimmer(
+                                    imageUrl:
+                                        'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg',
+                                    width: (MediaQuery.of(context).size.width) -
+                                        80,
+                                    height:
+                                        (MediaQuery.of(context).size.width) -
+                                            80,
+                                    fit: BoxFit.contain,
+                                  )),
                             ),
                           ],
                         ),
