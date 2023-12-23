@@ -630,24 +630,19 @@ class _HomePageState extends State<HomePage> {
 
                                     UploadReviewModel review = reviewsList[index];
 
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(context, 'view_review');
-                                      },
-                                      child: ReviewModel(
-                                          reviewId: review.rid,
-                                          imageUrl: review.imageUrl,
-                                          price: review.price,
-                                          isLiked: review.likedBy
-                                              .contains(MyApp.userId),
-                                          title: review.name,
-                                          brand: review.brand,
-                                          category: review.category,
-                                          date: review.date
-                                              .substring(0, 10)
-                                              .replaceAll('-', '/'),
-                                          rating: review.rating),
-                                    );
+                                    return ReviewModel(
+                                        reviewId: review.rid,
+                                        imageUrl: review.imageUrl,
+                                        price: review.price,
+                                        isLiked: review.likedBy
+                                            .contains(MyApp.userId),
+                                        title: review.name,
+                                        brand: review.brand,
+                                        category: review.category,
+                                        date: review.date
+                                            .substring(0, 10)
+                                            .replaceAll('-', '/'),
+                                        rating: review.rating);
                                   } else{
                                     return Center(child: Text('No Review Liked', style: MainFonts.filterText(color: AppColors.textColor)));
                                   }
