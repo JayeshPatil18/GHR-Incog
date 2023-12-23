@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import 'package:review_app/utils/fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/icon_size.dart';
 import '../../../../constants/values.dart';
+import '../../domain/entities/upload_review.dart';
+import '../../domain/entities/user.dart';
 import '../widgets/circle_button.dart';
 import '../widgets/image_shimmer.dart';
 
@@ -56,67 +61,80 @@ class _ViewReviewState extends State<ViewReview> {
               controller: _scrollController,
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    elevation: 0.0,
-                    automaticallyImplyLeading: false,
-                    pinned: false,
-                    floating: true,
-                    expandedHeight: height,
-                    backgroundColor: AppColors.backgroundColor60,
-                    flexibleSpace: FlexibleSpaceBar(
-                      title: _isShrink
-                          ? PreferredSize(
-                              preferredSize: Size.fromHeight(70),
-                              child: SafeArea(
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  margin: EdgeInsets.only(
-                                      left: 20, right: 20, top: 20, bottom: 20),
-                                  child: Text('Review',
-                                      style: MainFonts.pageTitleText()),
-                                ),
-                              ))
-                          : const SizedBox(),
-                      background: Container(
-                        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Icon(Icons.arrow_back_ios,
-                                      color: AppColors.textColor, size: 26),
-                                ),
-                                CircleIconContainer(
-                                  containerColor: AppColors.backgroundColor60,
-                                  containerSize: 44,
-                                  icon: Icon(Icons.favorite_border,
-                                      color: AppColors.primaryColor30,
-                                      size: 28),
-                                )
-                              ],
+                return <Widget>[
+                  StreamBuilder<QuerySnapshot>(
+                      stream: ReviewRepo.reviewFireInstance.where('rid', isEqualTo: widget.reviewId).snapshots(),
+                      builder: (context, snapshot) {
+                        final documents;
+                        documents = snapshot.data?.docs;
+
+                        if (documents != null && documents.isNotEmpty) {
+                          final firstDocument = documents[0];
+                          UploadReviewModel review =
+                          UploadReviewModel.fromMap(firstDocument.data() as Map<String, dynamic>);
+                        }
+
+                        return SliverAppBar(
+                          elevation: 0.0,
+                          automaticallyImplyLeading: false,
+                          pinned: false,
+                          floating: true,
+                          expandedHeight: height,
+                          backgroundColor: AppColors.backgroundColor60,
+                          flexibleSpace: FlexibleSpaceBar(
+                            title: _isShrink
+                                ? PreferredSize(
+                                preferredSize: Size.fromHeight(70),
+                                child: SafeArea(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20, top: 20, bottom: 20),
+                                    child: Text('Review',
+                                        style: MainFonts.pageTitleText()),
+                                  ),
+                                ))
+                                : const SizedBox(),
+                            background: Container(
+                              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(Icons.arrow_back_ios,
+                                            color: AppColors.textColor, size: 26),
+                                      ),
+                                      CircleIconContainer(
+                                        containerColor: AppColors.backgroundColor60,
+                                        containerSize: 44,
+                                        icon: Icon(Icons.favorite_border,
+                                            color: AppColors.primaryColor30,
+                                            size: 28),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 14),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        boxShadow: ContainerShadow.boxShadow),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            AppBoarderRadius.reviewUploadRadius),
+                                        child: CustomImageShimmer(imageUrl: 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', width: (MediaQuery.of(context).size.width) -
+                                            110, height: (MediaQuery.of(context).size.width) -
+                                            110, fit: BoxFit.contain,)),
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(height: 14),
-                            Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: ContainerShadow.boxShadow),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      AppBoarderRadius.reviewUploadRadius),
-                                  child: CustomImageShimmer(imageUrl: 'https://static.vecteezy.com/system/resources/thumbnails/021/690/601/small/bright-sun-shines-on-green-morning-grassy-meadow-bright-blue-sky-ai-generated-image-photo.jpg', width: (MediaQuery.of(context).size.width) -
-                                      110, height: (MediaQuery.of(context).size.width) -
-                                      110, fit: BoxFit.contain,)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                          ),
+                        );
+                      }),
                 ];
               },
               body: SingleChildScrollView(
