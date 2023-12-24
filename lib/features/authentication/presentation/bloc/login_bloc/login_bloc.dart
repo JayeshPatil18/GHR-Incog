@@ -29,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           String phoneNo = '';
 
           for (var userMap in data) {
-            if (userMap['username'] == event.username) {
+            if (userMap['username'].toString().toLowerCase() == event.username.toLowerCase()) {
               hasUsernameAlready = true;
               password = userMap['password'];
               userId = userMap['uid'];

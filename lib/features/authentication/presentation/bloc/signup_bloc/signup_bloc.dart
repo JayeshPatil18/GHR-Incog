@@ -9,6 +9,7 @@ import '../../../data/repositories/users_repo.dart';
 import '../login_bloc/login_bloc.dart';
 
 part 'signup_event.dart';
+
 part 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
@@ -40,11 +41,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         bool isOtpVerified = await optVerify(event.otpCode);
         if (isOtpVerified) {
           UsersRepo usersRepo = UsersRepo();
-          int userId = await usersRepo.addUser(event.fullName, event.username, event.phoneNo, event.password);
-          if(userId != -1){
+          int userId = await usersRepo.addUser(
+              event.fullName, event.username, event.phoneNo, event.password);
+          if (userId != -1) {
             loginDetails(userId.toString(), event.username, event.phoneNo);
             emit(OtpCodeVerifiedState());
-          } else{
+          } else {
             emit(AddUserDataFailedState());
           }
         } else {
@@ -95,13 +97,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   Future<int> validUsernameCheck(String username) async {
     UsersRepo usersRepo = UsersRepo();
     try {
-      List<Map<String, dynamic>> data =
-          await usersRepo.getUserCredentials();
+      List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
 
       bool hasUsernameAlready = false;
 
       for (var userMap in data) {
-        if (userMap['username'] == username) {
+        if (userMap['username'].toString().toLowerCase() == username.toLowerCase()) {
           hasUsernameAlready = true;
           break;
         }
