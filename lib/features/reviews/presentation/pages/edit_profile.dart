@@ -12,10 +12,13 @@ import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
+import '../../../authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/shadow.dart';
+import '../widgets/snackbar.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -496,8 +499,40 @@ class _EditProfileState extends State<EditProfile> {
                                                 AppBoarderRadius.buttonRadius)),
                                         elevation: AppElevations.buttonElev,
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async{
+                                        bool isValid =
                                         _formKey.currentState!.validate();
+                                        if(isValid){
+                                          List<String>? details = await getLoginDetails();
+                                          String username = details?[1] ??'';
+
+                                          SignupBloc signUpBlocObj = SignupBloc();
+                                          int validUsername = 0;
+
+                                          if(usernameController.text.toLowerCase() == username.toLowerCase()){
+                                            validUsername = 1;
+                                          } else{
+                                            validUsername = await signUpBlocObj.validUsernameCheck(usernameController.text);
+                                          }
+
+                                          if (validUsername == 1) {
+                                            UsersRepo userRepoObj = UsersRepo();
+                                            bool status = await userRepoObj.updateProfile(nameController.text, usernameController.text, bioController.text);
+                                            if(status){
+                                              mySnackBarShow(context,
+                                                  'Changes saved.');
+                                            } else{
+                                              mySnackBarShow(context,
+                                                  'Something went wrong! Try again.');
+                                            }
+                                          } else if (validUsername == -1) {
+                                            mySnackBarShow(context,
+                                                'This username is already in use! Try Another.');
+                                          } else if (validUsername == 0) {
+                                            mySnackBarShow(context,
+                                                'Something went wrong! Try again.');
+                                          }
+                                        }
                                       },
                                       child: Text('Save Changes',
                                           style: AuthFonts.authButtonText())),
