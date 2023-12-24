@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +10,10 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
+import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../authentication/data/repositories/users_repo.dart';
+import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/shadow.dart';
 
@@ -21,7 +25,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-
   final FocusNode _focusNameNode = FocusNode();
   bool _hasNameFocus = false;
 
@@ -62,7 +65,7 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
 
@@ -71,7 +74,7 @@ class _EditProfileState extends State<EditProfile> {
         _hasNameFocus = _focusNameNode.hasFocus;
       });
     });
-    
+
     _focusUsernameNode.addListener(() {
       setState(() {
         _hasUsernameFocus = _focusUsernameNode.hasFocus;
@@ -90,11 +93,12 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
-File? _selectedImage;
+  File? _selectedImage;
+
   Future pickImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
 
-    if(image == null) return;
+    if (image == null) return;
 
     setState(() {
       _selectedImage = File(image.path);
@@ -164,241 +168,346 @@ File? _selectedImage;
               ),
             )),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                  decoration: BoxDecoration(
-                    boxShadow: ContainerShadow.boxShadow,
-                    color: AppColors.primaryColor30,
-                    borderRadius: BorderRadius.circular(
-                        AppBoarderRadius.reviewUploadRadius),
-                  ),
-                  width: double.infinity,
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(30),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                  onTap: () {
-                    pickSource();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Container(
-                      decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: AppColors.secondaryColor10,
-                                    width: 2,
+          child: StreamBuilder<QuerySnapshot>(
+              stream: UsersRepo.userFireInstance.snapshots(),
+              builder: (context, snapshot) {
+                final documents;
+                User? user;
+                if (snapshot != null) {
+                  documents = snapshot.data?.docs;
+                  List<Map<String, dynamic>> usersData = [];
+
+                  if (documents != null && documents.isNotEmpty) {
+                    final firstDocument = documents[0];
+
+                    if (firstDocument != null &&
+                        firstDocument.data() != null &&
+                        firstDocument.data().containsKey('userslist')) {
+                      usersData = List<Map<String, dynamic>>.from(
+                          firstDocument.data()['userslist']);
+
+                      List<User> usersList = usersData
+                          .map((userData) => User.fromMap(userData))
+                          .toList();
+
+                      List<User> users = usersList
+                          .where((user) => user.uid == MyApp.userId)
+                          .toList();
+                      user = users.first;
+                    }
+                  }
+                }
+
+                nameController.text = user?.fullName ?? '_';
+                usernameController.text = user?.username ?? '_';
+                bioController.text = user?.bio ?? '_';
+                return Column(
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          boxShadow: ContainerShadow.boxShadow,
+                          color: AppColors.primaryColor30,
+                          borderRadius: BorderRadius.circular(
+                              AppBoarderRadius.reviewUploadRadius),
+                        ),
+                        width: double.infinity,
+                        margin: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(30),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    pickSource();
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: AppColors.secondaryColor10,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: Stack(children: [
+                                        _selectedImage != null
+                                            ? CircleAvatar(
+                                                backgroundImage:
+                                                    FileImage(_selectedImage!),
+                                                radius: 60,
+                                              )
+                                            : user?.profileUrl == 'null'
+                                                ? CircleAvatar(
+                                                    backgroundImage: AssetImage(
+                                                        "assets/icons/user.png"),
+                                                    radius: 60,
+                                                  )
+                                                : CircleAvatar(
+                                                    radius: 60,
+                                                    child: ClipOval(
+                                                        child: CustomImageShimmer(
+                                                            imageUrl:
+                                                                user?.profileUrl ??
+                                                                    '',
+                                                            width:
+                                                                double.infinity,
+                                                            height:
+                                                                double.infinity,
+                                                            fit:
+                                                                BoxFit.cover))),
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                // Set the background color of the icon
+                                                shape: BoxShape
+                                                    .circle, // Set the shape of the background to a circle
+                                              ),
+                                              child: Icon(Icons.add_circle,
+                                                  color: AppColors
+                                                      .secondaryColor10,
+                                                  size: 35)),
+                                        ),
+                                      ]),
+                                    ),
                                   ),
                                 ),
-                      child: Stack(children: [
-                        _selectedImage != null ? CircleAvatar(
-                                backgroundImage: FileImage(_selectedImage!),
-                                radius: 60,
-                              ) :
-                        CircleAvatar(
-                                radius: 60,
-                          child: ClipOval(
-                            child: CustomImageShimmer(imageUrl: 'https://media.wired.com/photos/5c57c3e3ce277c2cb23d575b/1:1/w_1666,h_1666,c_limit/Culture_Facebook_TheSocialNetwork.jpg', width: double.infinity, height: double.infinity, fit: BoxFit.cover)
-                          )
-                              ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors
-                                    .white, // Set the background color of the icon
-                                shape: BoxShape
-                                    .circle, // Set the shape of the background to a circle
-                              ),
-                              child: Icon(Icons.add_circle,
-                                  color: AppColors.secondaryColor10, size: 35)),
-                        ),
-                      ]),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10, left: 5),
-                            child: Text('Full Name', style: MainFonts.lableText()),
-                          ),
-                          Container(
-                            child: TextFormField(
-                              controller: nameController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: ((value) {
-                                return _validateInput(value, 0);
-                              }),
-                              style: MainFonts.textFieldText(),
-                              focusNode: _focusNameNode,
-                              cursorHeight: TextCursorHeight.cursorHeight,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    top: 16, bottom: 16, left: 20, right: 20),
-                                fillColor: AppColors.primaryColor30,
-                                filled: true,
-                                hintText:
-                                    _hasNameFocus ? 'Enter name' : null,
-                                hintStyle: MainFonts.hintFieldText(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.errorColor)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10, left: 5),
-                            child: Text('Username', style: MainFonts.lableText()),
-                          ),
-                          Container(
-                            child: TextFormField(
-                              controller: usernameController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: ((value) {
-                                return _validateInput(value, 1);
-                              }),
-                              style: MainFonts.textFieldText(),
-                              focusNode: _focusUsernameNode,
-                              cursorHeight: TextCursorHeight.cursorHeight,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    top: 16, bottom: 16, left: 20, right: 20),
-                                fillColor: AppColors.primaryColor30,
-                                filled: true,
-                                hintText:
-                                    _hasUsernameFocus ? 'Enter username' : null,
-                                hintStyle: MainFonts.hintFieldText(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.errorColor)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10, left: 5),
-                            child: Text('Bio (Optional)', style: MainFonts.lableText()),
-                          ),
-                          Container(
-                            child: TextFormField(
-                              maxLines: 3,
-                              controller: bioController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: ((value) {
-                                return _validateInput(value, 2);
-                              }),
-                              style: MainFonts.textFieldText(),
-                              focusNode: _focusBioNode,
-                              cursorHeight: TextCursorHeight.cursorHeight,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    top: 16, bottom: 16, left: 20, right: 20),
-                                fillColor: AppColors.primaryColor30,
-                                filled: true,
-                                hintText:
-                                    _hasBioFocus ? 'Enter bio' : null,
-                                hintStyle: MainFonts.hintFieldText(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.reviewUploadWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.searchBarColor)),
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppBoarderRadius.reviewUploadRadius),
-                                    borderSide: BorderSide(
-                                        width: AppBoarderWidth.searchBarWidth,
-                                        color: AppBoarderColor.errorColor)),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 40),
-                          Container(
-                            height: 55,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.secondaryColor10,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
-                                    elevation: AppElevations.buttonElev,
+                                SizedBox(height: 30),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 10, left: 5),
+                                  child: Text('Full Name',
+                                      style: MainFonts.lableText()),
+                                ),
+                                Container(
+                                  child: TextFormField(
+                                    controller: nameController,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    validator: ((value) {
+                                      return _validateInput(value, 0);
+                                    }),
+                                    style: MainFonts.textFieldText(),
+                                    focusNode: _focusNameNode,
+                                    cursorHeight: TextCursorHeight.cursorHeight,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 20,
+                                          right: 20),
+                                      fillColor: AppColors.primaryColor30,
+                                      filled: true,
+                                      hintText:
+                                          _hasNameFocus ? 'Enter name' : null,
+                                      hintStyle: MainFonts.hintFieldText(),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color:
+                                                  AppBoarderColor.errorColor)),
                                     ),
-                                onPressed: () { 
-                                  _formKey.currentState!.validate();
-                                 },
-                                child: Text('Save Changes', style: AuthFonts.authButtonText())
-                              ),
-                          ),
-                        ]),
-                  )),
-            ],
-          ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 10, left: 5),
+                                  child: Text('Username',
+                                      style: MainFonts.lableText()),
+                                ),
+                                Container(
+                                  child: TextFormField(
+                                    controller: usernameController,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    validator: ((value) {
+                                      return _validateInput(value, 1);
+                                    }),
+                                    style: MainFonts.textFieldText(),
+                                    focusNode: _focusUsernameNode,
+                                    cursorHeight: TextCursorHeight.cursorHeight,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 20,
+                                          right: 20),
+                                      fillColor: AppColors.primaryColor30,
+                                      filled: true,
+                                      hintText: _hasUsernameFocus
+                                          ? 'Enter username'
+                                          : null,
+                                      hintStyle: MainFonts.hintFieldText(),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color:
+                                                  AppBoarderColor.errorColor)),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 10, left: 5),
+                                  child: Text('Bio (Optional)',
+                                      style: MainFonts.lableText()),
+                                ),
+                                Container(
+                                  child: TextFormField(
+                                    maxLines: 3,
+                                    controller: bioController,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    validator: ((value) {
+                                      return _validateInput(value, 2);
+                                    }),
+                                    style: MainFonts.textFieldText(),
+                                    focusNode: _focusBioNode,
+                                    cursorHeight: TextCursorHeight.cursorHeight,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 20,
+                                          right: 20),
+                                      fillColor: AppColors.primaryColor30,
+                                      filled: true,
+                                      hintText:
+                                          _hasBioFocus ? 'Enter bio' : null,
+                                      hintStyle: MainFonts.hintFieldText(),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .reviewUploadWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color: AppBoarderColor
+                                                  .searchBarColor)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AppBoarderRadius
+                                                  .reviewUploadRadius),
+                                          borderSide: BorderSide(
+                                              width: AppBoarderWidth
+                                                  .searchBarWidth,
+                                              color:
+                                                  AppBoarderColor.errorColor)),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 40),
+                                Container(
+                                  height: 55,
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            AppColors.secondaryColor10,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                AppBoarderRadius.buttonRadius)),
+                                        elevation: AppElevations.buttonElev,
+                                      ),
+                                      onPressed: () {
+                                        _formKey.currentState!.validate();
+                                      },
+                                      child: Text('Save Changes',
+                                          style: AuthFonts.authButtonText())),
+                                ),
+                              ]),
+                        )),
+                  ],
+                );
+              }),
         ));
   }
 }
