@@ -39,4 +39,39 @@ class UsersRepo {
       return -1;
     }
   }
+
+  Future<bool> updateProfile(String name, String username, String bio) async {
+
+    try {
+      List<String>? details = await getLoginDetails();
+      int userId = -1;
+
+      if (details != null) {
+        userId = int.parse(details[0]);
+      }
+
+      var document = await userFireInstance
+          .doc('usersdoc')
+          .get();
+
+      List<Map<String, dynamic>> usersData =
+      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+
+      for (var user in usersData) {
+        if (user['uid'] == userId) {
+          user['fullname'] = name;
+          user['username'] = username;
+          user['bio'] = bio;
+        }
+      }
+
+      await userFireInstance.doc('usersdoc').update({
+        'userslist': usersData
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

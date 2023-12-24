@@ -183,8 +183,7 @@ class _EditProfileState extends State<EditProfile> {
                     if (firstDocument != null &&
                         firstDocument.data() != null &&
                         firstDocument.data().containsKey('userslist')) {
-                      usersData = List<Map<String, dynamic>>.from(
-                          firstDocument.data()['userslist']);
+                      usersData = List<Map<String, dynamic>>.from(firstDocument.data()['userslist']);
 
                       List<User> usersList = usersData
                           .map((userData) => User.fromMap(userData))
