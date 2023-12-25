@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
@@ -109,13 +111,13 @@ class _UserProfileModelState extends State<UserProfileModel> {
                               Text('Rank',
                                   style: ProfileUserFonts.userSubText()),
                               SizedBox(width: 6),
-                              Text(suffixOfNumber(widget.rank),
+                              Text('_', // suffixOfNumber(widget.rank),
                                   style: ProfileUserFonts.userValueText()),
                               SizedBox(width: 20),
                               Text('Points',
                                   style: ProfileUserFonts.userSubText()),
                               SizedBox(width: 6),
-                              Text(widget.points.toString(),
+                              Text('_', // widget.points.toString(),
                                   style: ProfileUserFonts.userValueText()),
                             ],
                           )
