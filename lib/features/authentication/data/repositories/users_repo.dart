@@ -16,9 +16,11 @@ class UsersRepo {
   Future<int> addUser(String fullName, String username, String phoneNo, String password) async {
     try {
       List<Map<String, dynamic>> data = await getUserCredentials();
+
       int length = getMaxUId(data) + 1;
 
       final snapshot = await _db.collection('users').doc('usersdoc');
+
       await snapshot.update({
         'userslist': FieldValue.arrayUnion([
           {

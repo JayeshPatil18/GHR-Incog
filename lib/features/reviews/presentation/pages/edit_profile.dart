@@ -48,12 +48,22 @@ class _EditProfileState extends State<EditProfile> {
       case 0:
         if (input == null || input.isEmpty) {
           return 'Field empty';
+        } else if (input.length < 2) {
+          return 'Name is too short';
+        } else if (input.length > 40) {
+          return 'Name is too long';
         }
         break;
 
       case 1:
         if (input == null || input.isEmpty) {
           return 'Field empty';
+        } else if (input.length < 2) {
+          return 'Username is too short';
+        } else if (input.length > 30) {
+          return 'Username is too long';
+        } else if(!doesNotContainSpaces(input)){
+          return 'Username should not contain any spaces';
         }
         break;
 

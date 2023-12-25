@@ -2,7 +2,8 @@
     package="com.review.review_app">
    <application
         android:label="review_app"
-        android:name="${applicationName}"
+       android:usesCleartextTraffic="true"
+       android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
