@@ -8,17 +8,22 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/methods.dart';
+import '../../../reviews/domain/entities/verify_phoneno_argument.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
+import '../../../reviews/presentation/widgets/snackbar.dart';
+import '../bloc/signup_bloc/signup_bloc.dart';
 
 class UpdatePassword extends StatefulWidget {
   const UpdatePassword({super.key});
+  static String newPassword = '';
 
   @override
   State<UpdatePassword> createState() => _UpdatePasswordState();
 }
 
 class _UpdatePasswordState extends State<UpdatePassword> {
-  
+
   final FocusNode _focusPasswordNode = FocusNode();
   bool _hasPasswordFocus = false;
 
@@ -31,8 +36,10 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       case 0:
         if (input == null || input.isEmpty) {
           return 'Field empty';
-        } else if(input.length > 128){
-          return 'Password it too long';
+        } else if (input.length < 6) {
+          return 'Password is too short';
+        } else if (input.length > 30) {
+          return 'Password is too long';
         }
         break;
 
@@ -160,8 +167,34 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                                       borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
                                       elevation: AppElevations.buttonElev,
                                       ),
-                                  onPressed: () { 
-                                    _formKey.currentState!.validate();
+                                  onPressed: () async{
+                                    bool isValid = _formKey.currentState!.validate();
+                                    if(isValid){
+                                      List<String>? details = await getLoginDetails();
+                                      String phoneNo = '';
+
+                                      if (details != null) {
+                                        phoneNo = details[2];
+                                      }
+
+                                      SignupBloc signupBlocObj = SignupBloc();
+                                      bool isOtpSent = await signupBlocObj
+                                          .sendOtpToPhoneNumber(phoneNo);
+
+                                      if (isOtpSent) {
+                                        UpdatePassword.newPassword = passwordController.text.trim().toString();
+                                        FocusScope.of(context).unfocus();
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300), () {
+                                          Navigator.of(context).pushNamed(
+                                              'verifynewphone',
+                                              arguments: VerifyPhoneNoArg(phoneNo, "password"));
+                                        });
+                                      } else {
+                                        mySnackBarShow(context,
+                                            'Something went wrong! Try again.');
+                                      }
+                                    }
                                    },
                                   child: Text('Update Password', style: AuthFonts.authButtonText())
                                 ),

@@ -1,7 +1,9 @@
-class PhoneNoArguments {
+class VerifyPhoneNoArg {
   final String phoneNo;
+  final String verifyForWhat;
 
-  PhoneNoArguments(
+  VerifyPhoneNoArg(
       this.phoneNo,
+      this.verifyForWhat,
       );
 }

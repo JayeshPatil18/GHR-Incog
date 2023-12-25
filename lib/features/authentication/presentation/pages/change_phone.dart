@@ -8,7 +8,7 @@ import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
-import '../../../reviews/domain/entities/phoneno_argument.dart';
+import '../../../reviews/domain/entities/verify_phoneno_argument.dart';
 import '../../../reviews/domain/entities/verify_arguments.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 import '../../../reviews/presentation/widgets/snackbar.dart';
@@ -192,10 +192,10 @@ class _ChangePhoneNoState extends State<ChangePhoneNo> {
                                       const Duration(milliseconds: 300), () {
                                     Navigator.of(context).pushNamed(
                                         'verifynewphone',
-                                        arguments: PhoneNoArguments(countryCode +
+                                        arguments: VerifyPhoneNoArg(countryCode +
                                             phoneNoController.text
                                                 .toString()
-                                                .trim()));
+                                                .trim(), "phoneno"));
                                   });
                                 } else {
                                   mySnackBarShow(context,

@@ -17,7 +17,7 @@ import 'package:review_app/main.dart';
 import '../features/authentication/presentation/pages/signup.dart';
 import '../features/authentication/presentation/pages/verify_new_phone.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
-import '../features/reviews/domain/entities/phoneno_argument.dart';
+import '../features/reviews/domain/entities/verify_phoneno_argument.dart';
 
 class RouteGenerator{
   Route<dynamic> generateRoute(RouteSettings settings){
@@ -100,12 +100,13 @@ class RouteGenerator{
 
       case 'verifynewphone':
 
-        PhoneNoArguments phoneNoArguments = settings.arguments as PhoneNoArguments;
+        VerifyPhoneNoArg verifyPhoneNoArg = settings.arguments as VerifyPhoneNoArg;
 
-        String phoneNo = phoneNoArguments.phoneNo;
+        String phoneNo = verifyPhoneNoArg.phoneNo;
+        String verifyForWhat = verifyPhoneNoArg.verifyForWhat;
 
         return MaterialPageRoute(
-            builder: (_) => VerifyNewPhoneNo(phoneNo: phoneNo)
+            builder: (_) => VerifyNewPhoneNo(phoneNo: phoneNo, verifyForWhat: verifyForWhat)
         );
 
       default:

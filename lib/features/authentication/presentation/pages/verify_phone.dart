@@ -165,7 +165,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                               ),
                             ),
                             SizedBox(height: 20),
-                            Text('Verification code has been sent to your phone number, verify phone number to change password', style: AuthFonts.authMsgText(color: Colors.grey)),
+                            Text('Verification code has been sent to ${widget.phoneNo}, verify phone number to Sign Up.', style: AuthFonts.authMsgText(color: Colors.grey)),
                             SizedBox(height: 40),
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: ((context, state) {

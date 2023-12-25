@@ -138,6 +138,39 @@ class UsersRepo {
     }
   }
 
+  Future<int> changePassword(String password) async {
+
+    try {
+      List<String>? details = await getLoginDetails();
+      int userId = -1;
+
+      if (details != null) {
+        userId = int.parse(details[0]);
+      }
+
+      var document = await userFireInstance
+          .doc('usersdoc')
+          .get();
+
+      List<Map<String, dynamic>> usersData =
+      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+
+      for (var user in usersData) {
+        if (user['uid'] == userId) {
+          user['password'] = password;
+        }
+      }
+
+      await userFireInstance.doc('usersdoc').update({
+        'userslist': usersData
+      });
+
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
   Future<String> _uploadFile(int rId, File _imageFile) async {
     try {
       final Reference storageRef =

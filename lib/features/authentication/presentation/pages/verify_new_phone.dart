@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:review_app/features/authentication/presentation/pages/update_password.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
@@ -15,9 +16,10 @@ import '../bloc/signup_bloc/signup_bloc.dart';
 class VerifyNewPhoneNo extends StatefulWidget {
 
   final String phoneNo;
+  final String verifyForWhat;
 
   const VerifyNewPhoneNo({super.key,
-    required this.phoneNo,
+    required this.phoneNo, required this.verifyForWhat,
   });
 
   @override
@@ -158,7 +160,7 @@ class _VerifyNewPhoneNoState extends State<VerifyNewPhoneNo> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Text('Verification code has been sent to your phone number, verify phone number to change password', style: AuthFonts.authMsgText(color: Colors.grey)),
+                      Text('Verification code has been sent to ${widget.phoneNo}, verify phone number to change ${widget.verifyForWhat == "phoneno" ? 'phone no' : 'password'}.', style: AuthFonts.authMsgText(color: Colors.grey)),
                       SizedBox(height: 40),
                       Container(
                         height: 55,
@@ -180,11 +182,11 @@ class _VerifyNewPhoneNoState extends State<VerifyNewPhoneNo> {
 
                                   UsersRepo userRepoObj = UsersRepo();
                                   int status =
-                                  await userRepoObj.changePhoneNo(widget.phoneNo);
+                                  widget.verifyForWhat == "phoneno" ? await userRepoObj.changePhoneNo(widget.phoneNo) : await userRepoObj.changePassword(UpdatePassword.newPassword);
                                   if (status == 1) {
                                     FocusScope.of(context).unfocus();
                                     mySnackBarShow(
-                                        context, 'Changes saved.');
+                                        context, '${widget.verifyForWhat == "phoneno" ? "Phone No" : "Password"} Changed.');
                                     Future.delayed(
                                         const Duration(milliseconds: 300), () {
                                       Navigator.of(context).pop();
