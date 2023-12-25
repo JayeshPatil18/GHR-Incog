@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/features/reviews/presentation/widgets/bottom_sheet.dart';
+import 'package:review_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String suffixOfNumber(int number) {
@@ -64,8 +65,8 @@ int getMaxUId(List<Map<String, dynamic>> data) {
 Future<bool> checkLoginStatus() async {
   bool isLoggedIn = false;
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('isLoggedIn') != null) {
-    isLoggedIn = prefs.getBool('isLoggedIn')!;
+  if (prefs.getBool(MyApp.LOGIN_KEY) != null) {
+    isLoggedIn = prefs.getBool(MyApp.LOGIN_KEY)!;
   }
 
   return isLoggedIn;
@@ -74,19 +75,19 @@ Future<bool> checkLoginStatus() async {
 // Update login status
 Future<void> updateLoginStatus(bool status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('isLoggedIn', status);
+  prefs.setBool(MyApp.LOGIN_KEY, status);
 }
 
 // Update login status
 Future<void> loginDetails(String uId, String username, String phoneNo) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setStringList('loginDetails', [uId, username, phoneNo]);
+  prefs.setStringList(MyApp.LOGIN_DETAILS_KEY, [uId, username, phoneNo]);
 }
 
 // get login status
 Future<List<String>?> getLoginDetails() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String>? loginDetails = prefs.getStringList('loginDetails');
+  List<String>? loginDetails = prefs.getStringList(MyApp.LOGIN_DETAILS_KEY);
   return loginDetails;
 }
 

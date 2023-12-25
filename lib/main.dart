@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static int userId = -1;
+  static String LOGIN_KEY = 'isLoggedIn';
+  static String LOGIN_DETAILS_KEY = 'loginDetails';
 
   static initUserId() async {
     List<String>? details = await getLoginDetails();
