@@ -10,6 +10,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
+import '../../../../constants/values.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
@@ -181,6 +182,8 @@ class _EditProfileState extends State<EditProfile> {
       },
     );
   }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -448,52 +451,68 @@ class _EditProfileState extends State<EditProfile> {
                                 elevation: AppElevations.buttonElev,
                               ),
                               onPressed: () async {
-                                bool isValid =
-                                    _formKey.currentState!.validate();
-                                if (isValid) {
-                                  List<String>? details =
-                                      await getLoginDetails();
-                                  String username = details?[1] ?? '';
+                                if (!isLoading) {
+                                  setIsLoading(true);
+                                  bool isValid =
+                                      _formKey.currentState!.validate();
+                                  if (isValid) {
+                                    List<String>? details =
+                                        await getLoginDetails();
+                                    String username = details?[1] ?? '';
 
-                                  SignupBloc signUpBlocObj = SignupBloc();
-                                  int validUsername = 0;
+                                    SignupBloc signUpBlocObj = SignupBloc();
+                                    int validUsername = 0;
 
-                                  if (usernameController.text.toLowerCase() ==
-                                      username.toLowerCase()) {
-                                    validUsername = 1;
-                                  } else {
-                                    validUsername =
-                                        await signUpBlocObj.validUsernameCheck(
-                                            usernameController.text);
-                                  }
-
-                                  if (validUsername == 1) {
-                                    UsersRepo userRepoObj = UsersRepo();
-                                    int status =
-                                        await userRepoObj.updateProfile(
-                                            _selectedImage,
-                                            nameController.text,
-                                            usernameController.text,
-                                            bioController.text);
-                                    if (status == 1) {
-                                      mySnackBarShow(context, 'Changes saved.');
-                                    } else if (status == -1) {
-                                      logOut();
+                                    if (usernameController.text.toLowerCase() ==
+                                        username.toLowerCase()) {
+                                      validUsername = 1;
                                     } else {
+                                      validUsername = await signUpBlocObj
+                                          .validUsernameCheck(
+                                              usernameController.text);
+                                    }
+
+                                    if (validUsername == 1) {
+                                      UsersRepo userRepoObj = UsersRepo();
+                                      int status =
+                                          await userRepoObj.updateProfile(
+                                              _selectedImage,
+                                              nameController.text,
+                                              usernameController.text,
+                                              bioController.text);
+                                      if (status == 1) {
+                                        mySnackBarShow(
+                                            context, 'Changes saved.');
+                                      } else if (status == -1) {
+                                        logOut();
+                                      } else {
+                                        mySnackBarShow(context,
+                                            'Something went wrong! Try again.');
+                                      }
+                                    } else if (validUsername == -1) {
+                                      mySnackBarShow(context,
+                                          'This username is already in use! Try Another.');
+                                    } else if (validUsername == 0) {
                                       mySnackBarShow(context,
                                           'Something went wrong! Try again.');
                                     }
-                                  } else if (validUsername == -1) {
-                                    mySnackBarShow(context,
-                                        'This username is already in use! Try Another.');
-                                  } else if (validUsername == 0) {
-                                    mySnackBarShow(context,
-                                        'Something went wrong! Try again.');
                                   }
+
+                                  setIsLoading(false);
                                 }
                               },
-                              child: Text('Save Changes',
-                                  style: AuthFonts.authButtonText())),
+                              child: isLoading == false
+                                  ? Text('Save Changes',
+                                      style: AuthFonts.authButtonText())
+                                  : SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: Center(
+                                          child: CircularProgressIndicator(
+                                              strokeWidth:
+                                                  AppValues.progresBarWidth,
+                                              color:
+                                                  AppColors.primaryColor30)))),
                         ),
                       ]),
                 )),
@@ -501,11 +520,15 @@ class _EditProfileState extends State<EditProfile> {
         )));
   }
 
+  setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
   logOut() {
     clearSharedPrefs();
-    Navigator.of(context)
-        .popUntil((route) => route.isFirst);
-    Navigator.of(context)
-        .pushReplacementNamed('login');
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).pushReplacementNamed('login');
   }
 }
