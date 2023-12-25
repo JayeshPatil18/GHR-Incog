@@ -481,8 +481,14 @@ class _EditProfileState extends State<EditProfile> {
                                               usernameController.text,
                                               bioController.text);
                                       if (status == 1) {
+                                        FocusScope.of(context).unfocus();
                                         mySnackBarShow(
                                             context, 'Changes saved.');
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300),
+                                            () {
+                                          Navigator.of(context).pop();
+                                        });
                                       } else if (status == -1) {
                                         logOut();
                                       } else {

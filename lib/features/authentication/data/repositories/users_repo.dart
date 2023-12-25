@@ -96,6 +96,48 @@ class UsersRepo {
     }
   }
 
+  Future<int> changePhoneNo(String phoneNo) async {
+
+    try {
+      List<String>? details = await getLoginDetails();
+      int userId = -1;
+      String username = '';
+      String phoneNo = '';
+
+      if (details != null) {
+        userId = int.parse(details[0]);
+        username = details[1];
+        phoneNo = details[2];
+      }
+
+      var document = await userFireInstance
+          .doc('usersdoc')
+          .get();
+
+      List<Map<String, dynamic>> usersData =
+      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+
+      for (var user in usersData) {
+        if (user['uid'] == userId) {
+          user['phoneno'] = phoneNo;
+        }
+      }
+
+      await userFireInstance.doc('usersdoc').update({
+        'userslist': usersData
+      });
+
+      try {
+        loginDetails(userId.toString(), username, phoneNo);
+      } on Exception catch (e) {
+        return -1;
+      }
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
   Future<String> _uploadFile(int rId, File _imageFile) async {
     try {
       final Reference storageRef =
