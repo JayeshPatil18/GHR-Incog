@@ -10,6 +10,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/icon_size.dart';
 import '../../../../constants/values.dart';
 import '../../../../main.dart';
+import '../../domain/entities/id_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/circle_button.dart';
@@ -297,10 +298,15 @@ class _ViewReviewState extends State<ViewReview> {
                                           ),
                                         ),
                                       ),
-                                      Text(('@${review?.username ?? ''}').length > 20
-                                          ? ('@${review?.username ?? ''}').substring(0, 19) + '...'
-                                          : ('@${review?.username ?? ''}'),
-                                          style: ViewReviewFonts.reviewUserText())
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(review?.userId ?? -1));
+                                        },
+                                        child: Text(('@${review?.username ?? ''}').length > 20
+                                            ? ('@${review?.username ?? ''}').substring(0, 19) + '...'
+                                            : ('@${review?.username ?? ''}'),
+                                            style: ViewReviewFonts.reviewUserText()),
+                                      )
                                     ],
                                   ),
                                   SizedBox(height: 20),

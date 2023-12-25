@@ -368,18 +368,22 @@ class _HomePageState extends State<HomePage> {
                               child: Image.asset('assets/icons/menu.png',
                                   height: 34, width: 34),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed('notification');
-                              },
-                              child: CircleIconContainer(
-                                  containerColor: AppColors.textColor,
-                                  containerSize: 44,
-                                  icon: Image.asset(
-                                      'assets/icons/notification.png',
-                                      height: AppIconSize.bottomNavBarIcons,
-                                      width: AppIconSize.bottomNavBarIcons)),
-                            )
+
+                            // **********************************************************
+                            // notification comment
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     Navigator.of(context).pushNamed('notification');
+                            //   },
+                            //   child: CircleIconContainer(
+                            //       containerColor: AppColors.textColor,
+                            //       containerSize: 44,
+                            //       icon: Image.asset(
+                            //           'assets/icons/notification.png',
+                            //           height: AppIconSize.bottomNavBarIcons,
+                            //           width: AppIconSize.bottomNavBarIcons)),
+                            // )
+                            // **********************************************************
                           ],
                         ),
                         const SizedBox(height: 40),
