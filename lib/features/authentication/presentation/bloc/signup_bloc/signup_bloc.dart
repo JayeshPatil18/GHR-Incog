@@ -38,7 +38,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
     on<VerifyClickEvent>((event, emit) async {
       if (event is VerifyClickEvent) {
-        bool isOtpVerified = true; //await optVerify(event.otpCode);
+        bool isOtpVerified = await optVerify(event.otpCode);
         if (isOtpVerified) {
           UsersRepo usersRepo = UsersRepo();
           int userId = await usersRepo.addUser(
