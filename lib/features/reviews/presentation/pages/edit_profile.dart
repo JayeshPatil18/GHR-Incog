@@ -453,6 +453,7 @@ class _EditProfileState extends State<EditProfile> {
                               onPressed: () async {
                                 if (!isLoading) {
                                   setIsLoading(true);
+
                                   bool isValid =
                                       _formKey.currentState!.validate();
                                   if (isValid) {

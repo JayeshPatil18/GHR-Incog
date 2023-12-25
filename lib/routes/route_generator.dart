@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:review_app/features/authentication/presentation/pages/forgot_password.dart';
 import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/authentication/presentation/pages/change_phone.dart';
 import 'package:review_app/features/reviews/domain/entities/verify_arguments.dart';
@@ -107,6 +108,11 @@ class RouteGenerator{
 
         return MaterialPageRoute(
             builder: (_) => VerifyNewPhoneNo(phoneNo: phoneNo, verifyForWhat: verifyForWhat)
+        );
+
+      case 'forgotpassword':
+        return MaterialPageRoute(
+            builder: (_) => const ForgotPassword()
         );
 
       default:

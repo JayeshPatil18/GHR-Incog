@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
+import 'package:review_app/features/authentication/presentation/pages/forgot_password.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/utils/methods.dart';
 
@@ -167,8 +168,24 @@ class _LoginPageState extends State<LoginPage> {
                             Padding(
                               padding:
                                   const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Password',
-                                  style: MainFonts.lableText()),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Password',
+                                      style: MainFonts.lableText()),
+                                  GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300), () {
+                                          Navigator.of(context).pushNamed(
+                                              'forgotpassword',
+                                              arguments: ForgotPassword());
+                                        });
+                                      },
+                                      child: Text('Forgot', style: AuthFonts.authMsgText(color: AppColors.iconColor))),
+                                ],
+                              ),
                             ),
                             Container(
                               child: TextFormField(

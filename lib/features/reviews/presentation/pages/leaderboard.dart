@@ -136,7 +136,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                       width: double.infinity,
                       height: double.infinity,
                       decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.5)
+                          color: Colors.white.withOpacity(0.6)
                       ),
                     ),
                   ),
