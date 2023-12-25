@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:review_app/utils/methods.dart';
 
 class UsersRepo {
@@ -42,14 +45,22 @@ class UsersRepo {
     }
   }
 
-  Future<bool> updateProfile(String name, String username, String bio) async {
+  Future<int> updateProfile(File? selectedImage, String name, String username, String bio) async {
 
     try {
       List<String>? details = await getLoginDetails();
       int userId = -1;
+      String phoneNo = '';
 
       if (details != null) {
         userId = int.parse(details[0]);
+        phoneNo = details[2];
+      }
+
+      // Upload Image
+      String imageUrl = "null";
+      if(selectedImage != null){
+        imageUrl = await _uploadFile(userId, selectedImage);
       }
 
       var document = await userFireInstance
@@ -64,16 +75,38 @@ class UsersRepo {
           user['fullname'] = name;
           user['username'] = username;
           user['bio'] = bio;
+          if(imageUrl != "null"){
+            user['profileurl'] = imageUrl;
+          }
         }
       }
 
       await userFireInstance.doc('usersdoc').update({
         'userslist': usersData
       });
-      return true;
+
+      try {
+        loginDetails(userId.toString(), username, phoneNo);
+      } on Exception catch (e) {
+        return -1;
+      }
+      return 1;
     } catch (e) {
-      print(e);
-      return false;
+      return 0;
+    }
+  }
+
+  Future<String> _uploadFile(int rId, File _imageFile) async {
+    try {
+      final Reference storageRef =
+      FirebaseStorage.instance.ref().child('users_profile');
+      UploadTask uploadTask = storageRef.child(rId.toString()).putFile(_imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask;
+
+      String url = await taskSnapshot.ref.getDownloadURL();
+      return url;
+    } catch (error) {
+      return 'null';
     }
   }
 }

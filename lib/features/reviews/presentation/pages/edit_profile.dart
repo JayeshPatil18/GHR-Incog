@@ -63,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
           return 'Username is too short';
         } else if (input.length > 30) {
           return 'Username is too long';
-        } else if(!doesNotContainSpaces(input)){
+        } else if (!doesNotContainSpaces(input)) {
           return 'Username should not contain any spaces';
         }
         break;
@@ -79,21 +79,17 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  _loadProfileData() async{
-    var document = await UsersRepo.userFireInstance
-        .doc('usersdoc')
-        .get();
+  _loadProfileData() async {
+    var document = await UsersRepo.userFireInstance.doc('usersdoc').get();
 
     List<Map<String, dynamic>> usersData =
-    List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+        List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
 
-    List<User> usersList = usersData
-        .map((userData) => User.fromMap(userData))
-        .toList();
+    List<User> usersList =
+        usersData.map((userData) => User.fromMap(userData)).toList();
 
-    List<User> users = usersList
-        .where((user) => user.uid == MyApp.userId)
-        .toList();
+    List<User> users =
+        usersList.where((user) => user.uid == MyApp.userId).toList();
     user = users.first;
 
     // Set Text to TextFields & Profile Image Url
@@ -113,7 +109,6 @@ class _EditProfileState extends State<EditProfile> {
 
     // Load Profile Data
     _loadProfileData();
-
 
     _focusNameNode.addListener(() {
       setState(() {
@@ -214,344 +209,303 @@ class _EditProfileState extends State<EditProfile> {
               ),
             )),
         body: SingleChildScrollView(
-          child: Column(
-        children: [
-        Container(
-        decoration: BoxDecoration(
-          boxShadow: ContainerShadow.boxShadow,
-          color: AppColors.primaryColor30,
-          borderRadius: BorderRadius.circular(
-              AppBoarderRadius.reviewUploadRadius),
-        ),
-        width: double.infinity,
-        margin: EdgeInsets.all(20),
-        padding: EdgeInsets.all(30),
-        child: Form(
-          key: _formKey,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    pickSource();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.secondaryColor10,
-                          width: 2,
-                        ),
-                      ),
-                      child: Stack(children: [
-                        _selectedImage != null
-                            ? CircleAvatar(
-                          backgroundImage:
-                          FileImage(_selectedImage!),
-                          radius: 60,
-                        )
-                            : profileImageUrl == 'null'
-                            ? CircleAvatar(
-                          backgroundImage: AssetImage(
-                              "assets/icons/user.png"),
-                          radius: 60,
-                        )
-                            : CircleAvatar(
-                            radius: 60,
-                            child: ClipOval(
-                                child: CustomImageShimmer(
-                                    imageUrl:
-                                    user?.profileUrl ??
-                                        '',
-                                    width:
-                                    double.infinity,
-                                    height:
-                                    double.infinity,
-                                    fit:
-                                    BoxFit.cover))),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
+            child: Column(
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                  boxShadow: ContainerShadow.boxShadow,
+                  color: AppColors.primaryColor30,
+                  borderRadius: BorderRadius.circular(
+                      AppBoarderRadius.reviewUploadRadius),
+                ),
+                width: double.infinity,
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(30),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            pickSource();
+                          },
                           child: Container(
+                            alignment: Alignment.center,
+                            child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                // Set the background color of the icon
-                                shape: BoxShape
-                                    .circle, // Set the shape of the background to a circle
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.secondaryColor10,
+                                  width: 2,
+                                ),
                               ),
-                              child: Icon(Icons.add_circle,
-                                  color: AppColors
-                                      .secondaryColor10,
-                                  size: 35)),
+                              child: Stack(children: [
+                                _selectedImage != null
+                                    ? CircleAvatar(
+                                        backgroundImage:
+                                            FileImage(_selectedImage!),
+                                        radius: 60,
+                                      )
+                                    : profileImageUrl == 'null'
+                                        ? CircleAvatar(
+                                            backgroundImage: AssetImage(
+                                                "assets/icons/user.png"),
+                                            radius: 60,
+                                          )
+                                        : CircleAvatar(
+                                            radius: 60,
+                                            child: ClipOval(
+                                                child: CustomImageShimmer(
+                                                    imageUrl:
+                                                        user?.profileUrl ?? '',
+                                                    width: double.infinity,
+                                                    height: double.infinity,
+                                                    fit: BoxFit.cover))),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        // Set the background color of the icon
+                                        shape: BoxShape
+                                            .circle, // Set the shape of the background to a circle
+                                      ),
+                                      child: Icon(Icons.add_circle,
+                                          color: AppColors.secondaryColor10,
+                                          size: 35)),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, left: 5),
+                          child:
+                              Text('Full Name', style: MainFonts.lableText()),
+                        ),
+                        Container(
+                          child: TextFormField(
+                            controller: nameController,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: ((value) {
+                              return _validateInput(value, 0);
+                            }),
+                            style: MainFonts.textFieldText(),
+                            focusNode: _focusNameNode,
+                            cursorHeight: TextCursorHeight.cursorHeight,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 16, bottom: 16, left: 20, right: 20),
+                              fillColor: AppColors.primaryColor30,
+                              filled: true,
+                              hintText: _hasNameFocus ? 'Enter name' : null,
+                              hintStyle: MainFonts.hintFieldText(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.errorColor)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, left: 5),
+                          child: Text('Username', style: MainFonts.lableText()),
+                        ),
+                        Container(
+                          child: TextFormField(
+                            controller: usernameController,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: ((value) {
+                              return _validateInput(value, 1);
+                            }),
+                            style: MainFonts.textFieldText(),
+                            focusNode: _focusUsernameNode,
+                            cursorHeight: TextCursorHeight.cursorHeight,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 16, bottom: 16, left: 20, right: 20),
+                              fillColor: AppColors.primaryColor30,
+                              filled: true,
+                              hintText:
+                                  _hasUsernameFocus ? 'Enter username' : null,
+                              hintStyle: MainFonts.hintFieldText(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.errorColor)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10, left: 5),
+                          child: Text('Bio (Optional)',
+                              style: MainFonts.lableText()),
+                        ),
+                        Container(
+                          child: TextFormField(
+                            maxLines: 3,
+                            controller: bioController,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: ((value) {
+                              return _validateInput(value, 2);
+                            }),
+                            style: MainFonts.textFieldText(),
+                            focusNode: _focusBioNode,
+                            cursorHeight: TextCursorHeight.cursorHeight,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 16, bottom: 16, left: 20, right: 20),
+                              fillColor: AppColors.primaryColor30,
+                              filled: true,
+                              hintText: _hasBioFocus ? 'Enter bio' : null,
+                              hintStyle: MainFonts.hintFieldText(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.reviewUploadWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.searchBarColor)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppBoarderRadius.reviewUploadRadius),
+                                  borderSide: BorderSide(
+                                      width: AppBoarderWidth.searchBarWidth,
+                                      color: AppBoarderColor.errorColor)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 40),
+                        Container(
+                          height: 55,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.secondaryColor10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        AppBoarderRadius.buttonRadius)),
+                                elevation: AppElevations.buttonElev,
+                              ),
+                              onPressed: () async {
+                                bool isValid =
+                                    _formKey.currentState!.validate();
+                                if (isValid) {
+                                  List<String>? details =
+                                      await getLoginDetails();
+                                  String username = details?[1] ?? '';
+
+                                  SignupBloc signUpBlocObj = SignupBloc();
+                                  int validUsername = 0;
+
+                                  if (usernameController.text.toLowerCase() ==
+                                      username.toLowerCase()) {
+                                    validUsername = 1;
+                                  } else {
+                                    validUsername =
+                                        await signUpBlocObj.validUsernameCheck(
+                                            usernameController.text);
+                                  }
+
+                                  if (validUsername == 1) {
+                                    UsersRepo userRepoObj = UsersRepo();
+                                    int status =
+                                        await userRepoObj.updateProfile(
+                                            _selectedImage,
+                                            nameController.text,
+                                            usernameController.text,
+                                            bioController.text);
+                                    if (status == 1) {
+                                      mySnackBarShow(context, 'Changes saved.');
+                                    } else if (status == -1) {
+                                      logOut();
+                                    } else {
+                                      mySnackBarShow(context,
+                                          'Something went wrong! Try again.');
+                                    }
+                                  } else if (validUsername == -1) {
+                                    mySnackBarShow(context,
+                                        'This username is already in use! Try Another.');
+                                  } else if (validUsername == 0) {
+                                    mySnackBarShow(context,
+                                        'Something went wrong! Try again.');
+                                  }
+                                }
+                              },
+                              child: Text('Save Changes',
+                                  style: AuthFonts.authButtonText())),
                         ),
                       ]),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 10, left: 5),
-                  child: Text('Full Name',
-                      style: MainFonts.lableText()),
-                ),
-                Container(
-                  child: TextFormField(
-                    controller: nameController,
-                    autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                    validator: ((value) {
-                      return _validateInput(value, 0);
-                    }),
-                    style: MainFonts.textFieldText(),
-                    focusNode: _focusNameNode,
-                    cursorHeight: TextCursorHeight.cursorHeight,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                          left: 20,
-                          right: 20),
-                      fillColor: AppColors.primaryColor30,
-                      filled: true,
-                      hintText:
-                      _hasNameFocus ? 'Enter name' : null,
-                      hintStyle: MainFonts.hintFieldText(),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color:
-                              AppBoarderColor.errorColor)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 10, left: 5),
-                  child: Text('Username',
-                      style: MainFonts.lableText()),
-                ),
-                Container(
-                  child: TextFormField(
-                    controller: usernameController,
-                    autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                    validator: ((value) {
-                      return _validateInput(value, 1);
-                    }),
-                    style: MainFonts.textFieldText(),
-                    focusNode: _focusUsernameNode,
-                    cursorHeight: TextCursorHeight.cursorHeight,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                          left: 20,
-                          right: 20),
-                      fillColor: AppColors.primaryColor30,
-                      filled: true,
-                      hintText: _hasUsernameFocus
-                          ? 'Enter username'
-                          : null,
-                      hintStyle: MainFonts.hintFieldText(),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color:
-                              AppBoarderColor.errorColor)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 10, left: 5),
-                  child: Text('Bio (Optional)',
-                      style: MainFonts.lableText()),
-                ),
-                Container(
-                  child: TextFormField(
-                    maxLines: 3,
-                    controller: bioController,
-                    autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                    validator: ((value) {
-                      return _validateInput(value, 2);
-                    }),
-                    style: MainFonts.textFieldText(),
-                    focusNode: _focusBioNode,
-                    cursorHeight: TextCursorHeight.cursorHeight,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                          left: 20,
-                          right: 20),
-                      fillColor: AppColors.primaryColor30,
-                      filled: true,
-                      hintText:
-                      _hasBioFocus ? 'Enter bio' : null,
-                      hintStyle: MainFonts.hintFieldText(),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .reviewUploadWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color: AppBoarderColor
-                                  .searchBarColor)),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius
-                                  .reviewUploadRadius),
-                          borderSide: BorderSide(
-                              width: AppBoarderWidth
-                                  .searchBarWidth,
-                              color:
-                              AppBoarderColor.errorColor)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 40),
-                Container(
-                  height: 55,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        AppColors.secondaryColor10,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                AppBoarderRadius.buttonRadius)),
-                        elevation: AppElevations.buttonElev,
-                      ),
-                      onPressed: () async{
-                        bool isValid =
-                        _formKey.currentState!.validate();
-                        if(isValid){
-                          List<String>? details = await getLoginDetails();
-                          String username = details?[1] ??'';
+                )),
+          ],
+        )));
+  }
 
-                          SignupBloc signUpBlocObj = SignupBloc();
-                          int validUsername = 0;
-
-                          if(usernameController.text.toLowerCase() == username.toLowerCase()){
-                            validUsername = 1;
-                          } else{
-                            validUsername = await signUpBlocObj.validUsernameCheck(usernameController.text);
-                          }
-
-                          if (validUsername == 1) {
-                            UsersRepo userRepoObj = UsersRepo();
-                            bool status = await userRepoObj.updateProfile(nameController.text, usernameController.text, bioController.text);
-                            if(status){
-                              mySnackBarShow(context,
-                                  'Changes saved.');
-                            } else{
-                              mySnackBarShow(context,
-                                  'Something went wrong! Try again.');
-                            }
-                          } else if (validUsername == -1) {
-                            mySnackBarShow(context,
-                                'This username is already in use! Try Another.');
-                          } else if (validUsername == 0) {
-                            mySnackBarShow(context,
-                                'Something went wrong! Try again.');
-                          }
-                        }
-                      },
-                      child: Text('Save Changes',
-                          style: AuthFonts.authButtonText())),
-                ),
-              ]),
-        )),
-    ],
-    )
-        ));
+  logOut() {
+    clearSharedPrefs();
+    Navigator.of(context)
+        .popUntil((route) => route.isFirst);
+    Navigator.of(context)
+        .pushReplacementNamed('login');
   }
 }
