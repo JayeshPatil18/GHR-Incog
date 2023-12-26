@@ -8,8 +8,10 @@ import 'package:review_app/utils/fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/values.dart';
+import '../../../../main.dart';
 import '../../domain/entities/id_argument.dart';
 import 'image_shimmer.dart';
+import 'loginRequiredBottomSheet.dart';
 
 class ReviewModel extends StatefulWidget {
   final int reviewId;
@@ -39,6 +41,9 @@ class ReviewModel extends StatefulWidget {
 }
 
 class _ReviewModelState extends State<ReviewModel> {
+
+  LoginRequiredState loginRequiredObj = LoginRequiredState();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -99,8 +104,12 @@ class _ReviewModelState extends State<ReviewModel> {
                       right: 8,
                       child: GestureDetector(
                         onTap: (() {
-                          ReviewRepo reviewRepo = ReviewRepo();
-                          reviewRepo.likeReview(widget.reviewId, widget.isLiked);
+                          if(MyApp.userId == -1){
+                            loginRequiredObj.showLoginRequiredDialog(context);
+                          } else{
+                            ReviewRepo reviewRepo = ReviewRepo();
+                            reviewRepo.likeReview(widget.reviewId, widget.isLiked);
+                          }
                         }),
                         child: SizedBox(
                           child: widget.isLiked

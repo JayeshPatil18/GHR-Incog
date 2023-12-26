@@ -26,6 +26,7 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
+import '../widgets/loginRequiredBottomSheet.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,6 +40,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  LoginRequiredState loginRequiredObj = LoginRequiredState();
+
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;
 
@@ -164,7 +168,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed('editprofile');
+                      if(MyApp.userId == -1){
+                        loginRequiredObj.showLoginRequiredDialog(context);
+                      } else{
+                        Navigator.of(context).pushNamed('editprofile');
+                      }
                     },
                     child: Container(
                         color: Colors.white,
@@ -203,7 +211,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed('changephoneno');
+                      if(MyApp.userId == -1){
+                        loginRequiredObj.showLoginRequiredDialog(context);
+                      } else{
+                        Navigator.of(context).pushNamed('changephoneno');
+                      }
                     },
                     child: Container(
                         color: Colors.white,
@@ -242,7 +254,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed('updatepassowrd');
+                      if(MyApp.userId == -1){
+                        loginRequiredObj.showLoginRequiredDialog(context);
+                      } else{
+                        Navigator.of(context).pushNamed('updatepassowrd');
+                      }
                     },
                     child: Container(
                         color: Colors.white,
@@ -289,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
-                              title: const Text('Want to Logout?'),
+                              title: Text('Want to ${MyApp.userId == -1 ? 'Login' : 'Logout'}?'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -321,13 +337,13 @@ class _HomePageState extends State<HomePage> {
                             Row(
                               children: [
                                 Icon(
-                                  Icons.lock_outlined,
+                                  MyApp.userId == -1 ? Icons.login_rounded : Icons.logout_rounded,
                                   size: 20,
                                   color: AppColors.textColor,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
-                                  child: Text('Logout',
+                                  child: Text('${MyApp.userId == -1 ? 'Login' : 'Logout'}',
                                       style: MainFonts.settingLabel()),
                                 ),
                               ],

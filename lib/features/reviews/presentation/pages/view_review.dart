@@ -15,6 +15,7 @@ import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/circle_button.dart';
 import '../widgets/image_shimmer.dart';
+import '../widgets/loginRequiredBottomSheet.dart';
 
 class ViewReview extends StatefulWidget {
   final int reviewId;
@@ -26,6 +27,9 @@ class ViewReview extends StatefulWidget {
 }
 
 class _ViewReviewState extends State<ViewReview> {
+
+  LoginRequiredState loginRequiredObj = LoginRequiredState();
+
   ScrollController _scrollController = ScrollController();
   bool lastStatus = true;
   double height = 385;
@@ -122,8 +126,12 @@ class _ViewReviewState extends State<ViewReview> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          ReviewRepo reviewRepo = ReviewRepo();
-                                          reviewRepo.likeReview(widget.reviewId, (review?.likedBy ?? []).contains(MyApp.userId));
+                                          if(MyApp.userId == -1){
+                                            loginRequiredObj.showLoginRequiredDialog(context);
+                                          } else{
+                                            ReviewRepo reviewRepo = ReviewRepo();
+                                            reviewRepo.likeReview(widget.reviewId, (review?.likedBy ?? []).contains(MyApp.userId));
+                                          }
                                         },
                                         child: Container(
                                           child: (review?.likedBy ?? []).contains(MyApp.userId) ? CircleIconContainer(

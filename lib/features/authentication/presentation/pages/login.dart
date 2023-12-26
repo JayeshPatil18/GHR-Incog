@@ -84,11 +84,40 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin:
+                          EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 20),
+                      child: Text('Login', style: MainFonts.pageBigTitleText()),
+                    ),
+
+                    // skip login
+                    Container(
+                      alignment: Alignment.centerRight,
+                      margin:
                       EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 20),
-                  child: Text('Login', style: MainFonts.pageBigTitleText()),
+                      child: GestureDetector(
+                        onTap: () {
+                          updateLoginStatus(true);
+                          loginDetails('-1', 'null', 'null');
+
+                          FocusScope.of(context).unfocus();
+                          Future.delayed(
+                              const Duration(milliseconds: 300), () {
+
+                            Navigator.popUntil(
+                                context, (route) => route.isFirst);
+                            Navigator.of(context)
+                                .pushReplacementNamed('landing');
+                          });
+                        },
+                          child: Text('Skip', style: MainFonts.lableText())),
+                    ),
+                  //   ##
+                  ],
                 ),
                 Container(
                     decoration: BoxDecoration(

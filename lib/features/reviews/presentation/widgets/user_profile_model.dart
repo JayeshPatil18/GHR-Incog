@@ -50,7 +50,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFA3E8EA),
+                    AppColors.primaryColor30,
                     AppColors.primaryColor30,
                   ],
                 ),

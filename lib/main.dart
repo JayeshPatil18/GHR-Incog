@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
     List<String>? details = await getLoginDetails();
     if (details != null) {
         MyApp.userId = int.parse(details[0]);
+    } else{
+      MyApp.userId = -1;
     }
   }
 

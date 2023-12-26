@@ -15,6 +15,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../widgets/loginRequiredBottomSheet.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
@@ -26,6 +27,9 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPageState extends State<LeaderBoardPage> {
+
+  LoginRequiredState loginRequiredObj = LoginRequiredState();
+
   static final itemController = ItemScrollController();
 
   static void scrollToIndex(int index) => itemController.scrollTo(
@@ -59,7 +63,11 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                         Text('Ranking', style: MainFonts.pageTitleText()),
                         GestureDetector(
                           onTap: () async {
-                            scrollToIndex(scrollIndex);
+                            if(MyApp.userId == -1){
+                              loginRequiredObj.showLoginRequiredDialog(context);
+                            } else{
+                              scrollToIndex(scrollIndex);
+                            }
                           },
                           child: Container(
                             decoration: BoxDecoration(

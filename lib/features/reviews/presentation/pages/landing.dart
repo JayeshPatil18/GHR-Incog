@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/shadow_color.dart';
+import 'package:review_app/features/reviews/presentation/widgets/loginRequiredBottomSheet.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../../../../main.dart';
 import '../../../../utils/methods.dart';
@@ -22,6 +23,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+
+  LoginRequiredState loginRequiredObj = LoginRequiredState();
   
   final screens = [
     HomePage(),
@@ -72,7 +75,11 @@ class _LandingPageState extends State<LandingPage> {
           ),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, 'upload');
+              if(MyApp.userId == -1){
+                loginRequiredObj.showLoginRequiredDialog(context);
+              } else{
+                Navigator.pushNamed(context, 'upload');
+              }
             },
           ),
           bottomNavigationBar: ClipRRect(
@@ -89,29 +96,46 @@ class _LandingPageState extends State<LandingPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+
+                    // Home
                     GestureDetector(
                       child: bottomNavIcons[0],
                       onTap: () {
                         value.updateIndex(0);
                       },
                     ),
+
+                    // Liked
                     GestureDetector(
                       child: bottomNavIcons[1],
                       onTap: () {
-                        value.updateIndex(1);
+                        if(MyApp.userId == -1){
+                          loginRequiredObj.showLoginRequiredDialog(context);
+                        } else{
+                          value.updateIndex(1);
+                        }
                       },
                     ),
+
                     SizedBox(width: 80.0), // Empty space for center notch
+
+                    // Leaderboard
                     GestureDetector(
                       child: bottomNavIcons[2],
                       onTap: () {
                         value.updateIndex(2);
                       },
                     ),
+
+                    // Profile
                     GestureDetector(
                       child: bottomNavIcons[3],
                       onTap: () {
-                        value.updateIndex(3);
+                        if(MyApp.userId == -1){
+                          loginRequiredObj.showLoginRequiredDialog(context);
+                        } else{
+                          value.updateIndex(3);
+                        }
                       },
                     ),
                   ],

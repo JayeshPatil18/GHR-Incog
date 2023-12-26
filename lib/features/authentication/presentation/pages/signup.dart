@@ -139,11 +139,40 @@ class _SignUpPageState extends State<SignUpPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin:
-                      EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                  child: Text('Sign Up', style: MainFonts.pageBigTitleText()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin:
+                          EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
+                      child: Text('Sign Up', style: MainFonts.pageBigTitleText()),
+                    ),
+
+                    // skip login
+                    Container(
+                      alignment: Alignment.centerRight,
+                      margin:
+                      EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 20),
+                      child: GestureDetector(
+                          onTap: () {
+                            updateLoginStatus(true);
+                            loginDetails('-1', 'null', 'null');
+
+                            FocusScope.of(context).unfocus();
+                            Future.delayed(
+                                const Duration(milliseconds: 300), () {
+
+                              Navigator.popUntil(
+                                  context, (route) => route.isFirst);
+                              Navigator.of(context)
+                                  .pushReplacementNamed('landing');
+                            });
+                          },
+                          child: Text('Skip', style: MainFonts.lableText())),
+                    ),
+                  //   ##
+                  ],
                 ),
                 Container(
                     decoration: BoxDecoration(
