@@ -57,6 +57,7 @@ dependencies:
   shimmer: ^3.0.0
   scrollable_positioned_list: 0.3.5
   blur: ^3.1.0
+  upgrader: ^5.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart'
 import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar.dart';
 import 'package:review_app/routes/route_generator.dart';
 import 'package:review_app/utils/methods.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'features/authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
 import 'features/authentication/presentation/pages/login.dart';
@@ -20,6 +23,10 @@ import 'features/reviews/presentation/pages/profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // remove in production
+  // await Upgrader.clearSavedSettings();
+
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -59,6 +66,17 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: mainAppColor),
           debugShowCheckedModeBanner: false,
           title: 'Review Products',
+          builder: (context, widget) => UpgradeAlert(
+            upgrader: Upgrader(
+              canDismissDialog: false,
+                showIgnore: false,
+                showLater: false,
+                showReleaseNotes: true,
+              dialogStyle: Platform.isIOS ? UpgradeDialogStyle.cupertino : UpgradeDialogStyle.material,
+                durationUntilAlertAgain: Duration(hours: 4),
+            ),
+            child: widget!,
+          ),
           initialRoute: '/',
           onGenerateRoute: RouteGenerator().generateRoute,
         ),)
