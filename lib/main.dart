@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: mainAppColor),
           debugShowCheckedModeBanner: false,
-          title: 'Review Products',
+          title: 'Review House',
           builder: (context, widget) => UpgradeAlert(
             upgrader: Upgrader(
               canDismissDialog: false,
@@ -94,11 +95,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
-    if(!isLoggedIn){
-      Navigator.of(context).pushReplacementNamed('login');
-    } else{
-      Navigator.of(context).pushReplacementNamed('landing');
-    }
+    Timer(Duration(milliseconds: 2000), () {
+      if(!isLoggedIn){
+        Navigator.of(context).pushReplacementNamed('login');
+      } else{
+        Navigator.of(context).pushReplacementNamed('landing');
+      }
+    });
   }
 
   @override
@@ -110,6 +113,21 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor60,
+      body: Center(
+        child: Container(
+            // decoration: BoxDecoration(
+            //   shape: BoxShape.circle,
+            //   border: Border.all(
+            //     color: AppColors.textColor,
+            //     width: 1,
+            //   ),
+            // ),
+            child: CircleAvatar(
+              backgroundImage:
+              AssetImage("assets/icons/playstore.png"),
+              radius: 60,
+            )),
+      )
     );
   }
 }
