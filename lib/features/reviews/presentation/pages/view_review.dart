@@ -252,10 +252,12 @@ class _ViewReviewState extends State<ViewReview> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(review?.name ?? '',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: ViewReviewFonts.titleText()),
+                                      Flexible(
+                                        child: Text(review?.name ?? '',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: ViewReviewFonts.titleText()),
+                                      ),
                                       Row(children: [
                                         Text(review?.price[0] ?? '',
                                             style: ViewReviewFonts.titleText(

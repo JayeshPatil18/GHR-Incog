@@ -58,6 +58,8 @@ dependencies:
   scrollable_positioned_list: 0.3.5
   blur: ^3.1.0
   upgrader: ^5.1.0
+  flutter_native_splash: ^2.2.18
+
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+
+flutter_native_splash:
+  image: "assets/playstore.png"
+  color: "#DBF9FA"
+  android: true
+  ios: true
+  web: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

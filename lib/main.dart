@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/authentication/presentation/bloc/login_bloc/login_bloc.dart';
@@ -95,13 +96,11 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
-    Timer(Duration(milliseconds: 2000), () {
-      if(!isLoggedIn){
-        Navigator.of(context).pushReplacementNamed('login');
-      } else{
-        Navigator.of(context).pushReplacementNamed('landing');
-      }
-    });
+    if(!isLoggedIn){
+      Navigator.of(context).pushReplacementNamed('login');
+    } else{
+      Navigator.of(context).pushReplacementNamed('landing');
+    }
   }
 
   @override
@@ -113,21 +112,21 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor60,
-      body: Center(
-        child: Container(
-            // decoration: BoxDecoration(
-            //   shape: BoxShape.circle,
-            //   border: Border.all(
-            //     color: AppColors.textColor,
-            //     width: 1,
-            //   ),
-            // ),
-            child: CircleAvatar(
-              backgroundImage:
-              AssetImage("assets/icons/playstore.png"),
-              radius: 60,
-            )),
-      )
+      // body: Center(
+      //   child: Container(
+      //       // decoration: BoxDecoration(
+      //       //   shape: BoxShape.circle,
+      //       //   border: Border.all(
+      //       //     color: AppColors.textColor,
+      //       //     width: 1,
+      //       //   ),
+      //       // ),
+      //       child: CircleAvatar(
+      //         backgroundImage:
+      //         AssetImage("assets/icons/playstore.png"),
+      //         radius: 60,
+      //       )),
+      // )
     );
   }
 }
