@@ -96,11 +96,11 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
-    if(!isLoggedIn){
-      Navigator.of(context).pushReplacementNamed('login');
-    } else{
-      Navigator.of(context).pushReplacementNamed('landing');
-    }
+      if(!isLoggedIn){
+        Navigator.of(context).pushReplacementNamed('login');
+      } else{
+        Navigator.of(context).pushReplacementNamed('landing');
+      }
   }
 
   @override
@@ -112,21 +112,11 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor60,
-      // body: Center(
-      //   child: Container(
-      //       // decoration: BoxDecoration(
-      //       //   shape: BoxShape.circle,
-      //       //   border: Border.all(
-      //       //     color: AppColors.textColor,
-      //       //     width: 1,
-      //       //   ),
-      //       // ),
-      //       child: CircleAvatar(
-      //         backgroundImage:
-      //         AssetImage("assets/icons/playstore.png"),
-      //         radius: 60,
-      //       )),
-      // )
+      body: Center(
+        child: CircularProgressIndicator(
+          value: 1,
+        )
+      )
     );
   }
 }
