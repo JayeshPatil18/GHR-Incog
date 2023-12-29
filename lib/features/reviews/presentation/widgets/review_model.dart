@@ -145,8 +145,8 @@ class _ReviewModelState extends State<ReviewModel> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                              widget.brand.length > 10
-                                  ? widget.brand.substring(0, 10) + '...'
+                              widget.brand.length > 9
+                                  ? widget.brand.substring(0, 8) + '..'
                                   : widget.brand,
                               style: ReviewModelFonts.reviewSubTitle()),
                           Text('  ○  ',
@@ -155,8 +155,8 @@ class _ReviewModelState extends State<ReviewModel> {
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor)),
                           Text(
-                              widget.category.length > 12
-                                  ? widget.category.substring(0, 11) + '...'
+                              widget.category.length > 10
+                                  ? widget.category.substring(0, 9) + '..'
                                   : widget.category,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
