@@ -155,8 +155,8 @@ class _ReviewModelState extends State<ReviewModel> {
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textColor)),
                           Text(
-                              widget.category.length > 10
-                                  ? widget.category.substring(0, 9) + '...'
+                              widget.category.length > 12
+                                  ? widget.category.substring(0, 11) + '...'
                                   : widget.category,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
