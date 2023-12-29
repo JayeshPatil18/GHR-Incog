@@ -517,8 +517,8 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
                               color:
-                              getLowercaseCategorys(Items.categorys).contains(selectedCategory) ||
-                                  getLowercaseBrands(Items.brands).contains(selectedBrand)
+                              getLowercaseCategorys(Items.categorys).contains(selectedCategory.toLowerCase()) ||
+                                  getLowercaseBrands(Items.brands).contains(selectedBrand.toLowerCase())
                                   ? AppColors.primaryColor30
                                   : AppColors.textColor,
                               borderRadius: BorderRadius.circular(
@@ -529,8 +529,8 @@ class _HomePageState extends State<HomePage> {
                             child: Text('All',
                                 style: MainFonts.filterText(
                                     color: getLowercaseCategorys(Items.categorys)
-                                        .contains(selectedCategory) ||
-                                        getLowercaseBrands(Items.brands).contains(selectedBrand)
+                                        .contains(selectedCategory.toLowerCase()) ||
+                                        getLowercaseBrands(Items.brands).contains(selectedBrand.toLowerCase())
                                         ? AppColors.textColor
                                         : AppColors.primaryColor30)),
                           ),
@@ -543,7 +543,7 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: getLowercaseCategorys(Items.categorys).contains(selectedCategory)
+                              color: getLowercaseCategorys(Items.categorys).contains(selectedCategory.toLowerCase())
                                   ? AppColors.textColor
                                   : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
@@ -554,7 +554,7 @@ class _HomePageState extends State<HomePage> {
                             child: Text('Category',
                                 style: MainFonts.filterText(
                                     color: getLowercaseCategorys(Items.categorys)
-                                        .contains(selectedCategory)
+                                        .contains(selectedCategory.toLowerCase())
                                         ? AppColors.primaryColor30
                                         : AppColors.textColor)),
                           ),
@@ -567,7 +567,7 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: ContainerShadow.boxShadow,
-                              color: getLowercaseBrands(Items.brands).contains(selectedBrand)
+                              color: getLowercaseBrands(Items.brands).contains(selectedBrand.toLowerCase())
                                   ? AppColors.textColor
                                   : AppColors.primaryColor30,
                               borderRadius: BorderRadius.circular(
@@ -577,7 +577,7 @@ class _HomePageState extends State<HomePage> {
                                 top: 10, bottom: 10, left: 13, right: 13),
                             child: Text('Brand',
                                 style: MainFonts.filterText(
-                                    color: getLowercaseBrands(Items.brands).contains(selectedBrand)
+                                    color: getLowercaseBrands(Items.brands).contains(selectedBrand.toLowerCase())
                                         ? AppColors.primaryColor30
                                         : AppColors.textColor)),
                           ),
@@ -753,7 +753,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Autocomplete(
                                   initialValue: TextEditingValue(
-                                      text: getLowercaseBrands(Items.brands).contains(selectedBrand)
+                                      text: getLowercaseBrands(Items.brands).contains(selectedBrand.toLowerCase())
                                           ? selectedBrand
                                           : ''),
                                   optionsBuilder:
@@ -826,12 +826,11 @@ class _HomePageState extends State<HomePage> {
                                         validator: ((value) {
                                           selectedBrand =
                                               value.toString()
-                                                  .toLowerCase()
                                                   .trim();
                                           if (value == null || value.isEmpty) {
                                             return 'Field empty';
                                           } else if (!(getLowercaseBrands(Items.brands)
-                                              .contains(selectedBrand))) {
+                                              .contains(selectedBrand.toLowerCase()))) {
                                             return 'Brand not exist';
                                           }
                                         }),
@@ -954,7 +953,7 @@ class _HomePageState extends State<HomePage> {
                                 Autocomplete(
                                   initialValue: TextEditingValue(
                                       text:
-                                      getLowercaseCategorys(Items.categorys).contains(selectedCategory)
+                                      getLowercaseCategorys(Items.categorys).contains(selectedCategory.toLowerCase())
                                           ? selectedCategory
                                           : ''),
                                   optionsBuilder:
@@ -1028,12 +1027,11 @@ class _HomePageState extends State<HomePage> {
                                         validator: ((value) {
                                           selectedCategory =
                                               value.toString()
-                                                  .toLowerCase()
                                                   .trim();
                                           if (value == null || value.isEmpty) {
                                             return 'Field empty';
                                           } else if (!(getLowercaseCategorys(Items.categorys)
-                                              .contains(selectedCategory))) {
+                                              .contains(selectedCategory.toLowerCase()))) {
                                             return 'Category not exist';
                                           }
                                         }),
@@ -1114,7 +1112,7 @@ class _HomePageState extends State<HomePage> {
   void _onBottomSheetClosed() {
     Timer(Duration(milliseconds: AppValues.closeDelay), () {
       changeReviewInstance(
-          selectedCategory, selectedBrand, HomePage.selectedSort);
+          selectedCategory.toLowerCase(), selectedBrand.toLowerCase(), HomePage.selectedSort);
     });
   }
 
