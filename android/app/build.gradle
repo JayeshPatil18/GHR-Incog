@@ -26,6 +26,15 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+
+// Deploy Code
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+
 android {
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
@@ -57,8 +66,10 @@ android {
 
     buildTypes {
         release {
+            crunchPngs false
             // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug keys for now,
+            // so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
     }

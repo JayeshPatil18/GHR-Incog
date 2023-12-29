@@ -80,7 +80,7 @@ class _ReviewModelState extends State<ReviewModel> {
                           ),
                         ),
                       )
-                          : CustomImageShimmer(imageUrl: widget.imageUrl, width: 156, height: 156, fit: BoxFit.contain,)),
+                          : CustomImageShimmer(imageUrl: widget.imageUrl, width: 156, height: 156, fit: BoxFit.fitHeight)),
                   Positioned(
                     top: 8,
                     left: 8,
