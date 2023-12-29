@@ -59,6 +59,7 @@ dependencies:
   blur: ^3.1.0
   upgrader: ^5.1.0
   flutter_native_splash: ^2.2.18
+  firebase_database: ^10.3.8
 
 
 dev_dependencies:

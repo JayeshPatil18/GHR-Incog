@@ -20,6 +20,7 @@ import 'package:upgrader/upgrader.dart';
 
 import 'features/authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
 import 'features/authentication/presentation/pages/login.dart';
+import 'features/reviews/data/repositories/realtime_db_repo.dart';
 import 'features/reviews/presentation/pages/liked.dart';
 import 'features/reviews/presentation/pages/profile.dart';
 
@@ -94,6 +95,11 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  final RealTimeDbService _realTimeDbService = RealTimeDbService();
+  _fetchDownloadsVal() async {
+    await _realTimeDbService.fetchDownloads();
+  }
+
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
       if(!isLoggedIn){
@@ -105,6 +111,7 @@ class _SplashState extends State<Splash> {
 
   @override
   void initState() {
+    _fetchDownloadsVal();
     _checkLogin();
   }
 
