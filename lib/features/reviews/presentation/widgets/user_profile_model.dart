@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
+import 'package:review_app/main.dart';
 
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
@@ -111,13 +112,13 @@ class _UserProfileModelState extends State<UserProfileModel> {
                               Text('Rank',
                                   style: ProfileUserFonts.userSubText()),
                               SizedBox(width: 6),
-                              Text('_', // suffixOfNumber(widget.rank),
+                              Text(MyApp.ENABLE_LEADERBOARD ? suffixOfNumber(widget.rank) : '_',
                                   style: ProfileUserFonts.userValueText()),
                               SizedBox(width: 20),
                               Text('Points',
                                   style: ProfileUserFonts.userSubText()),
                               SizedBox(width: 6),
-                              Text('_', // widget.points.toString(),
+                              Text(MyApp.ENABLE_LEADERBOARD ? widget.points.toString() : '_',
                                   style: ProfileUserFonts.userValueText()),
                             ],
                           )

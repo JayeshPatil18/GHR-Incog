@@ -16,6 +16,7 @@ import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart'
 import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar.dart';
 import 'package:review_app/routes/route_generator.dart';
 import 'package:review_app/utils/methods.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'features/authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
@@ -40,6 +41,8 @@ class MyApp extends StatelessWidget {
   static int userId = -1;
   static String LOGIN_KEY = 'isLoggedIn';
   static String LOGIN_DETAILS_KEY = 'loginDetails';
+  static String DOWNLOAD_VALUE_KEY = 'isFirstTime';
+  static bool ENABLE_LEADERBOARD = false;
 
   static initUserId() async {
     List<String>? details = await getLoginDetails();
@@ -96,8 +99,27 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   final RealTimeDbService _realTimeDbService = RealTimeDbService();
-  _fetchDownloadsVal() async {
-    await _realTimeDbService.fetchDownloads();
+  _updateDownloadVal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool(MyApp.DOWNLOAD_VALUE_KEY) ?? true;
+
+    if(isFirstTime){
+      await _realTimeDbService.updateDownloads();
+      prefs.setBool(MyApp.DOWNLOAD_VALUE_KEY, false);
+    }
+  }
+
+  _setLeaderboardEnable() async{
+    String? enable = await _realTimeDbService.getLeaderboardValue();
+    if(enable != null){
+      setState(() {
+        if(int.parse(enable) == 1){
+          MyApp.ENABLE_LEADERBOARD = true;
+        } else{
+          MyApp.ENABLE_LEADERBOARD = false;
+        }
+      });
+    }
   }
 
     _checkLogin() async {
@@ -111,7 +133,8 @@ class _SplashState extends State<Splash> {
 
   @override
   void initState() {
-    _fetchDownloadsVal();
+    _updateDownloadVal();
+    _setLeaderboardEnable();
     _checkLogin();
   }
 
