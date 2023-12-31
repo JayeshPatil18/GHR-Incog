@@ -147,7 +147,7 @@ class _ViewProfileState extends State<ViewProfile> {
               children: [
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: widget.userId).snapshots(),
+                      stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: widget.userId).orderBy('date', descending: true).snapshots(),
                       builder: (context, snapshot) {
                         final documents;
                         if (snapshot.data != null) {

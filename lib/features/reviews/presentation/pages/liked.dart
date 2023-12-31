@@ -90,7 +90,7 @@ class _LikedPageState extends State<LikedPage> {
             ),
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                        stream: ReviewRepo.reviewFireInstance.where('likedBy', arrayContains: MyApp.userId).snapshots(),
+                        stream: ReviewRepo.reviewFireInstance.where('likedBy', arrayContains: MyApp.userId).orderBy('date', descending: true).snapshots(),
                         builder: (context, snapshot) {
                           final documents;
                           if (snapshot.data != null) {

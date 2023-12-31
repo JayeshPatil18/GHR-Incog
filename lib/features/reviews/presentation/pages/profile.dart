@@ -135,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
                       stream: ReviewRepo.reviewFireInstance
-                          .where('userId', isEqualTo: MyApp.userId)
+                          .where('userId', isEqualTo: MyApp.userId).orderBy('date', descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
                         final documents;
