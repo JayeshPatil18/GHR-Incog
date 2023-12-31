@@ -128,7 +128,8 @@ class _UserProfileModelState extends State<UserProfileModel> {
                   ],
                 ),
                 SizedBox(height: 14),
-                Text(widget.bio, style: ProfileUserFonts.userBioText())
+                Text(widget.bio,maxLines: 2,
+                    overflow: TextOverflow.ellipsis, style: ProfileUserFonts.userBioText())
               ],
             ),
           ),
