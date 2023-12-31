@@ -102,12 +102,10 @@ class UsersRepo {
       List<String>? details = await getLoginDetails();
       int userId = -1;
       String username = '';
-      String phoneNo = '';
 
       if (details != null) {
         userId = int.parse(details[0]);
         username = details[1];
-        phoneNo = details[2];
       }
 
       var document = await userFireInstance

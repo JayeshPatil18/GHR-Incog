@@ -116,7 +116,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                             User user = usersList[index];
 
                             if (user.uid == MyApp.userId) {
-                              _setScrollIndex(user.uid);
+                              _setScrollIndex(index);
                             }
                             return UserModel(
                                 uId: user.uid,
