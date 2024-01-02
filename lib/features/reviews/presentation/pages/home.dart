@@ -628,6 +628,33 @@ class _HomePageState extends State<HomePage> {
                               UploadReviewModel review = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
                               reviewsList.add(review);
                             }
+
+                            // Solve this error and get solution
+                            List<UploadReviewModel> nameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+                              return !(element.name.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+                            }).toList();
+
+                            if(nameFilteredItems.isNotEmpty){
+
+                              reviewsList = nameFilteredItems;
+                            } else{
+                              List<UploadReviewModel> descriptionFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+                                return !(element.description.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+                              }).toList();
+
+                              if(descriptionFilteredItems.isNotEmpty){
+                                reviewsList = descriptionFilteredItems;
+                              } else{
+                                List<UploadReviewModel> usernameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+                                  return !(element.username.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+                                }).toList();
+
+                                if(usernameFilteredItems.isNotEmpty){
+                                  reviewsList = usernameFilteredItems;
+                                }
+                              }
+                            }
+
                             return GridView.builder(
                                 padding: EdgeInsets.only(
                                     top: 10, bottom: 100, left: 20, right: 20),
@@ -640,13 +667,6 @@ class _HomePageState extends State<HomePage> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: reviewsList.length,
                                 itemBuilder: (BuildContext context, int index) {
-
-                                  if(reviewsList.isNotEmpty){
-                                    reviewsList.sort((a, b) {
-                                      int relevanceA = calculateSubstringRelevance(HomePage.searchText, a.name);
-                                      int relevanceB = calculateSubstringRelevance(HomePage.searchText, b.name);
-                                      return relevanceB.compareTo(relevanceA); // Change to relevanceA.compareTo(relevanceB) for ascending order
-                                    });
 
                                     UploadReviewModel review = reviewsList[index];
 
@@ -663,9 +683,6 @@ class _HomePageState extends State<HomePage> {
                                             .substring(0, 10)
                                             .replaceAll('-', '/'),
                                         rating: review.rating);
-                                  } else{
-                                    return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
-                                  }
                                 });
                           } else {
                             return Center(child: CircularProgressIndicator());
