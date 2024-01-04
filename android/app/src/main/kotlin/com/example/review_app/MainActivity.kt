@@ -1,4 +1,4 @@
-package com.review.review_app
+package com.apps.confession
 
 import io.flutter.embedding.android.FlutterActivity
 

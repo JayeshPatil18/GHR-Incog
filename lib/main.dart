@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: mainAppColor),
           debugShowCheckedModeBanner: false,
-          title: 'Review House',
+          title: 'Confession App',
           builder: (context, widget) => UpgradeAlert(
             upgrader: Upgrader(
               canDismissDialog: false,

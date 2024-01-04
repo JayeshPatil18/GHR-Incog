@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.review.review_app">
+    package="com.apps.confession">
    <application
-        android:label="Review House"
+        android:label="Confession App"
        android:usesCleartextTraffic="true"
        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

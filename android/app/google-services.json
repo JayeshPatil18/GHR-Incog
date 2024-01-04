@@ -1,38 +1,27 @@
-
 {
   "project_info": {
-    "project_number": "177892493259",
-    "firebase_url": "https://review-app-a5ef7-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    "project_id": "review-app-a5ef7",
-    "storage_bucket": "review-app-a5ef7.appspot.com"
+    "project_number": "347249653684",
+    "firebase_url": "https://confession-app-5fde4-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "confession-app-5fde4",
+    "storage_bucket": "confession-app-5fde4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:177892493259:android:9dccb975b927f46195984e",
+        "mobilesdk_app_id": "1:347249653684:android:ccc939ecbe2c169edaa4e1",
         "android_client_info": {
-          "package_name": "com.review.review_app"
+          "package_name": "com.apps.confession"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "177892493259-9j536lflu18ba0u8lr7c433ldkhhqlb2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAIJhE5DNky6tU-Lkcj7lUnvGZYaTSZlCE"
+          "current_key": "AIzaSyBwStLvsKvXi0vf10bFUQdJTqN-Jg5l85k"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "177892493259-9j536lflu18ba0u8lr7c433ldkhhqlb2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
