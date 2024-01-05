@@ -209,7 +209,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.warning_amber_rounded, color: AppColors.transparentComponentColor, size: 12),
+                                Icon(Icons.warning_amber_rounded, color: AppColors.lightTextColor, size: 12),
                                 SizedBox(width: 6),
                                 Flexible(
                                   child: Text('Also check spam mail emails.',
