@@ -39,6 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     switch (index) {
       case 0:
+        // Write logic to check email from this college.
         if (input == null || input.isEmpty) {
           return 'Enter college email';
         }
@@ -73,15 +74,12 @@ class _SignUpPageState extends State<SignUpPage> {
           margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
           child: BlocConsumer<SignupBloc, SignupState>(
             listener: (context, state) {
-              if (state is SignUpInvalidUsernameState) {
-                mySnackBarShow(context,
-                    'This username is already in use! Try Another.');
-              } else if (state is SignupOtpSentState) {
+              if (state is SignupOtpSentState) {
                 FocusScope.of(context).unfocus();
                 Future.delayed(
                     const Duration(milliseconds: 300), () {
                   Navigator.of(context)
-                      .pushNamed('verifyphone', arguments: VerifyArguments(''));
+                      .pushNamed('verifyphone', arguments: VerifyArguments(state.email));
                 });
               } else if (state is SignupOtpSentFailedState ||
                   state is SignupFailedState) {
@@ -135,10 +133,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       _formKey.currentState!.validate();
                       if (isValid) {
                         BlocProvider.of<SignupBloc>(context)
-                            .add(SignupClickEvent(email: 'email'));
+                            .add(SignupClickEvent(email: emailController.text.trim()));
                       }
                     },
-                    child: Text('Sign Up',
+                    child: Text('Continue',
                         style: AuthFonts.authButtonText())),
               );
             },
@@ -153,7 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Container(
                 alignment: Alignment.center,
                 margin:
-                EdgeInsets.only(left: 30, right: 30, top: 120, bottom: 10),
+                EdgeInsets.only(left: 30, right: 30, top: 140, bottom: 10),
                 child: Text('Enter College Email', style: MainFonts.pageTitleText(fontSize: 24, weight: FontWeight.w500)),
               ),
               Container(

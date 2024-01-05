@@ -184,7 +184,7 @@ class _ChangePhoneNoState extends State<ChangePhoneNo> {
                               if(isValid){
                                 SignupBloc signupBlocObj = SignupBloc();
                                 bool isOtpSent = await signupBlocObj
-                                    .sendOtpToPhoneNumber(countryCode +
+                                    .sendOtpToEmail(countryCode +
                                     phoneNoController.text.toString().trim());
                                 if (isOtpSent) {
                                   FocusScope.of(context).unfocus();

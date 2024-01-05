@@ -25,7 +25,7 @@ class AppColors {
   static const starColor = Color(0xffd4af37);
   static const heartColor = Color(0xfff70059);
   static const errorColor = Color(0xFFff3333);
-  static const safeColor = Color(0xFF00ff00 );
+  static const safeColor = Color(0xFF00ff00);
 }
 
 MaterialColor mainAppColor = const MaterialColor(0xFF1D9BF0, <int, Color>{

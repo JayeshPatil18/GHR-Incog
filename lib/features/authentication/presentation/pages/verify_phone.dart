@@ -9,6 +9,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
+import '../../../../constants/values.dart';
 import '../../../../utils/fonts.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 import '../bloc/signup_bloc/signup_bloc.dart';
@@ -67,144 +68,160 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.backgroundColor60,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: SafeArea(
-              child: Container(
-                alignment: Alignment.centerLeft,
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Container(
+          margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+          child: BlocConsumer<SignupBloc, SignupState>(
+            listener: (context, state) {
+              if (state is OtpCodeVerifiedState) {
+                FocusScope.of(context).unfocus();
+                Future.delayed(
+                    const Duration(milliseconds: 300), () {
+
+                  Navigator.popUntil(
+                      context, (route) => route.isFirst);
+                  Navigator.of(context)
+                      .pushReplacementNamed('landing');
+                });
+              } else if(state is OtpCodeVerifiedFailedState){
+                mySnackBarShow(context, 'Invalid verification code.');
+              } else if(state is AddUserDataFailedState){
+                mySnackBarShow(context, 'Something went wrong.');
+                Navigator.pop(context);
+              }
+            },
+            builder: (context, state) {
+              if (state is SignupLoadingState) {
+                return Container(
+                  height: 55,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        AppColors.secondaryColor10,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(
+                                AppBoarderRadius
+                                    .buttonRadius)),
+                        elevation: AppElevations.buttonElev,
+                      ),
+                      onPressed: () {},
+                      child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: Center(
+                              child:
+                              CircularProgressIndicator(
+                                  strokeWidth: AppValues
+                                      .progresBarWidth,
+                                  color: AppColors
+                                      .primaryColor30)))),
+                );
+              }
+              return Container(
+                height: 55,
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                      AppColors.secondaryColor10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              AppBoarderRadius.buttonRadius)),
+                      elevation: AppElevations.buttonElev,
+                    ),
+                    onPressed: () {
+                      bool isValid = _formKey.currentState!.validate();
+                      if(isValid){
+                        BlocProvider.of<SignupBloc>(context)
+                            .add(VerifyClickEvent(otpCode: codeController.text.trim(), email: widget.email.trim()));
+                      }
+                    },
+                    child: Text('Confirm',
+                        style: AuthFonts.authButtonText())),
+              );
+            },
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: AppColors.mainGradient),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back_ios,
-                          color: AppColors.textColor, size: 26),
-                    ),
-                    SizedBox(width: 10),
-                    Text('Verify Phone no', style: MainFonts.pageTitleText()),
-                  ],
-                ),
+                EdgeInsets.only(left: 30, right: 30, top: 140, bottom: 10),
+                child: Text('OTP Verification', style: MainFonts.pageTitleText(fontSize: 24, weight: FontWeight.w500)),
               ),
-            )),
-        body: SingleChildScrollView(
-          child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: ContainerShadow.boxShadow,
-                      color: AppColors.primaryColor30,
-                      borderRadius: BorderRadius.circular(
-                          AppBoarderRadius.reviewUploadRadius),
-                    ),
-                    width: double.infinity,
-                    margin: EdgeInsets.all(20),
-                    padding: EdgeInsets.all(30),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10, left: 5),
-                              child: Text('Verification Code', style: MainFonts.lableText()),
-                            ),
-                            Container(
-                              child: TextFormField(
-                                maxLength: 6,
-                                controller: codeController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: ((value) {
-                                  return _validateInput(value, 0);
-                                }),
-                                style: MainFonts.textFieldText(),
-                                focusNode: _focusCodeNode,
-                                cursorHeight: TextCursorHeight.cursorHeight,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      top: 16, bottom: 16, left: 20, right: 20),
-                                  fillColor: AppColors.primaryColor30,
-                                  filled: true,
-                                  hintText:
-                                      _hasCodeFocus ? 'XXXXXX' : null,
-                                  hintStyle: MainFonts.hintFieldText(),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          AppBoarderRadius.reviewUploadRadius),
-                                      borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          AppBoarderRadius.reviewUploadRadius),
-                                      borderSide: BorderSide(
-                                          width: AppBoarderWidth.reviewUploadWidth,
-                                          color: AppBoarderColor.searchBarColor)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          AppBoarderRadius.reviewUploadRadius),
-                                      borderSide: BorderSide(
-                                          width: AppBoarderWidth.searchBarWidth,
-                                          color: AppBoarderColor.searchBarColor)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          AppBoarderRadius.reviewUploadRadius),
-                                      borderSide: BorderSide(
-                                          width: AppBoarderWidth.searchBarWidth,
-                                          color: AppBoarderColor.errorColor)),
+              Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(10),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: codeController,
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            validator: ((value) {
+                              return _validateInput(value, 0);
+                            }),
+                            style: MainFonts.textFieldText(),
+                            focusNode: _focusCodeNode,
+                            cursorHeight: TextCursorHeight.cursorHeight,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 16, bottom: 16, left: 20, right: 20),
+                              fillColor: AppColors.transparentComponentColor,
+                              filled: true,
+                              hintText: _hasCodeFocus
+                                  ? 'XXXX'
+                                  : null,
+                              hintStyle: MainFonts.hintFieldText(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.buttonRadius),
+                                borderSide: const BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    AppBoarderRadius.buttonRadius),
+                                borderSide: const BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Text('Verification code has been sent to ${widget.email}, verify phone number to Sign Up.', style: AuthFonts.authMsgText(color: Colors.grey)),
-                            SizedBox(height: 40),
-                            BlocConsumer<SignupBloc, SignupState>(
-                              listener: ((context, state) {
-                                if (state is OtpCodeVerifiedState) {
-                                  FocusScope.of(context).unfocus();
-                                  Future.delayed(
-                                      const Duration(milliseconds: 300), () {
-
-                                     Navigator.popUntil(
-                                      context, (route) => route.isFirst);
-                                      Navigator.of(context)
-                                          .pushReplacementNamed('landing');
-                                  });
-                                } else if(state is OtpCodeVerifiedFailedState){
-                                  mySnackBarShow(context, 'Invalid verification code.');
-                                } else if(state is AddUserDataFailedState){
-                                  mySnackBarShow(context, 'Something went wrong.');
-                                  Navigator.pop(context);
-                                }
-                              }),
-                              builder: (context, state) {
-                                return Container(
-                                height: 55,
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.secondaryColor10,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(AppBoarderRadius.buttonRadius)),
-                                        elevation: AppElevations.buttonElev,
-                                        ),
-                                    onPressed: () { 
-                                      bool isValid = _formKey.currentState!.validate();
-                                      if(isValid){
-                                        BlocProvider.of<SignupBloc>(context)
-                                                .add(VerifyClickEvent(otpCode: codeController.text.trim(), email: widget.email.trim()));
-                                      }
-                                     },
-                                    child: Text('Verify Code', style: AuthFonts.authButtonText())
-                                  ),
-                              );
-                              }
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 4, right: 4),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.warning_amber_rounded, color: AppColors.transparentComponentColor, size: 12),
+                                SizedBox(width: 6),
+                                Flexible(
+                                  child: Text('Also check spam mail emails.',
+                                      style: AuthFonts.authMsgText(fontSize: 12)),
+                                ),
+                              ],
                             ),
-                          ]),
-                    )),
+                          ),
+                        ]),
+                  )),
+            ],
+          ),
         ));
   }
 }

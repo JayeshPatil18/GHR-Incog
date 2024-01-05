@@ -17,21 +17,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       if (event is SignupClickEvent) {
         emit(SignupLoadingState());
 
-        int validUsername = await validUsernameCheck(event.email);
-
-        if (validUsername == 1) {
-          // Verification Code sending
-          bool isOtpSent = await sendOtpToPhoneNumber(event.email);
+          bool isOtpSent = await sendOtpToEmail(event.email);
           if (isOtpSent) {
-            emit(SignupOtpSentState(phoneNo: event.email));
+            emit(SignupOtpSentState(email: event.email));
           } else {
             emit(SignupOtpSentFailedState());
           }
-        } else if (validUsername == -1) {
-          emit(SignUpInvalidUsernameState());
-        } else if (validUsername == 0) {
-          emit(SignupFailedState());
-        }
       }
     });
 
@@ -55,10 +46,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     });
   }
 
-  Future<bool> sendOtpToPhoneNumber(String phoneNo) async {
+  Future<bool> sendOtpToEmail(String email) async {
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: phoneNo,
+        phoneNumber: email,
         verificationCompleted: (PhoneAuthCredential credential) {
           // Handle verification completion
         },
