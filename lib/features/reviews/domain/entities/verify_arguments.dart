@@ -1,13 +1,7 @@
 class VerifyArguments {
-  final String fullName;
-  final String username;
-  final String phoneNo;
-  final String password;
+  final String email;
 
   VerifyArguments(
-    this.fullName,
-    this.username,
-    this.phoneNo,
-    this.password,
+    this.email
   );
 }

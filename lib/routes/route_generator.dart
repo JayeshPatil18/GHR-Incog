@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/features/authentication/presentation/pages/forgot_password.dart';
-import 'package:review_app/features/authentication/presentation/pages/login.dart';
 import 'package:review_app/features/authentication/presentation/pages/change_phone.dart';
 import 'package:review_app/features/reviews/domain/entities/verify_arguments.dart';
 import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
@@ -60,11 +59,6 @@ class RouteGenerator{
         return MaterialPageRoute(
           builder: (_) => const SignUpPage()
         );
-
-      case 'login':
-        return MaterialPageRoute(
-          builder: (_) => const LoginPage()
-        );
       
       case 'notification':
         return MaterialPageRoute(
@@ -90,13 +84,10 @@ class RouteGenerator{
 
         VerifyArguments verifyArguments = settings.arguments as VerifyArguments;
 
-        String fullName = verifyArguments.fullName;
-        String username = verifyArguments.username;
-        String phoneNo = verifyArguments.phoneNo;
-        String password = verifyArguments.password;
+        String email = verifyArguments.email;
 
         return MaterialPageRoute(
-          builder: (_) => VerifyPhoneNo(fullname: fullName, username: username, phoneNo: phoneNo, password: password)
+          builder: (_) => VerifyPhoneNo(email: email)
         );
 
       case 'verifynewphone':

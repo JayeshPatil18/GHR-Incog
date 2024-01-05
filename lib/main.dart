@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
-import 'package:review_app/features/authentication/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:review_app/features/reviews/presentation/bloc/fetch_review/fetch_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/bloc/upload_review/upload_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
@@ -20,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'features/authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
-import 'features/authentication/presentation/pages/login.dart';
 import 'features/reviews/data/repositories/realtime_db_repo.dart';
 import 'features/reviews/presentation/pages/liked.dart';
 import 'features/reviews/presentation/pages/profile.dart';
@@ -28,6 +27,10 @@ import 'features/reviews/presentation/pages/profile.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Transparent Status Bar
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+  ));
   // remove in production
   // await Upgrader.clearSavedSettings();
 
@@ -64,7 +67,6 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: ((context) => SignupBloc())),
-          BlocProvider(create: ((context) => LoginBloc())),
           BlocProvider(create: ((context) => UploadReviewBloc())),
           BlocProvider(create: ((context) => FetchReviewBloc())),
         ], 
@@ -125,7 +127,7 @@ class _SplashState extends State<Splash> {
     _checkLogin() async {
     var isLoggedIn = await checkLoginStatus();
       if(!isLoggedIn){
-        Navigator.of(context).pushReplacementNamed('login');
+        Navigator.of(context).pushReplacementNamed('signup');
       } else{
         Navigator.of(context).pushReplacementNamed('landing');
       }

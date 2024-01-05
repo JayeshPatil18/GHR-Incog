@@ -15,16 +15,10 @@ import '../bloc/signup_bloc/signup_bloc.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
 
-  final String phoneNo;
-  final String fullname;
-  final String username;
-  final String password;
+  final String email;
 
   const VerifyPhoneNo({super.key, 
-    required this.phoneNo,
-    required this.fullname,
-    required this.username,
-    required this.password,
+    required this.email
   });
 
   @override
@@ -165,7 +159,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                               ),
                             ),
                             SizedBox(height: 20),
-                            Text('Verification code has been sent to ${widget.phoneNo}, verify phone number to Sign Up.', style: AuthFonts.authMsgText(color: Colors.grey)),
+                            Text('Verification code has been sent to ${widget.email}, verify phone number to Sign Up.', style: AuthFonts.authMsgText(color: Colors.grey)),
                             SizedBox(height: 40),
                             BlocConsumer<SignupBloc, SignupState>(
                               listener: ((context, state) {
@@ -201,7 +195,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                       bool isValid = _formKey.currentState!.validate();
                                       if(isValid){
                                         BlocProvider.of<SignupBloc>(context)
-                                                .add(VerifyClickEvent(otpCode: codeController.text.trim(), fullName: widget.fullname.trim(), username: widget.username.trim(), phoneNo: widget.phoneNo.trim(), password: widget.password.trim()));
+                                                .add(VerifyClickEvent(otpCode: codeController.text.trim(), email: widget.email.trim()));
                                       }
                                      },
                                     child: Text('Verify Code', style: AuthFonts.authButtonText())

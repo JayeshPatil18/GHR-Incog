@@ -4,27 +4,19 @@ part of 'signup_bloc.dart';
 abstract class SignupEvent {}
 
 class SignupClickEvent extends SignupEvent{
-  final String username;
-  final String phoneNo;
+  final String email;
 
   SignupClickEvent({
-    required this.username,
-    required this.phoneNo,
+    required this.email
   });
 }
 
 class VerifyClickEvent extends SignupEvent{
   final String otpCode;
-  final String fullName;
-  final String username;
-  final String phoneNo;
-  final String password;
+  final String email;
 
   VerifyClickEvent({
     required this.otpCode,
-    required this.fullName,
-    required this.username,
-    required this.phoneNo,
-    required this.password,
+    required this.email,
   });
 }

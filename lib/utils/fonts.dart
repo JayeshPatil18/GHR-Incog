@@ -162,9 +162,9 @@ class MainFonts {
     return TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: color);
   }
 
-  static TextStyle pageTitleText() {
-    return const TextStyle(
-        fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.textColor);
+  static TextStyle pageTitleText({double fontSize = 28, FontWeight weight = FontWeight.w600}) {
+    return TextStyle(
+        fontSize: fontSize, fontWeight: weight, color: AppColors.textColor);
   }
 
   static TextStyle pageBigTitleText() {
@@ -177,7 +177,7 @@ class MainFonts {
   }
 
   static TextStyle hintFieldText() {
-    return const TextStyle(fontSize: 18, color: AppColors.iconColor);
+    return const TextStyle(fontSize: 18, color: AppColors.lightTextColor);
   }
 
   static TextStyle textFieldText() {
@@ -191,11 +191,11 @@ class MainFonts {
 
 // In use
 class AuthFonts {
-  static authMsgText({Color color = AppColors.textColor}) {
-    return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
+  static authMsgText({double fontSize = 15, Color color = AppColors.lightTextColor}) {
+    return TextStyle(fontSize: fontSize, fontWeight: FontWeight.w400, color: color);
   }
 
-  static TextStyle authButtonText({Color color = AppColors.primaryColor30}) {
-    return TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: color);
+  static TextStyle authButtonText({FontWeight weight = FontWeight.w500, Color color = AppColors.primaryColor30}) {
+    return TextStyle(fontSize: 20, fontWeight: weight, color: color);
   }
 }

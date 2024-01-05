@@ -6,7 +6,6 @@ import 'package:review_app/features/authentication/presentation/pages/signup.dar
 import 'package:review_app/utils/methods.dart';
 
 import '../../../data/repositories/users_repo.dart';
-import '../login_bloc/login_bloc.dart';
 
 part 'signup_event.dart';
 
@@ -18,13 +17,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       if (event is SignupClickEvent) {
         emit(SignupLoadingState());
 
-        int validUsername = await validUsernameCheck(event.username);
+        int validUsername = await validUsernameCheck(event.email);
 
         if (validUsername == 1) {
           // Verification Code sending
-          bool isOtpSent = await sendOtpToPhoneNumber(event.phoneNo);
+          bool isOtpSent = await sendOtpToPhoneNumber(event.email);
           if (isOtpSent) {
-            emit(SignupOtpSentState(phoneNo: event.phoneNo));
+            emit(SignupOtpSentState(phoneNo: event.email));
           } else {
             emit(SignupOtpSentFailedState());
           }
@@ -42,9 +41,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         if (isOtpVerified) {
           UsersRepo usersRepo = UsersRepo();
           int userId = await usersRepo.addUser(
-              event.fullName, event.username, event.phoneNo, event.password);
+              event.email, 'event.username', 'event.phoneNo', 'event.password');
           if (userId != -1) {
-            loginDetails(userId.toString(), event.username, event.phoneNo);
+            loginDetails(userId.toString(), 'event.username', 'event.phoneNo');
             emit(OtpCodeVerifiedState());
           } else {
             emit(AddUserDataFailedState());
