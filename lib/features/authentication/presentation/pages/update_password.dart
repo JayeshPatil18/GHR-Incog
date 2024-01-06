@@ -179,7 +179,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
 
                                       SignupBloc signupBlocObj = SignupBloc();
                                       bool isOtpSent = await signupBlocObj
-                                          .sendOtpToEmail(phoneNo);
+                                          .sendEmailVerificationLink(phoneNo);
 
                                       if (isOtpSent) {
                                         UpdatePassword.newPassword = passwordController.text.trim().toString();

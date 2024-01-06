@@ -175,53 +175,53 @@ class _VerifyNewPhoneNoState extends State<VerifyNewPhoneNo> {
                             ),
                             onPressed: () async {
                               bool isValid = _formKey.currentState!.validate();
-                              if(isValid){
-                                SignupBloc signupBlocObj = SignupBloc();
-                                bool isOtpVerified = await signupBlocObj.optVerify(codeController.text.trim());
-
-                                if(isOtpVerified){
-
-                                  UsersRepo userRepoObj = UsersRepo();
-                                  int status =
-                                  widget.verifyForWhat == "phoneno" ? await userRepoObj.changePhoneNo(widget.phoneNo) : widget.verifyForWhat == "password" ? await userRepoObj.changePassword(UpdatePassword.newPassword) : 4;
-                                  if (status == 1) {
-                                    FocusScope.of(context).unfocus();
-                                    mySnackBarShow(
-                                        context, '${widget.verifyForWhat == "phoneno" ? "Phone No" : "Password"} Changed.');
-                                    Future.delayed(
-                                        const Duration(milliseconds: 300), () {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                    });
-                                  } else if(status == 4) {
-                                    // Login
-                                    try{
-                                      updateLoginStatus(true);
-                                      loginDetails(ForgotPassword.userId.toString(), ForgotPassword.dbUsername.toString(), ForgotPassword.phoneNo.toString());
-
-                                      FocusScope.of(context).unfocus();
-                                      Future.delayed(
-                                          const Duration(milliseconds: 300), () {
-
-                                        Navigator.popUntil(
-                                            context, (route) => route.isFirst);
-                                        Navigator.of(context)
-                                            .pushReplacementNamed('landing');
-                                      });
-                                    } catch(e){
-                                      mySnackBarShow(context,
-                                          'Something went wrong! Try again.');
-                                    }
-                                  } else if (status == -1) {
-                                    logOut();
-                                  } else {
-                                    mySnackBarShow(context,
-                                        'Something went wrong! Try again.');
-                                  }
-                                } else{
-                                  mySnackBarShow(context, 'Invalid verification code.');
-                                }
-                              }
+                              // if(isValid){
+                              //   SignupBloc signupBlocObj = SignupBloc();
+                              //   bool isOtpVerified = await signupBlocObj.optVerify(codeController.text.trim());
+                              //
+                              //   if(isOtpVerified){
+                              //
+                              //     UsersRepo userRepoObj = UsersRepo();
+                              //     int status =
+                              //     widget.verifyForWhat == "phoneno" ? await userRepoObj.changePhoneNo(widget.phoneNo) : widget.verifyForWhat == "password" ? await userRepoObj.changePassword(UpdatePassword.newPassword) : 4;
+                              //     if (status == 1) {
+                              //       FocusScope.of(context).unfocus();
+                              //       mySnackBarShow(
+                              //           context, '${widget.verifyForWhat == "phoneno" ? "Phone No" : "Password"} Changed.');
+                              //       Future.delayed(
+                              //           const Duration(milliseconds: 300), () {
+                              //         Navigator.of(context).pop();
+                              //         Navigator.of(context).pop();
+                              //       });
+                              //     } else if(status == 4) {
+                              //       // Login
+                              //       try{
+                              //         updateLoginStatus(true);
+                              //         loginDetails(ForgotPassword.userId.toString(), ForgotPassword.dbUsername.toString(), ForgotPassword.phoneNo.toString());
+                              //
+                              //         FocusScope.of(context).unfocus();
+                              //         Future.delayed(
+                              //             const Duration(milliseconds: 300), () {
+                              //
+                              //           Navigator.popUntil(
+                              //               context, (route) => route.isFirst);
+                              //           Navigator.of(context)
+                              //               .pushReplacementNamed('landing');
+                              //         });
+                              //       } catch(e){
+                              //         mySnackBarShow(context,
+                              //             'Something went wrong! Try again.');
+                              //       }
+                              //     } else if (status == -1) {
+                              //       logOut();
+                              //     } else {
+                              //       mySnackBarShow(context,
+                              //           'Something went wrong! Try again.');
+                              //     }
+                              //   } else{
+                              //     mySnackBarShow(context, 'Invalid verification code.');
+                              //   }
+                              // }
                             },
                             child: Text('Verify Code', style: AuthFonts.authButtonText())
                         ),

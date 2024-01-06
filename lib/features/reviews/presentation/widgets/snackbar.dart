@@ -5,8 +5,8 @@ import '../../../../constants/color.dart';
 void mySnackBarShow(BuildContext context, String text){
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: AppColors.textColor,
+      backgroundColor: AppColors.gradientStart,
       content: Text(text,
-        selectionColor: AppColors.primaryColor30))
+        selectionColor: AppColors.textColor))
   );
 }

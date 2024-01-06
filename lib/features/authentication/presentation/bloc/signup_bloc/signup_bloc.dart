@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
@@ -17,7 +18,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       if (event is SignupClickEvent) {
         emit(SignupLoadingState());
 
-          bool isOtpSent = await sendOtpToEmail(event.email);
+          bool isOtpSent = await sendEmailVerificationLink(event.email);
           if (isOtpSent) {
             emit(SignupOtpSentState(email: event.email));
           } else {
@@ -25,61 +26,21 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           }
       }
     });
+  }
 
-    on<VerifyClickEvent>((event, emit) async {
-      if (event is VerifyClickEvent) {
-        bool isOtpVerified = await optVerify(event.otpCode);
-        if (isOtpVerified) {
-          UsersRepo usersRepo = UsersRepo();
-          int userId = await usersRepo.addUser(
-              event.email, 'event.username', 'event.phoneNo', 'event.password');
-          if (userId != -1) {
-            loginDetails(userId.toString(), 'event.username', 'event.phoneNo');
-            emit(OtpCodeVerifiedState());
-          } else {
-            emit(AddUserDataFailedState());
-          }
-        } else {
-          emit(OtpCodeVerifiedFailedState());
-        }
+  Future<bool> sendEmailVerificationLink(String email) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        print('user is null');
+        return false;
       }
-    });
-  }
-
-  Future<bool> sendOtpToEmail(String email) async {
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: email,
-        verificationCompleted: (PhoneAuthCredential credential) {
-          // Handle verification completion
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          // Handle verification failure
-        },
-        codeSent: (String verificationId, int? resendToken) {
-          SignUpPage.verify = verificationId;
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
+      await user.sendEmailVerification();
 
       return true;
     } catch (e) {
-      return false;
-    }
-  }
+      print(e.toString());
 
-  Future<bool> optVerify(String opt) async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: SignUpPage.verify, smsCode: opt);
-
-      await auth.signInWithCredential(credential);
-
-      updateLoginStatus(true);
-
-      return true;
-    } catch (e) {
       return false;
     }
   }

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/helpers.dart';
@@ -27,6 +30,10 @@ class VerifyPhoneNo extends StatefulWidget {
 }
 
 class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
+
+  bool isEmailVerified = false;
+  bool canResendEmail = false;
+  Timer? timer;
   
   final FocusNode _focusCodeNode = FocusNode();
   bool _hasCodeFocus = false;
@@ -53,6 +60,18 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     @override
   void initState() {
     super.initState();
+
+    Future.delayed(
+        const Duration(seconds: 10), () {
+      setState(() {
+        canResendEmail = true;
+      });
+    });
+
+    timer = Timer.periodic(Duration(seconds: 2), (_) {
+      checkEmailVerified();
+    });
+
     _focusCodeNode.addListener(() {
       setState(() {
         _hasCodeFocus = _focusCodeNode.hasFocus;
@@ -62,89 +81,14 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
 
   @override
   void dispose() {
+    timer?.cancel();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-        FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Container(
-          margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
-          child: BlocConsumer<SignupBloc, SignupState>(
-            listener: (context, state) {
-              if (state is OtpCodeVerifiedState) {
-                FocusScope.of(context).unfocus();
-                Future.delayed(
-                    const Duration(milliseconds: 300), () {
-
-                  Navigator.popUntil(
-                      context, (route) => route.isFirst);
-                  Navigator.of(context)
-                      .pushReplacementNamed('landing');
-                });
-              } else if(state is OtpCodeVerifiedFailedState){
-                mySnackBarShow(context, 'Invalid verification code.');
-              } else if(state is AddUserDataFailedState){
-                mySnackBarShow(context, 'Something went wrong.');
-                Navigator.pop(context);
-              }
-            },
-            builder: (context, state) {
-              if (state is SignupLoadingState) {
-                return Container(
-                  height: 55,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        AppColors.secondaryColor10,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(
-                                AppBoarderRadius
-                                    .buttonRadius)),
-                        elevation: AppElevations.buttonElev,
-                      ),
-                      onPressed: () {},
-                      child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: Center(
-                              child:
-                              CircularProgressIndicator(
-                                  strokeWidth: AppValues
-                                      .progresBarWidth,
-                                  color: AppColors
-                                      .primaryColor30)))),
-                );
-              }
-              return Container(
-                height: 55,
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                      AppColors.secondaryColor10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppBoarderRadius.buttonRadius)),
-                      elevation: AppElevations.buttonElev,
-                    ),
-                    onPressed: () {
-                      bool isValid = _formKey.currentState!.validate();
-                      if(isValid){
-                        BlocProvider.of<SignupBloc>(context)
-                            .add(VerifyClickEvent(otpCode: codeController.text.trim(), email: widget.email.trim()));
-                      }
-                    },
-                    child: Text('Confirm',
-                        style: AuthFonts.authButtonText())),
-              );
-            },
-          ),
-        ),
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: BoxDecoration(
@@ -155,73 +99,27 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                 alignment: Alignment.center,
                 margin:
                 EdgeInsets.only(left: 30, right: 30, top: 140, bottom: 10),
-                child: Text('OTP Verification', style: MainFonts.pageTitleText(fontSize: 24, weight: FontWeight.w500)),
+                child: Text('Verification Email has been sent.', style: MainFonts.pageTitleText(fontSize: 24, weight: FontWeight.w500)),
               ),
-              Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(10),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextFormField(
-                            controller: codeController,
-                            autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
-                            validator: ((value) {
-                              return _validateInput(value, 0);
-                            }),
-                            style: MainFonts.textFieldText(),
-                            focusNode: _focusCodeNode,
-                            cursorHeight: TextCursorHeight.cursorHeight,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: 16, bottom: 16, left: 20, right: 20),
-                              fillColor: AppColors.transparentComponentColor,
-                              filled: true,
-                              hintText: _hasCodeFocus
-                                  ? 'XXXX'
-                                  : null,
-                              hintStyle: MainFonts.hintFieldText(),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    AppBoarderRadius.buttonRadius),
-                                borderSide: const BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                    AppBoarderRadius.buttonRadius),
-                                borderSide: const BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 4, right: 4),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(Icons.warning_amber_rounded, color: AppColors.lightTextColor, size: 12),
-                                SizedBox(width: 6),
-                                Flexible(
-                                  child: Text('Also check spam mail emails.',
-                                      style: AuthFonts.authMsgText(fontSize: 12)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ]),
-                  )),
             ],
           ),
         ));
+  }
+
+  Future checkEmailVerified() async{
+    await FirebaseAuth.instance.currentUser!.reload();
+
+    setState(() {
+      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
+
+    if(isEmailVerified) {
+      timer?.cancel();
+
+      Navigator.popUntil(
+          context, (route) => route.isFirst);
+      Navigator.of(context)
+          .pushReplacementNamed('landing');
+    }
   }
 }

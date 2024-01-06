@@ -212,7 +212,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     } else {
                                       SignupBloc signupBlocObj = SignupBloc();
                                       bool isOtpSent = await signupBlocObj
-                                          .sendOtpToEmail(
+                                          .sendEmailVerificationLink(
                                               ForgotPassword.phoneNo);
 
                                       if (isOtpSent) {
