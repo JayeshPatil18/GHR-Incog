@@ -16,8 +16,10 @@ import '../../../../constants/values.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
+import '../../../reviews/presentation/widgets/sort_card.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
+  static String gender = 'Male';
   final String email;
 
   const VerifyPhoneNo({super.key, required this.email});
@@ -104,14 +106,16 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                   if (isValid) {
                     bool isVerified = verifyOtp(codeController.text.trim());
                     if (isVerified) {
-                      bool isCredentialsStored =
+                      int isCredentialsStored =
                           await setLoginCredentials(widget.email);
-                      if (isCredentialsStored) {
+                      if (isCredentialsStored == 1) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 300), () {
                           Navigator.of(context).pushNamed('landing');
                         });
-                      } else {
+                      } if(isCredentialsStored == 0) {
+                        mySnackBarShow(context, 'Already login in another device. Logout from there.');
+                      }  else {
                         mySnackBarShow(context, 'Something went wrong.');
                       }
                     } else {
@@ -224,26 +228,80 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     return true;
   }
 
-  Future<bool> setLoginCredentials(String email) async {
+  Future<int> setLoginCredentials(String email) async {
     try {
       UsersRepo usersRepo = UsersRepo();
       List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
 
+      int length = getMaxUId(data) + 1;
+
       int userId = -1;
 
       for (var userMap in data) {
-        if (userMap['email'].toString() == email) {
+        if (userMap['email'].toString() == email && userMap['status'] == 1) {
+          return 0;
+        } else if(userMap['email'].toString() == email && userMap['status'] == 0) {
           userId = userMap['uid'];
-          break;
+
+          // Update login status value
+          updateUserLoginStatus(userId);
         }
+        break;
+      }
+
+      if(userId == -1) {
+        showSortDialog(context);
+        usersRepo.addUser(length, email, VerifyPhoneNo.gender, 'user${(length + 1).toString()}');
       }
 
       updateLoginStatus(true);
       loginDetails(userId.toString(), email);
 
-      return true;
+      return 1;
     } catch (e) {
-      return false;
+      return -1;
+    }
+  }
+
+  void showSortDialog(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: false,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+        builder: (context) =>
+            DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.60,
+                maxChildSize: 0.60,
+                builder: (context, scrollContoller) =>
+                    SingleChildScrollView(
+                      child: SortCard(),
+                    )));
+  }
+
+  Future<int> updateUserLoginStatus(int userId) async{
+    try{
+      var document = await UsersRepo.userFireInstance
+          .doc('usersdoc')
+          .get();
+
+      List<Map<String, dynamic>> usersData =
+      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+
+      for (var user in usersData) {
+        if (user['uid'] == userId) {
+          user['status'] = 1;
+        }
+      }
+
+      await UsersRepo.userFireInstance.doc('usersdoc').update({
+        'userslist': usersData
+      });
+
+      return 1;
+    } catch(e){
+      return -1;
     }
   }
 }

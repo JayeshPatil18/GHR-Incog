@@ -696,6 +696,23 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void showGenderDialog(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: false,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+        builder: (context) =>
+            DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.60,
+                maxChildSize: 0.60,
+                builder: (context, scrollContoller) =>
+                    SingleChildScrollView(
+                      child: SortCard(),
+                    ))).whenComplete(_onBottomSheetClosed);
+  }
+
   void showSortDialog(BuildContext context) {
     showModalBottomSheet(
         context: context,

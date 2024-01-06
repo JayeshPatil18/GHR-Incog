@@ -16,26 +16,23 @@ class UsersRepo {
     return userData;
   }
 
-  Future<int> addUser(String fullName, String username, String phoneNo, String password) async {
+  Future<int> addUser(int length, String email, String gender, String username) async {
     try {
-      List<Map<String, dynamic>> data = await getUserCredentials();
-
-      int length = getMaxUId(data) + 1;
 
       final snapshot = await _db.collection('users').doc('usersdoc');
 
       await snapshot.update({
         'userslist': FieldValue.arrayUnion([
           {
-            'uid': length,
+            'userid': length,
             'profileurl': 'null',
-            'password': password,
+            'email': email,
+            'gender': gender,
             'bio': '',
             'rank': length,
-            'fullname': fullName,
-            'phoneno': phoneNo,
-            'points': 0,
+            'score': 0,
             'username': username,
+            'status': 1,
           },
         ]),
       });
