@@ -86,7 +86,7 @@ class UsersRepo {
       });
 
       try {
-        loginDetails(userId.toString(), username, phoneNo);
+        loginDetails(userId.toString(), username);
       } on Exception catch (e) {
         return -1;
       }
@@ -126,7 +126,7 @@ class UsersRepo {
       });
 
       try {
-        loginDetails(userId.toString(), username, phoneNo);
+        loginDetails(userId.toString(), username);
       } on Exception catch (e) {
         return -1;
       }
@@ -181,5 +181,30 @@ class UsersRepo {
     } catch (error) {
       return 'null';
     }
+  }
+
+
+  Future<int> validUsernameCheck(String username) async {
+    UsersRepo usersRepo = UsersRepo();
+    try {
+      List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
+
+      bool hasUsernameAlready = false;
+
+      for (var userMap in data) {
+        if (userMap['username'].toString().toLowerCase() == username.toLowerCase()) {
+          hasUsernameAlready = true;
+          break;
+        }
+      }
+      if (!hasUsernameAlready) {
+        return 1;
+      } else if (hasUsernameAlready) {
+        return -1;
+      }
+    } on Exception catch (e) {
+      return 0;
+    }
+    return 0;
   }
 }

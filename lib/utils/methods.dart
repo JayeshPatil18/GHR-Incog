@@ -79,9 +79,9 @@ Future<void> updateLoginStatus(bool status) async {
 }
 
 // Update login status
-Future<void> loginDetails(String uId, String username, String phoneNo) async {
+Future<void> loginDetails(String uId, String email) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setStringList(MyApp.LOGIN_DETAILS_KEY, [uId, username, phoneNo]);
+  prefs.setStringList(MyApp.LOGIN_DETAILS_KEY, [uId, email]);
 }
 
 // get login status

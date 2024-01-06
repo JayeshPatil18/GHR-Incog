@@ -15,7 +15,6 @@ import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
-import '../../../authentication/presentation/bloc/signup_bloc/signup_bloc.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/shadow.dart';
@@ -457,18 +456,18 @@ class _EditProfileState extends State<EditProfile> {
                                   bool isValid =
                                       _formKey.currentState!.validate();
                                   if (isValid) {
+                                    UsersRepo usersRepo = UsersRepo();
                                     List<String>? details =
                                         await getLoginDetails();
                                     String username = details?[1] ?? '';
 
-                                    SignupBloc signUpBlocObj = SignupBloc();
                                     int validUsername = 0;
 
                                     if (usernameController.text.toLowerCase() ==
                                         username.toLowerCase()) {
                                       validUsername = 1;
                                     } else {
-                                      validUsername = await signUpBlocObj
+                                      validUsername = await usersRepo
                                           .validUsernameCheck(
                                               usernameController.text);
                                     }

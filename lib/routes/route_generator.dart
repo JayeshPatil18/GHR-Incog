@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:review_app/features/authentication/presentation/pages/forgot_password.dart';
-import 'package:review_app/features/authentication/presentation/pages/change_phone.dart';
 import 'package:review_app/features/reviews/domain/entities/verify_arguments.dart';
 import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/notification.dart';
-import 'package:review_app/features/authentication/presentation/pages/update_password.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/authentication/presentation/pages/verify_phone.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_profile.dart';
@@ -15,7 +12,6 @@ import 'package:review_app/features/reviews/presentation/pages/view_review.dart'
 import 'package:review_app/main.dart';
 
 import '../features/authentication/presentation/pages/signup.dart';
-import '../features/authentication/presentation/pages/verify_new_phone.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/verify_phoneno_argument.dart';
 
@@ -69,16 +65,6 @@ class RouteGenerator{
         return MaterialPageRoute(
           builder: (_) => const EditProfile()
         );
-
-      case 'updatepassowrd':
-        return MaterialPageRoute(
-          builder: (_) => const UpdatePassword()
-        );
-
-      case 'changephoneno':
-        return MaterialPageRoute(
-          builder: (_) => const ChangePhoneNo()
-        );
       
       case 'verifyphone':
 
@@ -88,22 +74,6 @@ class RouteGenerator{
 
         return MaterialPageRoute(
           builder: (_) => VerifyPhoneNo(email: email)
-        );
-
-      case 'verifynewphone':
-
-        VerifyPhoneNoArg verifyPhoneNoArg = settings.arguments as VerifyPhoneNoArg;
-
-        String phoneNo = verifyPhoneNoArg.phoneNo;
-        String verifyForWhat = verifyPhoneNoArg.verifyForWhat;
-
-        return MaterialPageRoute(
-            builder: (_) => VerifyNewPhoneNo(phoneNo: phoneNo, verifyForWhat: verifyForWhat)
-        );
-
-      case 'forgotpassword':
-        return MaterialPageRoute(
-            builder: (_) => const ForgotPassword()
         );
 
       default:
