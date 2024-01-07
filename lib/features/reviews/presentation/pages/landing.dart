@@ -89,7 +89,7 @@ class _LandingPageState extends State<LandingPage> {
               elevation: AppElevations.bottomNavBarElev,
               shape: CircularNotchedRectangle(),
               notchMargin: 12,
-              color: AppColors.primaryColor30,
+              color: AppColors.gradientMid,
               child: Container(
                 height: 65,
                 child: Row(

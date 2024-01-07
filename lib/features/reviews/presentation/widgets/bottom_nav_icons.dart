@@ -13,7 +13,7 @@ List<Widget> bottomNavIcons = [
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.home, color: value.currentIndex == 0 ? AppColors.secondaryColor10 : AppColors.iconColor, size: AppIconSize.bottomNavBarIcons));
+      child: Icon(Icons.home, color: value.currentIndex == 0 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
     }),
   ),
 
@@ -23,7 +23,7 @@ List<Widget> bottomNavIcons = [
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.favorite, color: value.currentIndex == 1 ? AppColors.secondaryColor10 : AppColors.iconColor, size: AppIconSize.bottomNavBarIcons));
+      child: Icon(Icons.favorite, color: value.currentIndex == 1 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
     }),
   ),
 
@@ -33,7 +33,7 @@ Consumer<BottomNavigationProvider>(
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.leaderboard, color: value.currentIndex == 2 ? AppColors.secondaryColor10 : AppColors.iconColor, size: AppIconSize.bottomNavBarIcons));
+      child: Icon(Icons.leaderboard, color: value.currentIndex == 2 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
     }),
   ),
 
@@ -43,7 +43,7 @@ Consumer<BottomNavigationProvider>(
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.person, color: value.currentIndex == 3 ? AppColors.secondaryColor10 : AppColors.iconColor, size: AppIconSize.bottomNavBarIcons));
+      child: Icon(Icons.person, color: value.currentIndex == 3 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
     }),
   ),
 ];
