@@ -84,6 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   elevation: AppElevations.buttonElev,
                 ),
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   bool isValid = _formKey.currentState!.validate();
                   if (isValid) {
                     bool isOtpSent = sendOtp(emailController.text.trim());

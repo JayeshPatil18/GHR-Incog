@@ -103,6 +103,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                   elevation: AppElevations.buttonElev,
                 ),
                 onPressed: () async {
+                  FocusScope.of(context).unfocus();
                   bool isValid = _formKey.currentState!.validate();
                   if (isValid) {
                     bool isVerified = verifyOtp(codeController.text.trim());
@@ -117,6 +118,8 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                       } else if (isCredentialsStored == 0) {
                         mySnackBarShow(context,
                             'Already login in another device. Logout from there.');
+                      } else if (isCredentialsStored != -1 || isCredentialsStored != 1 || isCredentialsStored != 0) {
+                        showCredentialsConfirm(context, isCredentialsStored, widget.email);
                       } else {
                         mySnackBarShow(context, 'Something went wrong.');
                       }
@@ -234,7 +237,6 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     try {
       UsersRepo usersRepo = UsersRepo();
       List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
-      print('###${data}');
       int length = getMaxUId(data) + 1;
 
       int userId = -1;
@@ -256,17 +258,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       }
 
       if (userId == -1) {
-        showCredentialsConfirm(context);
-
-          // Run below after closing of bottom sheet
-        Timer(Duration(milliseconds: AppValues.closeDelay), () async{
-          userId = await usersRepo.addUser(length, email, VerifyPhoneNo.gender,
-              'user${(length).toString()}');
-
-          updateLoginStatus(true);
-          loginDetails(userId.toString(), email);
-        });
-        return 1;
+        return length;
       } else{
         updateLoginStatus(true);
         loginDetails(userId.toString(), email);
@@ -279,7 +271,8 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     }
   }
 
-  void showCredentialsConfirm(BuildContext context) async {
+  // Now all clear but change UI of bottom sheet and also add username confirm
+  void showCredentialsConfirm(BuildContext context, int length, String email) async {
     showModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -293,7 +286,22 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                 builder: (context, scrollContoller) =>
                     SingleChildScrollView(
                       child: ChooseGender(),
-                    )));
-    return;
+                    ))).whenComplete(() async{
+                      try{
+                        UsersRepo usersRepo = UsersRepo();
+                        int userId = await usersRepo.addUser(length, email, VerifyPhoneNo.gender,
+                            'user${(length).toString()}');
+
+                        updateLoginStatus(true);
+                        loginDetails(userId.toString(), email);
+
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          Navigator.of(context).pushNamed('landing');
+                        });
+                      } catch(e){
+                        mySnackBarShow(context, 'Something went wrong.');
+                      }
+    });
   }
 }
