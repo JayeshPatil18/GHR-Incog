@@ -58,7 +58,7 @@ int getMaxUId(List<Map<String, dynamic>> data) {
   if(data.isEmpty){
     return 0;
   }
-  return data.map((item) => item['uid'] as int).reduce((a, b) => a > b ? a : b);
+  return data.map((item) => item['userid'] as int).reduce((a, b) => a > b ? a : b);
 }
 
 // Check login status on app start

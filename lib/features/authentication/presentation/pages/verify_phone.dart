@@ -17,6 +17,7 @@ import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../../reviews/presentation/widgets/shadow.dart';
 import '../../../reviews/presentation/widgets/sort_card.dart';
+import '../widgets/choose_gender.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
   static String gender = 'Male';
@@ -89,7 +90,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Container(
           margin:
-              const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+          const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
           child: Container(
             height: 55,
             width: double.infinity,
@@ -98,7 +99,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                   backgroundColor: AppColors.secondaryColor10,
                   shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(AppBoarderRadius.buttonRadius)),
+                      BorderRadius.circular(AppBoarderRadius.buttonRadius)),
                   elevation: AppElevations.buttonElev,
                 ),
                 onPressed: () async {
@@ -107,15 +108,16 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                     bool isVerified = verifyOtp(codeController.text.trim());
                     if (isVerified) {
                       int isCredentialsStored =
-                          await setLoginCredentials(widget.email);
+                      await setUserCredentials(widget.email);
                       if (isCredentialsStored == 1) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 300), () {
                           Navigator.of(context).pushNamed('landing');
                         });
-                      } if(isCredentialsStored == 0) {
-                        mySnackBarShow(context, 'Already login in another device. Logout from there.');
-                      }  else {
+                      } else if (isCredentialsStored == 0) {
+                        mySnackBarShow(context,
+                            'Already login in another device. Logout from there.');
+                      } else {
                         mySnackBarShow(context, 'Something went wrong.');
                       }
                     } else {
@@ -134,7 +136,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
               Container(
                 alignment: Alignment.center,
                 margin:
-                    EdgeInsets.only(left: 30, right: 30, top: 140, bottom: 10),
+                EdgeInsets.only(left: 30, right: 30, top: 140, bottom: 10),
                 child: Text('Email Verification',
                     style: MainFonts.pageTitleText(
                         fontSize: 24, weight: FontWeight.w500)),
@@ -152,7 +154,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                           TextFormField(
                             controller: codeController,
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            AutovalidateMode.onUserInteraction,
                             validator: ((value) {
                               return _validateInput(value, 0);
                             }),
@@ -165,7 +167,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                               fillColor: AppColors.transparentComponentColor,
                               filled: true,
                               hintText:
-                                  _hasCodeFocus ? 'Enter 6-digit Code' : null,
+                              _hasCodeFocus ? 'Enter 6-digit Code' : null,
                               hintStyle: MainFonts.hintFieldText(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
@@ -197,7 +199,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                                 Flexible(
                                   child: Text('Check your email box also spam.',
                                       style:
-                                          AuthFonts.authMsgText(fontSize: 12)),
+                                      AuthFonts.authMsgText(fontSize: 12)),
                                 ),
                               ],
                             ),
@@ -228,11 +230,11 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     return true;
   }
 
-  Future<int> setLoginCredentials(String email) async {
+  Future<int> setUserCredentials(String email) async {
     try {
       UsersRepo usersRepo = UsersRepo();
       List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
-
+      print('###${data}');
       int length = getMaxUId(data) + 1;
 
       int userId = -1;
@@ -240,30 +242,44 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       for (var userMap in data) {
         if (userMap['email'].toString() == email && userMap['status'] == 1) {
           return 0;
-        } else if(userMap['email'].toString() == email && userMap['status'] == 0) {
-          userId = userMap['uid'];
+        } else
+        if (userMap['email'].toString() == email && userMap['status'] == 0) {
+          userId = userMap['userid'];
 
           // Update login status value
-          updateUserLoginStatus(userId);
+          userMap['status'] = 1;
+          await UsersRepo.userFireInstance.doc('usersdoc').update({
+            'userslist': data
+          });
+          break;
         }
-        break;
       }
 
-      if(userId == -1) {
-        showSortDialog(context);
-        usersRepo.addUser(length, email, VerifyPhoneNo.gender, 'user${(length + 1).toString()}');
+      if (userId == -1) {
+        showCredentialsConfirm(context);
+
+          // Run below after closing of bottom sheet
+        Timer(Duration(milliseconds: AppValues.closeDelay), () async{
+          userId = await usersRepo.addUser(length, email, VerifyPhoneNo.gender,
+              'user${(length).toString()}');
+
+          updateLoginStatus(true);
+          loginDetails(userId.toString(), email);
+        });
+        return 1;
+      } else{
+        updateLoginStatus(true);
+        loginDetails(userId.toString(), email);
+
+        return 1;
       }
-
-      updateLoginStatus(true);
-      loginDetails(userId.toString(), email);
-
-      return 1;
     } catch (e) {
+      print(e.toString());
       return -1;
     }
   }
 
-  void showSortDialog(BuildContext context) {
+  void showCredentialsConfirm(BuildContext context) async {
     showModalBottomSheet(
         context: context,
         isScrollControlled: false,
@@ -276,32 +292,8 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                 maxChildSize: 0.60,
                 builder: (context, scrollContoller) =>
                     SingleChildScrollView(
-                      child: SortCard(),
+                      child: ChooseGender(),
                     )));
-  }
-
-  Future<int> updateUserLoginStatus(int userId) async{
-    try{
-      var document = await UsersRepo.userFireInstance
-          .doc('usersdoc')
-          .get();
-
-      List<Map<String, dynamic>> usersData =
-      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
-
-      for (var user in usersData) {
-        if (user['uid'] == userId) {
-          user['status'] = 1;
-        }
-      }
-
-      await UsersRepo.userFireInstance.doc('usersdoc').update({
-        'userslist': usersData
-      });
-
-      return 1;
-    } catch(e){
-      return -1;
-    }
+    return;
   }
 }
