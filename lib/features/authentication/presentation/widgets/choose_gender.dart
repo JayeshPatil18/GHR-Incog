@@ -80,6 +80,14 @@ class ChooseGenderState extends State<ChooseGender> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
+  setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -268,42 +276,56 @@ class ChooseGenderState extends State<ChooseGender> {
                     elevation: AppElevations.buttonElev,
                   ),
                   onPressed: () async {
-                    bool isValid = _formKey.currentState!.validate();
-                    if(isValid){
-                      VerifyPhoneNo.username = usernameController.text.trim();
+                    if(!isLoading){
+                      setIsLoading(true);
 
-                      try{
-                        UsersRepo usersRepo = UsersRepo();
+                      bool isValid = _formKey.currentState!.validate();
+                      if(isValid){
+                        VerifyPhoneNo.username = usernameController.text.trim();
 
-                        int validUsername = await usersRepo.validUsernameCheck(VerifyPhoneNo.username);
+                        try{
+                          UsersRepo usersRepo = UsersRepo();
 
-                        if (validUsername == 1) {
-                          // Username is Unique
+                          int validUsername = await usersRepo.validUsernameCheck(VerifyPhoneNo.username);
 
-                          int userId = await usersRepo.addUser(widget.length, widget.email, VerifyPhoneNo.gender,
-                              VerifyPhoneNo.username);
+                          if (validUsername == 1) {
+                            // Username is Unique
 
-                          updateLoginStatus(true);
-                          loginDetails(userId.toString(), widget.email);
+                            int userId = await usersRepo.addUser(widget.length, widget.email, VerifyPhoneNo.gender,
+                                VerifyPhoneNo.username);
 
-                          Timer(Duration(milliseconds: AppValues.closeDelay), () {
-                            Navigator.pop(context);
-                          });
+                            updateLoginStatus(true);
+                            loginDetails(userId.toString(), widget.email);
 
-                        } else if (validUsername == -1) {
-                          // Username already exists
-                          mySnackBarShow(context, 'Username already exist. Try another!');
-                        } else if (validUsername == 0) {
-                          // Exception
+                            Timer(Duration(milliseconds: AppValues.closeDelay), () {
+                              Navigator.pop(context);
+                            });
+
+                          } else if (validUsername == -1) {
+                            // Username already exists
+                            mySnackBarShow(context, 'Username already exist. Try another!');
+                          } else if (validUsername == 0) {
+                            // Exception
+                            mySnackBarShow(context, 'Something went wrong.');
+                          }
+                        } catch(e){
                           mySnackBarShow(context, 'Something went wrong.');
                         }
-                      } catch(e){
-                        mySnackBarShow(context, 'Something went wrong.');
                       }
+
+                      setIsLoading(false);
                     }
                   },
-                  child: Text('Confirm',
-                      style: AuthFonts.authButtonText())),
+                  child: isLoading == false ? Text('Confirm',
+                      style: AuthFonts.authButtonText()) : SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                              strokeWidth:
+                              AppValues.progresBarWidth,
+                              color:
+                              AppColors.primaryColor30)))),
             ),
           ],
         ),

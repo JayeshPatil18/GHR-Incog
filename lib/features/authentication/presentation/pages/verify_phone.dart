@@ -86,6 +86,14 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
+  setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,31 +114,45 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                 ),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
-                  bool isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    bool isVerified = verifyOtp(codeController.text.trim());
-                    if (isVerified) {
-                      int isCredentialsStored =
-                      await setUserCredentials(widget.email);
-                      if (isCredentialsStored == 1) {
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          Navigator.of(context).pushNamed('landing');
-                        });
-                      } else if (isCredentialsStored == 0) {
-                        mySnackBarShow(context,
-                            'Already login in another device. Logout from there.');
-                      } else if (isCredentialsStored != -1 || isCredentialsStored != 1 || isCredentialsStored != 0) {
-                        showCredentialsConfirm(context, isCredentialsStored, widget.email);
+                  if(!isLoading) {
+                    setIsLoading(true);
+
+                    bool isValid = _formKey.currentState!.validate();
+                    if (isValid) {
+                      bool isVerified = verifyOtp(codeController.text.trim());
+                      if (isVerified) {
+                        int isCredentialsStored =
+                        await setUserCredentials(widget.email);
+                        if (isCredentialsStored == 1) {
+                          FocusScope.of(context).unfocus();
+                          Future.delayed(const Duration(milliseconds: 300), () {
+                            Navigator.of(context).pushNamed('landing');
+                          });
+                        } else if (isCredentialsStored == 0) {
+                          mySnackBarShow(context,
+                              'Already login in another device. Logout from there.');
+                        } else if (isCredentialsStored != -1 || isCredentialsStored != 1 || isCredentialsStored != 0) {
+                          showCredentialsConfirm(context, isCredentialsStored, widget.email);
+                        } else {
+                          mySnackBarShow(context, 'Something went wrong.');
+                        }
                       } else {
-                        mySnackBarShow(context, 'Something went wrong.');
+                        mySnackBarShow(context, 'Invalid code.');
                       }
-                    } else {
-                      mySnackBarShow(context, 'Invalid code.');
                     }
+
+                    setIsLoading(false);
                   }
                 },
-                child: Text('Continue', style: AuthFonts.authButtonText())),
+                child: isLoading == false ? Text('Continue', style: AuthFonts.authButtonText()) : SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: Center(
+                        child: CircularProgressIndicator(
+                            strokeWidth:
+                            AppValues.progresBarWidth,
+                            color:
+                            AppColors.primaryColor30)))),
           ),
         ),
         backgroundColor: Colors.transparent,
