@@ -124,9 +124,15 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                         int isCredentialsStored =
                         await setUserCredentials(widget.email);
                         if (isCredentialsStored == 1) {
+
                           FocusScope.of(context).unfocus();
                           Future.delayed(const Duration(milliseconds: 300), () {
-                            Navigator.of(context).pushNamed('landing');
+
+                            // Remove all backtrack pages
+                            Navigator.popUntil(
+                                context, (route) => route.isFirst);
+
+                            Navigator.of(context).pushReplacementNamed('landing');
                           });
                         } else if (isCredentialsStored == 0) {
                           mySnackBarShow(context,
@@ -295,7 +301,6 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     }
   }
 
-  // Now all clear but change UI of bottom sheet and also add username confirm
   void showCredentialsConfirm(BuildContext context, int length, String email) async {
     showModalBottomSheet(
         isDismissible: false,
@@ -317,9 +322,15 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
             )).whenComplete(() async {
       var isLoggedIn = await checkLoginStatus();
       if(isLoggedIn){
+
         FocusScope.of(context).unfocus();
-        Future.delayed(const Duration(milliseconds: 220), () {
-          Navigator.of(context).pushNamed('landing');
+        Future.delayed(const Duration(milliseconds: 200), () {
+
+          // Remove all backtrack pages
+          Navigator.popUntil(
+              context, (route) => route.isFirst);
+
+          Navigator.of(context).pushReplacementNamed('landing');
         });
       }
     });
