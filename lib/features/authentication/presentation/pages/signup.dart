@@ -141,7 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   top: 16, bottom: 16, left: 20, right: 20),
                               fillColor: AppColors.transparentComponentColor,
                               filled: true,
-                              hintText: _hasEmailFocus ? 'Enter email' : null,
+                              hintText: 'Enter email',
                               hintStyle: MainFonts.hintFieldText(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(

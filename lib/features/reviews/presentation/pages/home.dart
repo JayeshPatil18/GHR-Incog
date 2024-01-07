@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/icon_size.dart';
+import 'package:review_app/features/authentication/presentation/widgets/choose_gender.dart';
 import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
@@ -588,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                     // SizedBox(width: 12),
                     GestureDetector(
                       onTap: () {
-                        showSortDialog(context);
+                        showGenderDialog(context);
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 20),
@@ -698,19 +699,23 @@ class _HomePageState extends State<HomePage> {
 
   void showGenderDialog(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: false,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (context) =>
-            DraggableScrollableSheet(
-                expand: false,
-                initialChildSize: 0.60,
-                maxChildSize: 0.60,
-                builder: (context, scrollContoller) =>
-                    SingleChildScrollView(
-                      child: SortCard(),
-                    ))).whenComplete(_onBottomSheetClosed);
+            Container(
+              decoration: BoxDecoration(gradient: AppColors.mainGradient),
+              child: DraggableScrollableSheet(
+                  expand: false,
+                  initialChildSize: 0.80,
+                  maxChildSize: 0.80,
+                  builder: (context, scrollContoller) =>
+                      SingleChildScrollView(
+                        child: SortCard(),
+                      )),
+            )).whenComplete(_onBottomSheetClosed);
   }
 
   void showSortDialog(BuildContext context) {

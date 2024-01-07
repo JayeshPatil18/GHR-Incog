@@ -21,7 +21,9 @@ import '../widgets/choose_gender.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
   static String gender = 'Male';
+  static String username = 'null';
   final String email;
+
 
   const VerifyPhoneNo({super.key, required this.email});
 
@@ -170,7 +172,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                               fillColor: AppColors.transparentComponentColor,
                               filled: true,
                               hintText:
-                              _hasCodeFocus ? 'Enter 6-digit Code' : null,
+                              'Enter 6-digit Code',
                               hintStyle: MainFonts.hintFieldText(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
@@ -274,34 +276,30 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
   // Now all clear but change UI of bottom sheet and also add username confirm
   void showCredentialsConfirm(BuildContext context, int length, String email) async {
     showModalBottomSheet(
+        isDismissible: false,
+        enableDrag: false,
+      backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: false,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (context) =>
-            DraggableScrollableSheet(
-                expand: false,
-                initialChildSize: 0.60,
-                maxChildSize: 0.60,
-                builder: (context, scrollContoller) =>
-                    SingleChildScrollView(
-                      child: ChooseGender(),
-                    ))).whenComplete(() async{
-                      try{
-                        UsersRepo usersRepo = UsersRepo();
-                        int userId = await usersRepo.addUser(length, email, VerifyPhoneNo.gender,
-                            'user${(length).toString()}');
-
-                        updateLoginStatus(true);
-                        loginDetails(userId.toString(), email);
-
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 300), () {
-                          Navigator.of(context).pushNamed('landing');
-                        });
-                      } catch(e){
-                        mySnackBarShow(context, 'Something went wrong.');
-                      }
+            Container(
+              decoration: BoxDecoration(gradient: AppColors.mainGradient),
+              child: DraggableScrollableSheet(
+                  expand: false,
+                  initialChildSize: 0.82,
+                  maxChildSize: 0.82,
+                  builder: (context, scrollContoller) =>
+                      ChooseGender(email: email, length: length)),
+            )).whenComplete(() async {
+      var isLoggedIn = await checkLoginStatus();
+      if(isLoggedIn){
+        FocusScope.of(context).unfocus();
+        Future.delayed(const Duration(milliseconds: 220), () {
+          Navigator.of(context).pushNamed('landing');
+        });
+      }
     });
   }
 }
