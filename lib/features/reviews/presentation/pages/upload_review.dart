@@ -214,18 +214,21 @@ class _UploadReviewState extends State<UploadReview> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
-                                  radius: 22,
+                                Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
+                                    radius: 22,
+                                  ),
                                 ),
                                 const SizedBox(width: 15),
                                 Expanded(
                                   child: TextField(
                                     controller: postTextController,
-                                    style: MainFonts.textFieldText(size: 20),
+                                    style: MainFonts.textFieldText(size: 18),
                                     decoration: InputDecoration(
                                       hintText: "Write fearlessly...",
-                                      hintStyle: MainFonts.hintFieldText(size: 20, color: AppColors.transparentComponentColor),
+                                      hintStyle: MainFonts.hintFieldText(size: 18, color: AppColors.transparentComponentColor),
                                       border: InputBorder.none,
                                     ),
                                     maxLines: null,
