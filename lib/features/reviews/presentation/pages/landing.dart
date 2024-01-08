@@ -44,8 +44,10 @@ class _LandingPageState extends State<LandingPage> {
       builder: ((context, value, child) {
         return Scaffold(
           extendBody: true,
-          backgroundColor: AppColors.backgroundColor60,
-          body: screens[value.currentIndex],
+          backgroundColor: Colors.transparent,
+          body: Container(
+              decoration: BoxDecoration(gradient: AppColors.mainGradient),
+              child: screens[value.currentIndex]),
           resizeToAvoidBottomInset: false,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

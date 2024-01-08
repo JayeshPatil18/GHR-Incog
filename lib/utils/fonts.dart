@@ -148,9 +148,9 @@ class ReviewModelFonts {
 
 // In use
 class MainFonts {
-  static TextStyle uploadButtonText() {
+  static TextStyle uploadButtonText({double size = 22, FontWeight weight = FontWeight.w500}) {
     return TextStyle(
-        fontSize: 22, fontWeight: FontWeight.w500, color: AppColors.textColor);
+        fontSize: size, fontWeight: weight, color: AppColors.textColor);
   }
 
   static TextStyle lableText() {
@@ -176,12 +176,12 @@ class MainFonts {
     return TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: color);
   }
 
-  static TextStyle hintFieldText() {
-    return const TextStyle(fontSize: 18, color: AppColors.lightTextColor);
+  static TextStyle hintFieldText({double size = 18, Color color = AppColors.lightTextColor}) {
+    return TextStyle(fontSize: 18, color: color);
   }
 
-  static TextStyle textFieldText() {
-    return const TextStyle(fontSize: 19, color: AppColors.textColor);
+  static TextStyle textFieldText({double size = 19}) {
+    return TextStyle(fontSize: size, color: AppColors.textColor);
   }
 
   static TextStyle settingLabel() {

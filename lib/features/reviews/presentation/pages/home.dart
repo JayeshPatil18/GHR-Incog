@@ -366,50 +366,53 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin:
+                  EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: Image.asset('assets/icons/menu.png',
+                            color: AppColors.primaryColor30,
+                            height: 34, width: 34),
+                      ),
+
+                      // **********************************************************
+                      // notification comment
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('notification');
+                        },
+                        child: Image.asset(
+                            'assets/icons/notification.png',
+                            height: AppIconSize.appIcons,
+                            width: AppIconSize.appIcons),
+                      )
+                      // **********************************************************
+                    ],
+                  ),
+                ),
+                Line()
+              ],
+            ),
+          )),
       backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
       body: Container(
-        decoration: BoxDecoration(gradient: AppColors.mainGradient),
         child: Container(
           margin: EdgeInsets.only(top: 20),
           child: Column(
             children: [
-              Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          child: Image.asset('assets/icons/menu.png',
-                              color: AppColors.primaryColor30,
-                              height: 34, width: 34),
-                        ),
-
-                        // **********************************************************
-                        // notification comment
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed('notification');
-                          },
-                          child: Image.asset(
-                              'assets/icons/notification.png',
-                              height: AppIconSize.appIcons,
-                              width: AppIconSize.appIcons),
-                        )
-                        // **********************************************************
-                      ],
-                    ),
-                  ),
-                  Line()
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
               Expanded(
                   child: StreamBuilder(
                       stream: reviewStream,
