@@ -131,8 +131,20 @@ class _UploadReviewState extends State<UploadReview> {
     });
   }
 
+  double progress = 0;
+  int currentCharacters = 0;
+
+  _onTextChanged(){
+    setState(() {
+      currentCharacters = postTextController.text.length;
+      progress = currentCharacters / AppValues.maxCharactersPost;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _onTextChanged();
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
@@ -221,16 +233,24 @@ class _UploadReviewState extends State<UploadReview> {
                                     radius: 22,
                                   ),
                                 ),
-                                const SizedBox(width: 15),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
+                                    maxLength: AppValues.maxCharactersPost,
                                     controller: postTextController,
                                     style: MainFonts.textFieldText(size: 18),
                                     decoration: InputDecoration(
+                                      counterText: '',
                                       hintText: "Write fearlessly...",
                                       hintStyle: MainFonts.hintFieldText(size: 18, color: AppColors.transparentComponentColor),
                                       border: InputBorder.none,
                                     ),
+                                    onChanged: (value) {
+                                      _onTextChanged();
+                                      if (currentCharacters > AppValues.maxCharactersPost) {
+                                        mySnackBarShow(context, 'Character limit exceeded!');
+                                      }
+                                    },
                                     maxLines: null,
                                   ),
                                 ),
@@ -247,7 +267,7 @@ class _UploadReviewState extends State<UploadReview> {
                                   margin: EdgeInsets.only(left: 50),
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.file(_selectedImage!, fit: BoxFit.fitWidth)),
+                                      child: Image.file(_selectedImage!, fit: BoxFit.cover)),
                                 ),
                                 Align(
                                     alignment: Alignment(1, -1),
@@ -288,6 +308,7 @@ class _UploadReviewState extends State<UploadReview> {
                     ),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0).copyWith(
@@ -298,8 +319,37 @@ class _UploadReviewState extends State<UploadReview> {
                             onTap: () {
                               pickSource();
                             },
-                            child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.secondaryColor10),
+                            child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.textColor),
                         ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
+                            padding: EdgeInsets.all(4),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  backgroundColor: AppColors.transparentComponentColor,
+                                  value: progress,
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(currentCharacters < AppValues.maxCharactersPost ? AppColors.textColor : AppColors.errorColor),
+                                ),
+                                Text(
+                                  '${currentCharacters <= AppValues.maxCharactersPost ? currentCharacters : AppValues.maxCharactersPost}',
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textColor
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 15)
+                        ],
                       ),
                     ],
                   ),
