@@ -20,6 +20,7 @@ class AppColors {
   static const transparentComponentColor = Color.fromRGBO(255, 255, 255, 0.2);
   static const textColor = Color(0xFFFFFFFF);
   static const lightTextColor = Color.fromRGBO(255, 255, 255, 0.4);
+  static const lightBlackColor = Color.fromRGBO(0, 0, 0, 0.3411764705882353);
   static const iconColor = Color(0xFFBABABA);
   static const iconLightColor = Color(0xFFe4e4e4);
   static const iconLighterColor = Color.fromARGB(255, 243, 243, 243);

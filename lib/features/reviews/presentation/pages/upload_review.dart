@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:review_app/constants/values.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
+import 'package:review_app/features/reviews/presentation/widgets/line.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/utils/dropdown_items.dart';
 
@@ -91,32 +92,31 @@ class _UploadReviewState extends State<UploadReview> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: Icon(Icons.photo),
-                title: Text('Gallary'),
-                onTap: () {
-                  pickImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
-                color: AppColors.iconLightColor,
-                height: 1,
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_camera),
-                title: Text('Camera'),
-                onTap: () {
-                  pickImage(ImageSource.camera);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+        return Container(
+          decoration: BoxDecoration(gradient: AppColors.mainGradient),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.photo, color: AppColors.textColor),
+                  title: Text('Gallary' , style: MainFonts.filterText(color: AppColors.textColor)),
+                  onTap: () {
+                    pickImage(ImageSource.gallery);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Line(),
+                ListTile(
+                  leading: Icon(Icons.photo_camera, color: AppColors.textColor),
+                  title: Text('Camera' , style: MainFonts.filterText(color: AppColors.textColor)),
+                  onTap: () {
+                    pickImage(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -236,12 +236,40 @@ class _UploadReviewState extends State<UploadReview> {
                                 ),
                               ],
                             ),
-                            _selectedImage != null ? Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                              ),
-                              child: Image.file(_selectedImage!),
+                            _selectedImage != null ? Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 260,
+                                  margin: EdgeInsets.only(left: 50),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.file(_selectedImage!, fit: BoxFit.fitWidth)),
+                                ),
+                                Align(
+                                    alignment: Alignment(1, -1),
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _selectedImage = null;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.lightBlackColor,
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                            child: Icon(Icons.close_rounded, color: AppColors.primaryColor30)),
+                                      ),
+                                    )
+                                ),
+                              ],
                             ) : SizedBox()
                           ],
                         ),
@@ -270,7 +298,7 @@ class _UploadReviewState extends State<UploadReview> {
                             onTap: () {
                               pickSource();
                             },
-                            child: Icon(Icons.photo_outlined, color: AppColors.secondaryColor10)
+                            child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.secondaryColor10),
                         ),
                       ),
                     ],
