@@ -259,6 +259,7 @@ class _UploadReviewState extends State<UploadReview> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    FocusScope.of(context).unfocus();
                                     Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(_selectedMedia?.path ?? '' , false));
                             },
                                   child: Container(
