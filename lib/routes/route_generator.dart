@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:review_app/features/reviews/domain/entities/image_argument.dart';
 import 'package:review_app/features/reviews/domain/entities/verify_arguments.dart';
 import 'package:review_app/features/reviews/presentation/pages/edit_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/notification.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
 import 'package:review_app/features/authentication/presentation/pages/verify_phone.dart';
+import 'package:review_app/features/reviews/presentation/pages/view_image.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_profile.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_review.dart';
 import 'package:review_app/main.dart';
@@ -15,24 +17,34 @@ import '../features/authentication/presentation/pages/signup.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/verify_phoneno_argument.dart';
 
-class RouteGenerator{
-  Route<dynamic> generateRoute(RouteSettings settings){
-    
+class RouteGenerator {
+  Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const Splash()
+            builder: (_) => const Splash()
         );
-      
+
       case 'landing':
         return MaterialPageRoute(
-          builder: (_) => const LandingPage()
+            builder: (_) => const LandingPage()
         );
 
       case 'upload':
         return MaterialPageRoute(
-          builder: (_) => const UploadReview()
+            builder: (_) => const UploadReview()
+        );
+
+      case 'view_image':
+
+        ImageViewArguments arguments = settings.arguments as ImageViewArguments;
+
+        String imageUrl = arguments.imageUrl;
+        bool isNetworkUrl = arguments.isNetworkUrl;
+
+        return MaterialPageRoute(
+            builder: (_) => ViewImage(imageUrl: imageUrl, isNetworkImage: isNetworkUrl)
         );
 
       case 'view_review':
@@ -53,27 +65,26 @@ class RouteGenerator{
 
       case 'signup':
         return MaterialPageRoute(
-          builder: (_) => const SignUpPage()
+            builder: (_) => const SignUpPage()
         );
-      
+
       case 'notification':
         return MaterialPageRoute(
-          builder: (_) => const NotificationPage()
+            builder: (_) => const NotificationPage()
         );
 
       case 'editprofile':
         return MaterialPageRoute(
-          builder: (_) => const EditProfile()
+            builder: (_) => const EditProfile()
         );
-      
-      case 'verifyphone':
 
+      case 'verifyphone':
         VerifyArguments verifyArguments = settings.arguments as VerifyArguments;
 
         String email = verifyArguments.email;
 
         return MaterialPageRoute(
-          builder: (_) => VerifyPhoneNo(email: email)
+            builder: (_) => VerifyPhoneNo(email: email)
         );
 
       default:
@@ -83,13 +94,13 @@ class RouteGenerator{
 
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
-      builder: (_) {
-        return Scaffold(
-          body: const Center(
-            child: Text("ERROR"),
-          ),
-        );
-      }
+        builder: (_) {
+          return Scaffold(
+            body: const Center(
+              child: Text("ERROR"),
+            ),
+          );
+        }
     );
   }
 }

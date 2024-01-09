@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:review_app/constants/values.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/line.dart';
@@ -21,6 +22,7 @@ import '../../../../constants/elevation.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
+import '../../domain/entities/image_argument.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
@@ -255,16 +257,21 @@ class _UploadReviewState extends State<UploadReview> {
                             const SizedBox(height: 40),
                             _selectedMedia != null ? Stack(
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(_selectedMedia?.path ?? '' , false));
+                            },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 260,
+                                    margin: EdgeInsets.only(left: 50),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.file(_selectedMedia!, fit: BoxFit.cover)),
                                   ),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 260,
-                                  margin: EdgeInsets.only(left: 50),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.file(_selectedMedia!, fit: BoxFit.cover)),
                                 ),
                                 Align(
                                     alignment: Alignment(1, -1),
