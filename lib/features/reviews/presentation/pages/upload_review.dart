@@ -49,7 +49,7 @@ class _UploadReviewState extends State<UploadReview> {
 
     switch (index) {
       case 0:
-        if (input == null || input.isEmpty) {
+        if (input == null || input.length < 2) {
           return 'Write confession';
         }
         break;
@@ -177,7 +177,7 @@ class _UploadReviewState extends State<UploadReview> {
                         height: 35,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.secondaryColor10,
+                              backgroundColor: postTextController.text.trim().length > 1 ? AppColors.secondaryColor10 : AppColors.transparentComponentColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)),
@@ -235,23 +235,31 @@ class _UploadReviewState extends State<UploadReview> {
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
-                                  child: TextField(
-                                    maxLength: AppValues.maxCharactersPost,
-                                    controller: postTextController,
-                                    style: MainFonts.textFieldText(size: 18),
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      hintText: "Write fearlessly...",
-                                      hintStyle: MainFonts.hintFieldText(size: 18, color: AppColors.transparentComponentColor),
-                                      border: InputBorder.none,
+                                  child: Form(
+                                    key: _formKey,
+                                    child: TextFormField(
+                                      maxLength: AppValues.maxCharactersPost,
+                                      controller: postTextController,
+                                      autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                      validator: ((value) {
+                                        return _validateInput(value, 0);
+                                      }),
+                                      style: MainFonts.textFieldText(size: 18),
+                                      decoration: InputDecoration(
+                                        counterText: '',
+                                        hintText: "Write fearlessly...",
+                                        hintStyle: MainFonts.hintFieldText(size: 18, color: AppColors.transparentComponentColor),
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (value) {
+                                        _onTextChanged();
+                                        if (currentCharacters > AppValues.maxCharactersPost) {
+                                          mySnackBarShow(context, 'Character limit exceeded!');
+                                        }
+                                      },
+                                      maxLines: null,
                                     ),
-                                    onChanged: (value) {
-                                      _onTextChanged();
-                                      if (currentCharacters > AppValues.maxCharactersPost) {
-                                        mySnackBarShow(context, 'Character limit exceeded!');
-                                      }
-                                    },
-                                    maxLines: null,
                                   ),
                                 ),
                               ],
