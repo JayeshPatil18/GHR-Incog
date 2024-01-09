@@ -295,7 +295,7 @@ class ChooseGenderState extends State<ChooseGender> {
                                 VerifyPhoneNo.username);
 
                             updateLoginStatus(true);
-                            loginDetails(userId.toString(), widget.email);
+                            loginDetails(userId.toString(), VerifyPhoneNo.username);
 
                             Timer(Duration(milliseconds: AppValues.closeDelay), () {
                               Navigator.pop(context);

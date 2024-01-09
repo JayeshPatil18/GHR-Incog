@@ -413,85 +413,87 @@ class _HomePageState extends State<HomePage> {
           margin: EdgeInsets.only(top: 20),
           child: Column(
             children: [
-              Expanded(
-                  child: StreamBuilder(
-                      stream: reviewStream,
-                      builder: (context, snapshot) {
-                        final documents;
-                        if (snapshot.data != null) {
-                          documents = snapshot.data!.docs;
-                          if (documents.length < 1) {
-                            return Center(
-                                child: Text('No Reviews',
-                                    style: MainFonts.filterText(
-                                        color: AppColors.textColor)));
-                          }
 
-                          List<UploadReviewModel> reviewsList = [];
-                          for(int i = 0; i < documents.length; i++){
-                            UploadReviewModel review = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-                            reviewsList.add(review);
-                          }
-
-                          // Solve this error and get solution
-                          List<UploadReviewModel> nameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-                            return !(element.name.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-                          }).toList();
-
-                          if(nameFilteredItems.isNotEmpty){
-
-                            reviewsList = nameFilteredItems;
-                          } else{
-                            List<UploadReviewModel> descriptionFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-                              return !(element.description.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-                            }).toList();
-
-                            if(descriptionFilteredItems.isNotEmpty){
-                              reviewsList = descriptionFilteredItems;
-                            } else{
-                              List<UploadReviewModel> usernameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-                                return !(element.username.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-                              }).toList();
-
-                              if(usernameFilteredItems.isNotEmpty){
-                                reviewsList = usernameFilteredItems;
-                              }
-                            }
-                          }
-
-                          return GridView.builder(
-                              padding: EdgeInsets.only(
-                                  top: 10, bottom: 100, left: 20, right: 20),
-                              gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: (100 / 158)),
-                              scrollDirection: Axis.vertical,
-                              itemCount: reviewsList.length,
-                              itemBuilder: (BuildContext context, int index) {
-
-                                UploadReviewModel review = reviewsList[index];
-
-                                return ReviewModel(
-                                    reviewId: review.rid,
-                                    imageUrl: review.imageUrl,
-                                    price: review.price,
-                                    isLiked: review.likedBy
-                                        .contains(MyApp.userId),
-                                    title: review.name,
-                                    brand: review.brand,
-                                    category: review.category,
-                                    date: review.date
-                                        .substring(0, 10)
-                                        .replaceAll('-', '/'),
-                                    rating: review.rating);
-                              });
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      })),
+              // Review GridView
+              // Expanded(
+              //     child: StreamBuilder(
+              //         stream: reviewStream,
+              //         builder: (context, snapshot) {
+              //           final documents;
+              //           if (snapshot.data != null) {
+              //             documents = snapshot.data!.docs;
+              //             if (documents.length < 1) {
+              //               return Center(
+              //                   child: Text('No Reviews',
+              //                       style: MainFonts.filterText(
+              //                           color: AppColors.textColor)));
+              //             }
+              //
+              //             List<UploadReviewModel> reviewsList = [];
+              //             for(int i = 0; i < documents.length; i++){
+              //               UploadReviewModel review = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+              //               reviewsList.add(review);
+              //             }
+              //
+              //             // Solve this error and get solution
+              //             List<UploadReviewModel> nameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+              //               return !(element.text.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+              //             }).toList();
+              //
+              //             if(nameFilteredItems.isNotEmpty){
+              //
+              //               reviewsList = nameFilteredItems;
+              //             } else{
+              //               List<UploadReviewModel> descriptionFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+              //                 return !(element.description.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+              //               }).toList();
+              //
+              //               if(descriptionFilteredItems.isNotEmpty){
+              //                 reviewsList = descriptionFilteredItems;
+              //               } else{
+              //                 List<UploadReviewModel> usernameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
+              //                   return !(element.username.toLowerCase().contains(HomePage.searchText.toLowerCase()));
+              //                 }).toList();
+              //
+              //                 if(usernameFilteredItems.isNotEmpty){
+              //                   reviewsList = usernameFilteredItems;
+              //                 }
+              //               }
+              //             }
+              //
+              //             return GridView.builder(
+              //                 padding: EdgeInsets.only(
+              //                     top: 10, bottom: 100, left: 20, right: 20),
+              //                 gridDelegate:
+              //                 const SliverGridDelegateWithFixedCrossAxisCount(
+              //                     crossAxisSpacing: 20,
+              //                     mainAxisSpacing: 20,
+              //                     crossAxisCount: 2,
+              //                     childAspectRatio: (100 / 158)),
+              //                 scrollDirection: Axis.vertical,
+              //                 itemCount: reviewsList.length,
+              //                 itemBuilder: (BuildContext context, int index) {
+              //
+              //                   UploadReviewModel review = reviewsList[index];
+              //
+              //                   return ReviewModel(
+              //                       reviewId: review.postId,
+              //                       imageUrl: review.mediaUrl,
+              //                       price: review.price,
+              //                       isLiked: review.likedBy
+              //                           .contains(MyApp.userId),
+              //                       title: review.text,
+              //                       brand: review.brand,
+              //                       category: review.category,
+              //                       date: review.date
+              //                           .substring(0, 10)
+              //                           .replaceAll('-', '/'),
+              //                       rating: review.rating);
+              //                 });
+              //           } else {
+              //             return Center(child: CircularProgressIndicator());
+              //           }
+              //         })),
             ],
           ),
         )

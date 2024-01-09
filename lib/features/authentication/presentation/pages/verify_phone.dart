@@ -270,6 +270,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       int length = getMaxUId(data) + 1;
 
       int userId = -1;
+      String username = 'null';
 
       for (var userMap in data) {
         if (userMap['email'].toString() == email && userMap['status'] == 1) {
@@ -277,6 +278,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
         } else
         if (userMap['email'].toString() == email && userMap['status'] == 0) {
           userId = userMap['userid'];
+          username = userMap['username'];
 
           // Update login status value
           userMap['status'] = 1;
@@ -291,7 +293,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
         return length;
       } else{
         updateLoginStatus(true);
-        loginDetails(userId.toString(), email);
+        loginDetails(userId.toString(), username);
 
         return 1;
       }

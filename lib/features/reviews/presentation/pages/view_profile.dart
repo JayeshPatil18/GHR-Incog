@@ -86,109 +86,111 @@ class _ViewProfileState extends State<ViewProfile> {
           controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              StreamBuilder<QuerySnapshot>(
-                  stream: UsersRepo.userFireInstance.snapshots(),
-                  builder: (context, snapshot) {
-                    final documents;
-                    if (snapshot != null) {
-                      documents = snapshot.data?.docs;
-                      List<Map<String, dynamic>> usersData = [];
-                      User? user;
-
-                      if (documents != null && documents.isNotEmpty) {
-                        final firstDocument = documents[0];
-
-                        if (firstDocument != null &&
-                            firstDocument.data() != null &&
-                            firstDocument.data().containsKey('userslist')) {
-                          usersData = List<Map<String, dynamic>>.from(
-                              firstDocument.data()['userslist']);
-
-                          List<User> usersList = usersData
-                              .map((userData) => User.fromMap(userData))
-                              .toList();
-
-                          List<User> users = usersList
-                              .where((user) => user.uid == widget.userId)
-                              .toList();
-                          user = users.first;
-
-                        }
-                      }
-
-                      return SliverAppBar(
-                          elevation: 0.0,
-                          pinned: false,
-                          floating: false,
-                          automaticallyImplyLeading: false,
-                          expandedHeight: height,
-                          backgroundColor: AppColors.backgroundColor60,
-                          flexibleSpace: FlexibleSpaceBar(
-                              title: const SizedBox(),
-                              background: UserProfileModel(
-                                profileUrl: user?.profileUrl ?? 'null',
-                                name: user?.fullName ?? '',
-                                username: user?.username ?? '',
-                                rank: user?.rank ?? -1,
-                                points: user?.points ?? -1,
-                                bio: user?.bio ?? '',
-                              )));
-                    } else {
-                      return Container(
-                          height: 400,
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                  }),
+              // Profile
+              // StreamBuilder<QuerySnapshot>(
+              //     stream: UsersRepo.userFireInstance.snapshots(),
+              //     builder: (context, snapshot) {
+              //       final documents;
+              //       if (snapshot != null) {
+              //         documents = snapshot.data?.docs;
+              //         List<Map<String, dynamic>> usersData = [];
+              //         User? user;
+              //
+              //         if (documents != null && documents.isNotEmpty) {
+              //           final firstDocument = documents[0];
+              //
+              //           if (firstDocument != null &&
+              //               firstDocument.data() != null &&
+              //               firstDocument.data().containsKey('userslist')) {
+              //             usersData = List<Map<String, dynamic>>.from(
+              //                 firstDocument.data()['userslist']);
+              //
+              //             List<User> usersList = usersData
+              //                 .map((userData) => User.fromMap(userData))
+              //                 .toList();
+              //
+              //             List<User> users = usersList
+              //                 .where((user) => user.uid == widget.userId)
+              //                 .toList();
+              //             user = users.first;
+              //
+              //           }
+              //         }
+              //
+              //         return SliverAppBar(
+              //             elevation: 0.0,
+              //             pinned: false,
+              //             floating: false,
+              //             automaticallyImplyLeading: false,
+              //             expandedHeight: height,
+              //             backgroundColor: AppColors.backgroundColor60,
+              //             flexibleSpace: FlexibleSpaceBar(
+              //                 title: const SizedBox(),
+              //                 background: UserProfileModel(
+              //                   profileUrl: user?.profileUrl ?? 'null',
+              //                   name: user?.fullName ?? '',
+              //                   username: user?.username ?? '',
+              //                   rank: user?.rank ?? -1,
+              //                   points: user?.points ?? -1,
+              //                   bio: user?.bio ?? '',
+              //                 )));
+              //       } else {
+              //         return Container(
+              //             height: 400,
+              //             child: Center(child: CircularProgressIndicator()));
+              //       }
+              //     }),
             ];
           },
           body: SafeArea(
             bottom: false,
             child: Column(
               children: [
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: widget.userId).orderBy('date', descending: true).snapshots(),
-                      builder: (context, snapshot) {
-                        final documents;
-                        if (snapshot.data != null) {
-                          documents = snapshot.data!.docs;
-                          if(documents.length < 1){
-                            return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
-                          }
-                          return GridView.builder(
-                              padding: EdgeInsets.only(
-                                  top: 10, bottom: 100, left: 20, right: 20),
-                              gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: (100 / 158)),
-                              scrollDirection: Axis.vertical,
-                              itemCount: documents.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                UploadReviewModel review =
-                                UploadReviewModel.fromMap(documents[index]
-                                    .data() as Map<String, dynamic>);
-
-                                return ReviewModel(
-                                    reviewId: review.rid,
-                                    imageUrl: review.imageUrl,
-                                    price: review.price,
-                                    isLiked: review.likedBy.contains(MyApp.userId),
-                                    title: review.name,
-                                    brand: review.brand,
-                                    category: review.category,
-                                    date: review.date
-                                        .substring(0, 10)
-                                        .replaceAll('-', '/'),
-                                    rating: review.rating);
-                              });
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      }),
-                ),
+                // Review GridView
+                // Expanded(
+                //   child: StreamBuilder<QuerySnapshot>(
+                //       stream: ReviewRepo.reviewFireInstance.where('userId', isEqualTo: widget.userId).orderBy('date', descending: true).snapshots(),
+                //       builder: (context, snapshot) {
+                //         final documents;
+                //         if (snapshot.data != null) {
+                //           documents = snapshot.data!.docs;
+                //           if(documents.length < 1){
+                //             return Center(child: Text('No Reviews', style: MainFonts.filterText(color: AppColors.textColor)));
+                //           }
+                //           return GridView.builder(
+                //               padding: EdgeInsets.only(
+                //                   top: 10, bottom: 100, left: 20, right: 20),
+                //               gridDelegate:
+                //               const SliverGridDelegateWithFixedCrossAxisCount(
+                //                   crossAxisSpacing: 20,
+                //                   mainAxisSpacing: 20,
+                //                   crossAxisCount: 2,
+                //                   childAspectRatio: (100 / 158)),
+                //               scrollDirection: Axis.vertical,
+                //               itemCount: documents.length,
+                //               itemBuilder: (BuildContext context, int index) {
+                //                 UploadReviewModel review =
+                //                 UploadReviewModel.fromMap(documents[index]
+                //                     .data() as Map<String, dynamic>);
+                //
+                //                 return ReviewModel(
+                //                     reviewId: review.postId,
+                //                     imageUrl: review.mediaUrl,
+                //                     price: review.price,
+                //                     isLiked: review.likedBy.contains(MyApp.userId),
+                //                     title: review.text,
+                //                     brand: review.brand,
+                //                     category: review.category,
+                //                     date: review.date
+                //                         .substring(0, 10)
+                //                         .replaceAll('-', '/'),
+                //                     rating: review.rating);
+                //               });
+                //         } else {
+                //           return Center(child: CircularProgressIndicator());
+                //         }
+                //       }),
+                // ),
               ],
             ),
           ),

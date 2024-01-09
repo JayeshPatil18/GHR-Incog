@@ -14,23 +14,18 @@ class UploadReviewBloc extends Bloc<UploadReviewEvent, UploadReviewState> {
       if (event is UploadClickEvent) {
         emit(UploadReviewLoading());
         UploadReviewModel reviewModel = UploadReviewModel(
-          brand : event.brand,
-          category : event.category,
-          date : '', // 
-          description : event.description,
-          imageUrl : '', //
+          date : '', //
           likedBy : [],
-          name : event.name,
-          price : event.price,
-          rating : event.rating,
-          summary : event.summary,
+          mediaUrl : '', //
+          parentId: event.parentId, //
+          postId: '-1',
+          text : event.postText,
           userId : -1, //
           username : '', //
-          rid: -1, //
         );
 
         ReviewRepo reviewRepo = ReviewRepo();
-        bool isUploaded = await reviewRepo.uploadReview(reviewModel, event.imageSelected);
+        bool isUploaded = await reviewRepo.uploadReview(reviewModel, event.mediaSelected);
         if(isUploaded){
           emit(UploadReviewSuccess());
         } else{

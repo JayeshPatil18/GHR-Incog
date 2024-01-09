@@ -162,7 +162,7 @@ class _ViewReviewState extends State<ViewReview> {
                                         borderRadius: BorderRadius.circular(
                                             AppBoarderRadius
                                                 .reviewUploadRadius),
-                                        child: review?.imageUrl == 'null'
+                                        child: review?.mediaUrl == 'null'
                                             ? SizedBox(
                                           width: (MediaQuery.of(context)
                                               .size
@@ -185,7 +185,7 @@ class _ViewReviewState extends State<ViewReview> {
                                             : Container(
                                           color: AppColors.primaryColor30,
                                               child: CustomImageShimmer(
-                                          imageUrl: review?.imageUrl ?? '',
+                                          imageUrl: review?.mediaUrl ?? '',
                                           width: (MediaQuery.of(context)
                                                     .size
                                                     .width) -
@@ -244,103 +244,104 @@ class _ViewReviewState extends State<ViewReview> {
                                   borderRadius: BorderRadius.circular(5),
                                   color: AppColors.iconLightColor),
                             ),
-                            Container(
-                              padding: EdgeInsets.all(30),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Text(review?.name ?? '',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: ViewReviewFonts.titleText()),
-                                      ),
-                                      Row(children: [
-                                        Text(review?.price[0] ?? '',
-                                            style: ViewReviewFonts.titleText(
-                                                color: AppColors.secondaryColor10)),
-                                        Text((review?.price.substring(1) ?? '').length > 11
-                                            ? (review?.price.substring(1, 9) ?? '') + '...'
-                                            : (review?.price.substring(1) ?? ''),
-                                            style: ViewReviewFonts.titleText())
-                                      ]),
-                                    ],
-                                  ),
-                                  SizedBox(height: 6),
-                                  Text((review?.brand ?? '').length > 34
-                                      ? (review?.brand ?? '').substring(0, 33) + '...'
-                                      : (review?.brand ?? ''),
-                                      style:
-                                      ViewReviewFonts.subTitleText(fontSize: 14)),
-                                  SizedBox(height: 4),
-                                  Text((review?.category ?? '').length > 34
-                                      ? (review?.category ?? '').substring(0, 33) + '...'
-                                      : (review?.category ?? ''),
-                                      style:
-                                      ViewReviewFonts.subTitleText(fontSize: 14)),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          alignment: Alignment.centerRight,
-                                          height: 24,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: AppValues.maxRating,
-                                            itemBuilder:
-                                                (BuildContext context, int index) {
-                                              return Row(
-                                                children: [
-                                                  Icon(Icons.star,
-                                                      size: 24,
-                                                      color: index < (review?.rating ?? 0)
-                                                          ? AppColors.starColor
-                                                          : AppColors.iconLightColor),
-                                                  SizedBox(width: 2)
-                                                ],
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(review?.userId ?? -1));
-                                        },
-                                        child: Text(('@${review?.username ?? ''}').length > 20
-                                            ? ('@${review?.username ?? ''}').substring(0, 19) + '...'
-                                            : ('@${review?.username ?? ''}'),
-                                            style: ViewReviewFonts.reviewUserText()),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text('Description',
-                                      style: ViewReviewFonts.contentLabelText()),
-                                  SizedBox(height: 8),
-                                  Text((review?.description ?? ''),
-                                    maxLines: 6,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: ViewReviewFonts.contentText(),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text('Summary',
-                                      style: ViewReviewFonts.contentLabelText()),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    (review?.summary ?? ''),
-                                    maxLines: 36,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: ViewReviewFonts.contentText(),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Review Upload Fields
+                            // Container(
+                            //   padding: EdgeInsets.all(30),
+                            //   child: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Flexible(
+                            //             child: Text(review?.text ?? '',
+                            //                 maxLines: 2,
+                            //                 overflow: TextOverflow.ellipsis,
+                            //                 style: ViewReviewFonts.titleText()),
+                            //           ),
+                            //           Row(children: [
+                            //             Text(review?.price[0] ?? '',
+                            //                 style: ViewReviewFonts.titleText(
+                            //                     color: AppColors.secondaryColor10)),
+                            //             Text((review?.price.substring(1) ?? '').length > 11
+                            //                 ? (review?.price.substring(1, 9) ?? '') + '...'
+                            //                 : (review?.price.substring(1) ?? ''),
+                            //                 style: ViewReviewFonts.titleText())
+                            //           ]),
+                            //         ],
+                            //       ),
+                            //       SizedBox(height: 6),
+                            //       Text((review?.brand ?? '').length > 34
+                            //           ? (review?.brand ?? '').substring(0, 33) + '...'
+                            //           : (review?.brand ?? ''),
+                            //           style:
+                            //           ViewReviewFonts.subTitleText(fontSize: 14)),
+                            //       SizedBox(height: 4),
+                            //       Text((review?.category ?? '').length > 34
+                            //           ? (review?.category ?? '').substring(0, 33) + '...'
+                            //           : (review?.category ?? ''),
+                            //           style:
+                            //           ViewReviewFonts.subTitleText(fontSize: 14)),
+                            //       SizedBox(height: 10),
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Expanded(
+                            //             child: Container(
+                            //               alignment: Alignment.centerRight,
+                            //               height: 24,
+                            //               child: ListView.builder(
+                            //                 scrollDirection: Axis.horizontal,
+                            //                 itemCount: AppValues.maxRating,
+                            //                 itemBuilder:
+                            //                     (BuildContext context, int index) {
+                            //                   return Row(
+                            //                     children: [
+                            //                       Icon(Icons.star,
+                            //                           size: 24,
+                            //                           color: index < (review?.rating ?? 0)
+                            //                               ? AppColors.starColor
+                            //                               : AppColors.iconLightColor),
+                            //                       SizedBox(width: 2)
+                            //                     ],
+                            //                   );
+                            //                 },
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           InkWell(
+                            //             onTap: () {
+                            //               Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(review?.userId ?? -1));
+                            //             },
+                            //             child: Text(('@${review?.username ?? ''}').length > 20
+                            //                 ? ('@${review?.username ?? ''}').substring(0, 19) + '...'
+                            //                 : ('@${review?.username ?? ''}'),
+                            //                 style: ViewReviewFonts.reviewUserText()),
+                            //           )
+                            //         ],
+                            //       ),
+                            //       SizedBox(height: 20),
+                            //       Text('Description',
+                            //           style: ViewReviewFonts.contentLabelText()),
+                            //       SizedBox(height: 8),
+                            //       Text((review?.description ?? ''),
+                            //         maxLines: 6,
+                            //         overflow: TextOverflow.ellipsis,
+                            //         style: ViewReviewFonts.contentText(),
+                            //       ),
+                            //       SizedBox(height: 20),
+                            //       Text('Summary',
+                            //           style: ViewReviewFonts.contentLabelText()),
+                            //       SizedBox(height: 8),
+                            //       Text(
+                            //         (review?.summary ?? ''),
+                            //         maxLines: 36,
+                            //         overflow: TextOverflow.ellipsis,
+                            //         style: ViewReviewFonts.contentText(),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Container(
                               margin: EdgeInsets.only(
                                   top: 20, left: 20, right: 20, bottom: 40),
@@ -354,7 +355,7 @@ class _ViewReviewState extends State<ViewReview> {
                                         borderRadius: BorderRadius.circular(
                                             AppBoarderRadius
                                                 .reviewUploadRadius),
-                                        child: review?.imageUrl == 'null'
+                                        child: review?.mediaUrl == 'null'
                                             ? SizedBox(
                                           width: (MediaQuery.of(context)
                                               .size
@@ -377,7 +378,7 @@ class _ViewReviewState extends State<ViewReview> {
                                             : Container(
                                           color: AppColors.primaryColor30,
                                               child: CustomImageShimmer(
-                                          imageUrl: review?.imageUrl ?? '',
+                                          imageUrl: review?.mediaUrl ?? '',
                                           width: (MediaQuery.of(context)
                                                 .size
                                                 .width) -

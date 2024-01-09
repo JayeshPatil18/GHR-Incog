@@ -1,68 +1,48 @@
 import 'dart:io';
 
 class UploadReviewModel {
-  String brand;
-  String category;
   String date;
-  String description;
-  String imageUrl;
   List<int> likedBy;
-  String name;
-  String price;
-  int rating;
-  int rid;
-  String summary;
+  String mediaUrl;
+  String parentId;
+  String postId;
+  String text;
   int userId;
   String username;
 
   UploadReviewModel({
-    required this.brand,
-    required this.category,
     required this.date,
-    required this.description,
-    required this.imageUrl,
     required this.likedBy,
-    required this.name,
-    required this.price,
-    required this.rating,
-    required this.rid,
-    required this.summary,
+    required this.mediaUrl,
+    required this.parentId,
+    required this.postId,
+    required this.text,
     required this.userId,
     required this.username,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'brand': brand,
-      'category': category,
       'date': date,
-      'description': description,
-      'imageUrl': imageUrl,
-      'likedBy': likedBy,
-      'name': name,
-      'price': price,
-      'rating': rating,
-      'rid': rid,
-      'summary': summary,
-      'userId': userId,
+      'likedby': likedBy,
+      'mediaurl': mediaUrl,
+      'parentid': parentId,
+      'postid': postId,
+      'text': text,
+      'userid': userId,
       'username': username,
     };
   }
 
    factory UploadReviewModel.fromMap(Map<String, dynamic> map) {
     return UploadReviewModel(
-      brand: map['brand'] ?? '',
-      category: map['category'] ?? '',
       date: map['date'] ?? '',
-      description: map['description'] ?? '',
-      imageUrl: map['imageUrl'] ?? '',
-      likedBy: (map['likedBy'] as List<dynamic>).map<int>((item) => item as int).toList(),
-      name: map['name'] ?? '',
-      price: map['price'] ?? '',
-      rating: map['rating'] ?? 0,
-      rid: map['rid'] ?? 0,
-      summary: map['summary'] ?? '',
-      userId: map['userId'] ?? 0,
+      likedBy: (map['likedby'] as List<dynamic>).map<int>((item) => item as int).toList(),
+      mediaUrl: map['mediaurl'] ?? '',
+      parentId: map['parentid'] ?? '',
+      postId: map['postid'] ?? '',
+      text: map['text'] ?? 0,
+      userId: map['userid'] ?? 0,
       username: map['username'] ?? '',
     );
   }

@@ -9,7 +9,7 @@ import '../../domain/entities/upload_review.dart';
 class ReviewRepo {
   final _db = FirebaseFirestore.instance;
   static final reviewFireInstance = FirebaseFirestore.instance
-                            .collection('reviews');
+                            .collection('posts');
 
   Future<bool> likeReview(int reviewId, bool isLiked) async {
 
@@ -47,11 +47,13 @@ class ReviewRepo {
     return allData;
   }
 
-  Future<bool> uploadReview(UploadReviewModel uploadReviewModel, File imageSelected) async {
+  Future<bool> uploadReview(UploadReviewModel uploadReviewModel, File? imageSelected) async {
 
     try {
-      List<Map<String, dynamic>> data = await getReviews();
-      int reviewId = getMaxRId(data) + 1;
+      final reference = _db.collection('posts');
+
+      // Next Post Id
+      String postId = reference.doc().id;
 
       List<String>? details = await getLoginDetails();
       int userId = -1;
@@ -65,16 +67,17 @@ class ReviewRepo {
       }
 
       // Upload Image
-      String imageUrl = await _uploadFile(reviewId, imageSelected);
+      String imageUrl = imageSelected == null ? 'null' : await _uploadFile(postId, imageSelected);
 
+      print('${imageSelected == null} ### $imageUrl');
+
+      uploadReviewModel.date = date;
+      uploadReviewModel.mediaUrl = imageUrl;
+      uploadReviewModel.postId = postId;
       uploadReviewModel.userId = userId;
       uploadReviewModel.username = username;
-      uploadReviewModel.rid = reviewId;
-      uploadReviewModel.date = date;
-      uploadReviewModel.imageUrl = imageUrl;
 
-
-      final snapshot = await _db.collection('reviews').doc(reviewId.toString());
+      final snapshot = reference.doc(postId);
       await snapshot.set(uploadReviewModel.toMap());
       return true;
     } catch (e) {
@@ -82,16 +85,16 @@ class ReviewRepo {
     }
   }
 
-  Future<String> _uploadFile(int rId, File _imageFile) async {
+  Future<String> _uploadFile(String postId, File mediaFile) async {
     try {
-    final Reference storageRef =
-      FirebaseStorage.instance.ref().child('review_images');
-      UploadTask uploadTask = storageRef.child(rId.toString()).putFile(_imageFile);
+      final Reference storageRef =
+      FirebaseStorage.instance.ref().child('post_medias');
+      UploadTask uploadTask = storageRef.child(postId).putFile(mediaFile);
       TaskSnapshot taskSnapshot = await uploadTask;
 
       String url = await taskSnapshot.ref.getDownloadURL();
       return url;
-    } catch (error) {
+    } catch (e) {
       return 'null';
     }
   }
