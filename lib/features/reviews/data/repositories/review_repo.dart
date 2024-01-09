@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:review_app/utils/methods.dart';
 
 import '../../domain/entities/upload_review.dart';
+import 'package:path/path.dart' as p;
 
 class ReviewRepo {
   final _db = FirebaseFirestore.instance;
@@ -87,13 +88,18 @@ class ReviewRepo {
 
   Future<String> _uploadFile(String postId, File mediaFile) async {
     try {
-      final Reference storageRef =
-      FirebaseStorage.instance.ref().child('post_medias');
-      UploadTask uploadTask = storageRef.child(postId).putFile(mediaFile);
-      TaskSnapshot taskSnapshot = await uploadTask;
+      final storage = FirebaseStorage.instance;
+      // add this the get the extension
+      final fileExtension = p.extension(mediaFile.path);
 
-      String url = await taskSnapshot.ref.getDownloadURL();
-      return url;
+      // append the extension to the child name
+      final ref = storage.ref().child("posts_medias").child("$postId$fileExtension");
+      final uploadTask = ref.putFile(mediaFile);
+
+      final snapshot = await uploadTask.whenComplete(() {});
+
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
     } catch (e) {
       return 'null';
     }
