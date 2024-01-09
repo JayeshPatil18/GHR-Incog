@@ -93,7 +93,7 @@ class ReviewRepo {
       final fileExtension = p.extension(mediaFile.path);
 
       // append the extension to the child name
-      final ref = storage.ref().child("posts_medias").child("$postId$fileExtension");
+      final ref = storage.ref().child("post_medias").child("$postId$fileExtension");
       final uploadTask = ref.putFile(mediaFile);
 
       final snapshot = await uploadTask.whenComplete(() {});
