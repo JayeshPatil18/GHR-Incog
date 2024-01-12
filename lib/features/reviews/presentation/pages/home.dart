@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/icon_size.dart';
@@ -408,95 +409,75 @@ class _HomePageState extends State<HomePage> {
           )),
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      body: Container(
-        child: Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Column(
-            children: [
-
-              // Review GridView
-              // Expanded(
-              //     child: StreamBuilder(
-              //         stream: reviewStream,
-              //         builder: (context, snapshot) {
-              //           final documents;
-              //           if (snapshot.data != null) {
-              //             documents = snapshot.data!.docs;
-              //             if (documents.length < 1) {
-              //               return Center(
-              //                   child: Text('No Reviews',
-              //                       style: MainFonts.filterText(
-              //                           color: AppColors.textColor)));
-              //             }
-              //
-              //             List<UploadReviewModel> reviewsList = [];
-              //             for(int i = 0; i < documents.length; i++){
-              //               UploadReviewModel review = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-              //               reviewsList.add(review);
-              //             }
-              //
-              //             // Solve this error and get solution
-              //             List<UploadReviewModel> nameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-              //               return !(element.text.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-              //             }).toList();
-              //
-              //             if(nameFilteredItems.isNotEmpty){
-              //
-              //               reviewsList = nameFilteredItems;
-              //             } else{
-              //               List<UploadReviewModel> descriptionFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-              //                 return !(element.description.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-              //               }).toList();
-              //
-              //               if(descriptionFilteredItems.isNotEmpty){
-              //                 reviewsList = descriptionFilteredItems;
-              //               } else{
-              //                 List<UploadReviewModel> usernameFilteredItems = reviewsList.skipWhile((UploadReviewModel element) {
-              //                   return !(element.username.toLowerCase().contains(HomePage.searchText.toLowerCase()));
-              //                 }).toList();
-              //
-              //                 if(usernameFilteredItems.isNotEmpty){
-              //                   reviewsList = usernameFilteredItems;
-              //                 }
-              //               }
-              //             }
-              //
-              //             return GridView.builder(
-              //                 padding: EdgeInsets.only(
-              //                     top: 10, bottom: 100, left: 20, right: 20),
-              //                 gridDelegate:
-              //                 const SliverGridDelegateWithFixedCrossAxisCount(
-              //                     crossAxisSpacing: 20,
-              //                     mainAxisSpacing: 20,
-              //                     crossAxisCount: 2,
-              //                     childAspectRatio: (100 / 158)),
-              //                 scrollDirection: Axis.vertical,
-              //                 itemCount: reviewsList.length,
-              //                 itemBuilder: (BuildContext context, int index) {
-              //
-              //                   UploadReviewModel review = reviewsList[index];
-              //
-              //                   return ReviewModel(
-              //                       reviewId: review.postId,
-              //                       imageUrl: review.mediaUrl,
-              //                       price: review.price,
-              //                       isLiked: review.likedBy
-              //                           .contains(MyApp.userId),
-              //                       title: review.text,
-              //                       brand: review.brand,
-              //                       category: review.category,
-              //                       date: review.date
-              //                           .substring(0, 10)
-              //                           .replaceAll('-', '/'),
-              //                       rating: review.rating);
-              //                 });
-              //           } else {
-              //             return Center(child: CircularProgressIndicator());
-              //           }
-              //         })),
-            ],
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 80),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
+                    radius: 18,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text('Username' , style: MainFonts.lableText(fontSize: 16, weight: FontWeight.w500)),
+                              SizedBox(width: 6),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.transparentComponentColor,
+                                  borderRadius:
+                                  BorderRadius.circular(3.0)
+                                ),
+                                padding: EdgeInsets.only(top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                child: Text('M', style: TextStyle(fontSize: 11, color: AppColors.primaryColor30)),
+                              )
+                            ],
+                          ),
+                          Text('10 days ago' , style: MainFonts.miniText(fontSize: 11, color: AppColors.lightTextColor)),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text('"Hey everyone, I wanted to start a discussion on the current state of the stock market. It\'s been a pretty wild ride lately, with lots of ups and downs. I\'m curious to hear everyone\'s thoughts on what\'s driving the market, and what we can expect in the coming weeks and months.' , style: MainFonts.postMainText(size: 17)),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset('assets/icons/reply.png',
+                              color: AppColors.primaryColor30,
+                              height: 20, width: 20),
+                          const SizedBox(width: 4),
+                          Text('100', style: MainFonts.postMainText(size: 14)),
+                          const SizedBox(width: 40),
+                          Image.asset('assets/icons/like.png',
+                              color: AppColors.primaryColor30,
+                              height: 20, width: 20),
+                          const SizedBox(width: 4),
+                          Text('100', style: MainFonts.postMainText(size: 14)),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
+          Line()
+        ],
       ),
     );
   }

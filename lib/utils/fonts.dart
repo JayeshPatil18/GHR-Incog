@@ -153,9 +153,9 @@ class MainFonts {
         fontSize: size, fontWeight: weight, color: AppColors.textColor);
   }
 
-  static TextStyle lableText() {
+  static TextStyle lableText({double fontSize = 18, FontWeight weight = FontWeight.w500}) {
     return TextStyle(
-        fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
+        fontSize: fontSize, fontWeight: weight, color: AppColors.textColor);
   }
 
   static TextStyle suggestionText({Color color = AppColors.textColor}) {
@@ -184,8 +184,16 @@ class MainFonts {
     return TextStyle(fontSize: size, color: AppColors.textColor);
   }
 
+  static TextStyle postMainText({double size = 18}) {
+    return TextStyle(fontSize: size, fontWeight: FontWeight.w300, color: AppColors.textColor);
+  }
+
   static TextStyle settingLabel() {
     return const TextStyle(fontSize: 18, color: AppColors.textColor);
+  }
+
+  static miniText({double fontSize = 12, Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: fontSize, fontWeight: FontWeight.w400, color: color);
   }
 }
 

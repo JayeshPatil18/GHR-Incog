@@ -236,7 +236,7 @@ class _UploadReviewState extends State<UploadReview> {
                                       validator: ((value) {
                                         return _validateInput(value, 0);
                                       }),
-                                      style: MainFonts.textFieldText(size: 18),
+                                      style: MainFonts.postMainText(size: 18),
                                       decoration: InputDecoration(
                                         counterText: '',
                                         hintText: "Write fearlessly...",
