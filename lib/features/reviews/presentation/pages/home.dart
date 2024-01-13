@@ -369,7 +369,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70),
+          preferredSize: Size.fromHeight(55),
           child: SafeArea(
             child: Column(
               children: [
