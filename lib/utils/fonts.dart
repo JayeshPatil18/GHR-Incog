@@ -153,9 +153,9 @@ class MainFonts {
         fontSize: size, fontWeight: weight, color: AppColors.textColor);
   }
 
-  static TextStyle lableText({double fontSize = 18, FontWeight weight = FontWeight.w500}) {
+  static TextStyle lableText({Color color = AppColors.textColor, double fontSize = 18, FontWeight weight = FontWeight.w500}) {
     return TextStyle(
-        fontSize: fontSize, fontWeight: weight, color: AppColors.textColor);
+        fontSize: fontSize, fontWeight: weight, color: color);
   }
 
   static TextStyle suggestionText({Color color = AppColors.textColor}) {

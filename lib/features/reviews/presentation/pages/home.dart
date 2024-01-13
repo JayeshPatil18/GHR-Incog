@@ -31,6 +31,7 @@ import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
 import '../widgets/line.dart';
 import '../widgets/loginRequiredBottomSheet.dart';
+import '../widgets/post_model.dart';
 import '../widgets/sort_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -409,75 +410,20 @@ class _HomePageState extends State<HomePage> {
           )),
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 80),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
-                    radius: 18,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text('Username' , style: MainFonts.lableText(fontSize: 16, weight: FontWeight.w500)),
-                              SizedBox(width: 6),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.transparentComponentColor,
-                                  borderRadius:
-                                  BorderRadius.circular(3.0)
-                                ),
-                                padding: EdgeInsets.only(top: 2, bottom: 2, left: 3.5, right: 3.5),
-                                child: Text('M', style: TextStyle(fontSize: 11, color: AppColors.primaryColor30)),
-                              )
-                            ],
-                          ),
-                          Text('10 days ago' , style: MainFonts.miniText(fontSize: 11, color: AppColors.lightTextColor)),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Text('"Hey everyone, I wanted to start a discussion on the current state of the stock market. It\'s been a pretty wild ride lately, with lots of ups and downs. I\'m curious to hear everyone\'s thoughts on what\'s driving the market, and what we can expect in the coming weeks and months.' , style: MainFonts.postMainText(size: 17)),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset('assets/icons/reply.png',
-                              color: AppColors.primaryColor30,
-                              height: 20, width: 20),
-                          const SizedBox(width: 4),
-                          Text('100', style: MainFonts.postMainText(size: 14)),
-                          const SizedBox(width: 40),
-                          Image.asset('assets/icons/like.png',
-                              color: AppColors.primaryColor30,
-                              height: 20, width: 20),
-                          const SizedBox(width: 4),
-                          Text('100', style: MainFonts.postMainText(size: 14)),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+      body: Container(
+        margin: EdgeInsets.only(top: 80),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 100),
+          child: Column(
+            children: [
+              PostModel(),
+              PostModel(),
+              PostModel(),
+              PostModel(),
+              PostModel(),
+            ],
           ),
-          Line()
-        ],
+        ),
       ),
     );
   }

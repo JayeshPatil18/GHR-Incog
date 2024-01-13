@@ -96,3 +96,18 @@ Future<void> clearSharedPrefs() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   await preferences.clear();
 }
+
+bool hastextoverflow(
+    String text,
+    TextStyle style,
+    {double minwidth = 0,
+      double maxwidth = double.infinity,
+      int maxlines = 7
+    }) {
+  final TextPainter textpainter = TextPainter(
+    text: TextSpan(text: text, style: style),
+    maxLines: maxlines,
+    textDirection: TextDirection.ltr,
+  )..layout(minWidth: minwidth, maxWidth: maxwidth);
+  return textpainter.didExceedMaxLines;
+}
