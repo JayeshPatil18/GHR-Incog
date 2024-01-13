@@ -412,18 +412,39 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       body: Container(
         margin: EdgeInsets.only(top: 80),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: 100),
-          child: Column(
-            children: [
-              PostModel(),
-              PostModel(),
-              PostModel(),
-              PostModel(),
-              PostModel(),
-            ],
-          ),
-        ),
+        child: Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+                stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
+                builder: (context, snapshot) {
+                  final documents;
+                  if (snapshot.data != null) {
+                    documents = snapshot.data!.docs;
+                    if(documents.length < 1){
+                      return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
+                    }
+                    return ListView.builder(
+                        padding: EdgeInsets.only(bottom: 100),
+                        itemCount: documents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          UploadReviewModel post =
+                              UploadReviewModel.fromMap(documents[index]
+                                  .data() as Map<String, dynamic>);
+
+                          return PostModel(
+                            date: post.date,
+                            likedBy: post.likedBy,
+                            mediaUrl: post.mediaUrl,
+                            parentId: post.parentId,
+                            postId: post.postId,
+                            text: post.text,
+                            userId: post.userId,
+                            username: post.username,
+                          );
+                        });
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                })),
       ),
     );
   }
