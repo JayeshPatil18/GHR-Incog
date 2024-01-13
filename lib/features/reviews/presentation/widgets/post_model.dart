@@ -6,6 +6,7 @@ import 'package:review_app/utils/methods.dart';
 import '../../../../constants/color.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../domain/entities/image_argument.dart';
 import 'image_shimmer.dart';
 import 'line.dart';
 
@@ -52,18 +53,8 @@ class _PostModelState extends State<PostModel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: widget.mediaUrl != 'null'
+                child: widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty
                     ? CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                        radius: 18,
-                        child: ClipOval(
-                            child: CustomImageShimmer(
-                                imageUrl: widget.mediaUrl,
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.cover)),
-                      )
-                    : CircleAvatar(
                   backgroundColor: Colors.transparent,
                         radius: 18,
                   child: ClipOval(
@@ -74,7 +65,16 @@ class _PostModelState extends State<PostModel> {
                       child: Icon(Icons.person, color: AppColors.lightTextColor,),
                     ),
                   ),
-                      ),
+                      ) : CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 18,
+                  child: ClipOval(
+                      child: CustomImageShimmer(
+                          imageUrl: widget.mediaUrl,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover)),
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -143,6 +143,31 @@ class _PostModelState extends State<PostModel> {
                           ),
                         ],
                       ),
+                    ),
+                    widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty ? SizedBox(height: 0) : Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(widget.mediaUrl , true));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 260,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CustomImageShimmer(
+                                    imageUrl: widget.mediaUrl,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover)),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
                     Row(
