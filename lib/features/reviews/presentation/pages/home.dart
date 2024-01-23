@@ -434,6 +434,8 @@ class _HomePageState extends State<HomePage> {
                             date: post.date,
                             likedBy: post.likedBy,
                             mediaUrl: post.mediaUrl,
+                            gender: post.gender,
+                            userProfileUrl: post.userProfileUrl,
                             parentId: post.parentId,
                             postId: post.postId,
                             text: post.text,

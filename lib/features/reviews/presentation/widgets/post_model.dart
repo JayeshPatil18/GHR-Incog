@@ -14,6 +14,8 @@ class PostModel extends StatefulWidget {
   final String date;
   final List<int> likedBy;
   final String mediaUrl;
+  final String userProfileUrl;
+  final String gender;
   final String parentId;
   final String postId;
   final String text;
@@ -25,6 +27,8 @@ class PostModel extends StatefulWidget {
     required this.date,
     required this.likedBy,
     required this.mediaUrl,
+    required this.userProfileUrl,
+    required this.gender,
     required this.parentId,
     required this.postId,
     required this.text,
@@ -53,7 +57,7 @@ class _PostModelState extends State<PostModel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty
+                child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
                     ? CircleAvatar(
                   backgroundColor: Colors.transparent,
                         radius: 18,
@@ -70,7 +74,7 @@ class _PostModelState extends State<PostModel> {
                   radius: 18,
                   child: ClipOval(
                       child: CustomImageShimmer(
-                          imageUrl: widget.mediaUrl,
+                          imageUrl: widget.userProfileUrl,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover)),
@@ -100,7 +104,7 @@ class _PostModelState extends State<PostModel> {
                                   borderRadius: BorderRadius.circular(3.0)),
                               padding: EdgeInsets.only(
                                   top: 2, bottom: 2, left: 3.5, right: 3.5),
-                              child: Text('M',
+                              child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
                                   style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.primaryColor30)),

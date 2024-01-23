@@ -5,6 +5,8 @@ class UploadReviewModel {
   List<int> likedBy;
   String mediaUrl;
   String parentId;
+  String userProfileUrl;
+  String gender;
   String postId;
   String text;
   int userId;
@@ -14,6 +16,8 @@ class UploadReviewModel {
     required this.date,
     required this.likedBy,
     required this.mediaUrl,
+    required this.userProfileUrl,
+    required this.gender,
     required this.parentId,
     required this.postId,
     required this.text,
@@ -26,6 +30,8 @@ class UploadReviewModel {
       'date': date,
       'likedby': likedBy,
       'mediaurl': mediaUrl,
+      'profileurl': userProfileUrl,
+      'gender': gender,
       'parentid': parentId,
       'postid': postId,
       'text': text,
@@ -39,6 +45,8 @@ class UploadReviewModel {
       date: map['date'] ?? '',
       likedBy: (map['likedby'] as List<dynamic>).map<int>((item) => item as int).toList(),
       mediaUrl: map['mediaurl'] ?? '',
+      userProfileUrl: map['profileurl'] ?? '',
+      gender: map['gender'] ?? '',
       parentId: map['parentid'] ?? '',
       postId: map['postid'] ?? '',
       text: map['text'] ?? 0,

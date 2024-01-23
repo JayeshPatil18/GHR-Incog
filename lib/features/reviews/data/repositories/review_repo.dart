@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
 import 'package:review_app/utils/methods.dart';
 
 import '../../domain/entities/upload_review.dart';
@@ -59,6 +60,8 @@ class ReviewRepo {
       List<String>? details = await getLoginDetails();
       int userId = -1;
       String username = '';
+      String gender = '';
+      String userProfileUrl = '';
       final DateTime now = DateTime.now();
       String date = now.toString();
 
@@ -67,13 +70,23 @@ class ReviewRepo {
         username = details[1].toString();
       }
 
+      UsersRepo usersRepo = UsersRepo();
+      List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
+
+      for (var user in data) {
+        if (user['userid'] == userId) {
+          userProfileUrl = user['profileurl'];
+          gender = user['gender'];
+        }
+      }
+
       // Upload Image
       String imageUrl = imageSelected == null ? 'null' : await _uploadFile(postId, imageSelected);
 
-      print('${imageSelected == null} ### $imageUrl');
-
       uploadReviewModel.date = date;
       uploadReviewModel.mediaUrl = imageUrl;
+      uploadReviewModel.userProfileUrl = userProfileUrl;
+      uploadReviewModel.gender = gender;
       uploadReviewModel.postId = postId;
       uploadReviewModel.userId = userId;
       uploadReviewModel.username = username;

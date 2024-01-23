@@ -27,7 +27,7 @@ class UsersRepo {
             'userid': length,
             'profileurl': 'null',
             'email': email,
-            'gender': gender,
+            'gender': gender.toLowerCase(),
             'bio': '',
             'rank': length,
             'score': 0,

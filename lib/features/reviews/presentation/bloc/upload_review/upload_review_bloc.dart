@@ -17,6 +17,8 @@ class UploadReviewBloc extends Bloc<UploadReviewEvent, UploadReviewState> {
           date : '', //
           likedBy : [],
           mediaUrl : '', //
+          userProfileUrl: '',
+          gender: '',
           parentId: event.parentId, //
           postId: '-1',
           text : event.postText,
