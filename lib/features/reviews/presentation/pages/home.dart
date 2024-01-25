@@ -410,66 +410,68 @@ class _HomePageState extends State<HomePage> {
           )),
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      body: Container(
-        margin: EdgeInsets.only(top: 80),
-        child: Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
-                builder: (context, snapshot) {
-                  final documents;
-                  if (snapshot.data != null) {
-                    documents = snapshot.data!.docs;
-                    if(documents.length < 1){
-                      return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
-                    }
-
-                    List<UploadReviewModel> documentList = [];
-                    List<UploadReviewModel> postsList = [];
-                    for(int i = 0; i < documents.length; i++){
-                      UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-                      documentList.add(post);
-                      if(post.parentId == "-1"){
-                        postsList.add(post);
+      body: Column(
+        children: [
+          const SizedBox(height: 80),
+          Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
+                  builder: (context, snapshot) {
+                    final documents;
+                    if (snapshot.data != null) {
+                      documents = snapshot.data!.docs;
+                      if(documents.length < 1){
+                        return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
                       }
-                    }
 
-                    return ListView.builder(
-                        padding: EdgeInsets.only(bottom: 100),
-                        itemCount: postsList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          UploadReviewModel post = postsList[index];
+                      List<UploadReviewModel> documentList = [];
+                      List<UploadReviewModel> postsList = [];
+                      for(int i = 0; i < documents.length; i++){
+                        UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                        documentList.add(post);
+                        if(post.parentId == "-1"){
+                          postsList.add(post);
+                        }
+                      }
 
-                          int commentCount = 0;
-                          bool isCommented = false;
-                          for(UploadReviewModel i in documentList){
-                            if(post.postId == i.parentId){
-                              if(MyApp.userId == i.userId){
-                                isCommented = true;
+                      return ListView.builder(
+                          padding: EdgeInsets.only(bottom: 100),
+                          itemCount: postsList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            UploadReviewModel post = postsList[index];
+
+                            int commentCount = 0;
+                            bool isCommented = false;
+                            for(UploadReviewModel i in documentList){
+                              if(post.postId == i.parentId){
+                                if(MyApp.userId == i.userId){
+                                  isCommented = true;
+                                }
+                                commentCount++;
                               }
-                              commentCount++;
+
                             }
 
-                          }
-
-                          return PostModel(
-                            commentCount: commentCount,
-                            isCommented: isCommented,
-                            date: post.date,
-                            likedBy: post.likedBy,
-                            mediaUrl: post.mediaUrl,
-                            gender: post.gender,
-                            userProfileUrl: post.userProfileUrl,
-                            parentId: post.parentId,
-                            postId: post.postId,
-                            text: post.text,
-                            userId: post.userId,
-                            username: post.username,
-                          );
-                        });
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                })),
+                            return PostModel(
+                              commentCount: commentCount,
+                              isCommented: isCommented,
+                              date: post.date,
+                              likedBy: post.likedBy,
+                              mediaUrl: post.mediaUrl,
+                              gender: post.gender,
+                              userProfileUrl: post.userProfileUrl,
+                              parentId: post.parentId,
+                              postId: post.postId,
+                              text: post.text,
+                              userId: post.userId,
+                              username: post.username,
+                            );
+                          });
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  })),
+        ],
       ),
     );
   }
