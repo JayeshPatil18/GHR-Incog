@@ -422,15 +422,38 @@ class _HomePageState extends State<HomePage> {
                     if(documents.length < 1){
                       return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
                     }
+
+                    List<UploadReviewModel> documentList = [];
+                    List<UploadReviewModel> postsList = [];
+                    for(int i = 0; i < documents.length; i++){
+                      UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                      documentList.add(post);
+                      if(post.parentId == "-1"){
+                        postsList.add(post);
+                      }
+                    }
+
                     return ListView.builder(
                         padding: EdgeInsets.only(bottom: 100),
-                        itemCount: documents.length,
+                        itemCount: postsList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          UploadReviewModel post =
-                              UploadReviewModel.fromMap(documents[index]
-                                  .data() as Map<String, dynamic>);
+                          UploadReviewModel post = postsList[index];
+
+                          int commentCount = 0;
+                          bool isCommented = false;
+                          for(UploadReviewModel i in documentList){
+                            if(post.postId == i.parentId){
+                              if(MyApp.userId == i.userId){
+                                isCommented = true;
+                              }
+                              commentCount++;
+                            }
+
+                          }
 
                           return PostModel(
+                            commentCount: commentCount,
+                            isCommented: isCommented,
                             date: post.date,
                             likedBy: post.likedBy,
                             mediaUrl: post.mediaUrl,

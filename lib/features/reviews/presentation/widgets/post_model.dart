@@ -6,11 +6,14 @@ import 'package:review_app/utils/methods.dart';
 import '../../../../constants/color.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import 'image_shimmer.dart';
 import 'line.dart';
 
 class PostModel extends StatefulWidget {
+  final int commentCount;
+  final bool isCommented;
   final String date;
   final List<int> likedBy;
   final String mediaUrl;
@@ -24,6 +27,8 @@ class PostModel extends StatefulWidget {
 
   const PostModel({
     super.key,
+    required this.commentCount,
+    required this.isCommented,
     required this.date,
     required this.likedBy,
     required this.mediaUrl,
@@ -177,27 +182,40 @@ class _PostModelState extends State<PostModel> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset('assets/icons/reply.png',
-                            color: AppColors.primaryColor30,
-                            height: 19,
-                            width: 19),
-                        // Image.asset('assets/icons/reply-fill.png',
-                        //     color: AppColors.secondaryColor10,
-                        //     height: 19,
-                        //     width: 19),
+                        Container(
+                          child: widget.isCommented ? Image.asset('assets/icons/reply-fill.png',
+                              color: AppColors.secondaryColor10,
+                              height: 19,
+                              width: 19) : Image.asset('assets/icons/reply.png',
+                              color: AppColors.primaryColor30,
+                              height: 19,
+                              width: 19),
+                        ),
                         const SizedBox(width: 5),
-                        Text('100', style: MainFonts.postMainText(size: 13)),
+                        Text(widget.commentCount.toString(), style: MainFonts.postMainText(size: 13)),
                         const SizedBox(width: 40),
-                        widget.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
-                            color: AppColors.heartColor,
-                            height: 19,
-                            width: 19) : Image.asset('assets/icons/like.png',
-                            color: AppColors.primaryColor30,
-                            height: 19,
-                            width: 19),
-                        const SizedBox(width: 5),
-                        Text(widget.likedBy.length.toString(),
-                            style: MainFonts.postMainText(size: 12)),
+                        GestureDetector(
+                          onTap: () {
+                            ReviewRepo reviewRepo = ReviewRepo();
+                            reviewRepo.likeReview(widget.postId, widget.likedBy.contains(MyApp.userId));
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                child: widget.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
+                                    color: AppColors.heartColor,
+                                    height: 19,
+                                    width: 19) : Image.asset('assets/icons/like.png',
+                                    color: AppColors.primaryColor30,
+                                    height: 19,
+                                    width: 19),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(widget.likedBy.length.toString(),
+                                  style: MainFonts.postMainText(size: 12)),
+                            ],
+                          ),
+                        ),
                       ],
                     )
                   ],

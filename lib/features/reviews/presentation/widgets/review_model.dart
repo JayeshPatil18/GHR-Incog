@@ -107,8 +107,8 @@ class _ReviewModelState extends State<ReviewModel> {
                           if(MyApp.userId == -1){
                             loginRequiredObj.showLoginRequiredDialog(context);
                           } else{
-                            ReviewRepo reviewRepo = ReviewRepo();
-                            reviewRepo.likeReview(widget.reviewId, widget.isLiked);
+                            // ReviewRepo reviewRepo = ReviewRepo();
+                            // reviewRepo.likeReview(widget.reviewId, widget.isLiked);
                           }
                         }),
                         child: SizedBox(

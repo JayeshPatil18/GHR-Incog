@@ -129,8 +129,8 @@ class _ViewReviewState extends State<ViewReview> {
                                           if(MyApp.userId == -1){
                                             loginRequiredObj.showLoginRequiredDialog(context);
                                           } else{
-                                            ReviewRepo reviewRepo = ReviewRepo();
-                                            reviewRepo.likeReview(widget.reviewId, (review?.likedBy ?? []).contains(MyApp.userId));
+                                            // ReviewRepo reviewRepo = ReviewRepo();
+                                            // reviewRepo.likeReview(widget.reviewId, (review?.likedBy ?? []).contains(MyApp.userId));
                                           }
                                         },
                                         child: Container(

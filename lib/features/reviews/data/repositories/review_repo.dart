@@ -13,7 +13,7 @@ class ReviewRepo {
   static final reviewFireInstance = FirebaseFirestore.instance
                             .collection('posts');
 
-  Future<bool> likeReview(int reviewId, bool isLiked) async {
+  Future<bool> likeReview(String postId, bool isLiked) async {
 
     try {
       List<String>? details = await getLoginDetails();
@@ -23,16 +23,16 @@ class ReviewRepo {
         userId = int.parse(details[0]);
       }
 
-      final snapshot = await _db.collection('reviews').doc(reviewId.toString());
+      final snapshot = await _db.collection('posts').doc(postId.toString());
       if(!isLiked){
         await snapshot.update({
-        'likedBy': FieldValue.arrayUnion([
+        'likedby': FieldValue.arrayUnion([
           userId
         ]),
       });
       } else if(isLiked){
         await snapshot.update({
-        'likedBy': FieldValue.arrayRemove([
+        'likedby': FieldValue.arrayRemove([
           userId
         ]),
       });
