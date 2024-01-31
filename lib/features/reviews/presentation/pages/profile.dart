@@ -17,6 +17,7 @@ import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
+import '../widgets/tabs_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -70,121 +71,68 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text('Profile', style: MainFonts.pageTitleText()),
               ),
             )),
-        body: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              StreamBuilder<QuerySnapshot>(
-                  stream: UsersRepo.userFireInstance.snapshots(),
-                  builder: (context, snapshot) {
-                    final documents;
-                    if (snapshot != null) {
-                      documents = snapshot.data?.docs;
-                      List<Map<String, dynamic>> usersData = [];
-                      User? user;
-
-                      if (documents != null && documents.isNotEmpty) {
-                        final firstDocument = documents[0];
-
-                        if (firstDocument != null &&
-                            firstDocument.data() != null &&
-                            firstDocument.data().containsKey('userslist')) {
-                          usersData = List<Map<String, dynamic>>.from(
-                              firstDocument.data()['userslist']);
-
-                          List<User> usersList = usersData
-                              .map((userData) => User.fromMap(userData))
-                              .toList();
-
-                          List<User> users = usersList
-                              .where((user) => user.uid == MyApp.userId)
-                              .toList();
-                          user = users.first;
-                        }
-                      }
-
-                      return SliverAppBar(
-                        elevation: 0.0,
-                          pinned: false,
-                          floating: false,
-                          automaticallyImplyLeading: false,
-                          expandedHeight: height,
-                          backgroundColor: AppColors.backgroundColor60,
-                          flexibleSpace: FlexibleSpaceBar(
-                            title: const SizedBox(),
-                          background: UserProfileModel(
-                            profileUrl: user?.profileUrl ?? 'null',
-                            name: user?.fullName ?? '',
-                            username: user?.username ?? '',
-                            rank: user?.rank ?? -1,
-                            points: user?.points ?? -1,
-                            bio: user?.bio ?? '',
-                          )));
-                    } else {
-                      return Container(
-                          height: 400,
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                  }),
-            ];
-          },
-          body: SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-
-                // Review GridView
-                // Expanded(
-                //   child: StreamBuilder<QuerySnapshot>(
-                //       stream: ReviewRepo.reviewFireInstance
-                //           .where('userId', isEqualTo: MyApp.userId).orderBy('date', descending: true)
-                //           .snapshots(),
-                //       builder: (context, snapshot) {
-                //         final documents;
-                //         if (snapshot.data != null) {
-                //           documents = snapshot.data!.docs;
-                //           if (documents.length < 1) {
-                //             return Center(
-                //                 child: Text('No Reviews',
-                //                     style: MainFonts.filterText(
-                //                         color: AppColors.textColor)));
-                //           }
-                //           return GridView.builder(
-                //               padding: EdgeInsets.only(
-                //                   top: 10, bottom: 100, left: 20, right: 20),
-                //               gridDelegate:
-                //                   const SliverGridDelegateWithFixedCrossAxisCount(
-                //                       crossAxisSpacing: 20,
-                //                       mainAxisSpacing: 20,
-                //                       crossAxisCount: 2,
-                //                       childAspectRatio: (100 / 158)),
-                //               scrollDirection: Axis.vertical,
-                //               itemCount: documents.length,
-                //               itemBuilder: (BuildContext context, int index) {
-                //                 UploadReviewModel review =
-                //                     UploadReviewModel.fromMap(documents[index]
-                //                         .data() as Map<String, dynamic>);
-                //
-                //                 return ReviewModel(
-                //                     reviewId: review.postId,
-                //                     imageUrl: review.mediaUrl,
-                //                     price: review.price,
-                //                     isLiked:
-                //                         review.likedBy.contains(MyApp.userId),
-                //                     title: review.text,
-                //                     brand: review.brand,
-                //                     category: review.category,
-                //                     date: review.date
-                //                         .substring(0, 10)
-                //                         .replaceAll('-', '/'),
-                //                     rating: review.rating);
-                //               });
-                //         } else {
-                //           return Center(child: CircularProgressIndicator());
-                //         }
-                //       }),
-                // ),
-              ],
+        body: DefaultTabController(
+          length: 3,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              // _refresh();
+            },
+            child: NestedScrollView(
+              headerSliverBuilder: (context, _) {
+                return [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      UserProfileModel(profileUrl: 'profileUrl', name: 'name', username: 'username', rank: 1, points: 1, bio: 'bio'),
+                    ]),
+                  )
+                ];
+              },
+              body: Container(
+                color: Colors.transparent,
+                child: Column(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: AppColors.transparentComponentColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TabBar(
+                                indicator: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(10)),
+                                labelColor: Colors.white,
+                                unselectedLabelColor: Colors.white,
+                                tabs: [
+                                  Tab(
+                                    text: "Post",
+                                  ),
+                                  Tab(
+                                    text: "Comments",
+                                  ),
+                                  Tab(
+                                    text: "Likes",
+                                  ),
+                                ]),
+                          ),
+                          Container(
+                            color: Colors.grey,
+                            height: 0.3,
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [TweetsTab(), RepliesTab(), LikesTab()],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ));

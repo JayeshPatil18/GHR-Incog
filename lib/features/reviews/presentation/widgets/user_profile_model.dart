@@ -40,45 +40,26 @@ class _UserProfileModelState extends State<UserProfileModel> {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.secondaryColor10,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(20.9),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.primaryColor30,
-                    AppColors.primaryColor30,
-                  ],
-                ),
-                boxShadow: ContainerShadow.boxShadow),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.textColor,
-                            width: 2,
-                          ),
                         ),
                         child: widget.profileUrl == null ||
                                 widget.profileUrl == 'null'
                             ? CircleAvatar(
                                 backgroundImage:
                                     AssetImage("assets/icons/user.png"),
-                                radius: 50,
+                                radius: 40,
                               )
                             : CircleAvatar(
-                                radius: 50,
+                                radius: 40,
                                 child: ClipOval(
                                     child: CustomImageShimmer(
                                         imageUrl: widget.profileUrl,
@@ -87,47 +68,18 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                         fit: BoxFit.cover)),
                               )),
                     Container(
-                      margin: EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(widget.name,
-                                      style: ProfileUserFonts.nameText())),
-                              Container(
-                                  alignment: Alignment.topLeft,
-                                  margin: EdgeInsets.only(top: 6),
-                                  child: Text('@${widget.username}',
-                                      style: ProfileUserFonts.usernameText()))
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text('Rank',
-                                  style: ProfileUserFonts.userSubText()),
-                              SizedBox(width: 6),
-                              Text(MyApp.ENABLE_LEADERBOARD ? suffixOfNumber(widget.rank) : '_',
-                                  style: ProfileUserFonts.userValueText()),
-                              SizedBox(width: 20),
-                              Text('Points',
-                                  style: ProfileUserFonts.userSubText()),
-                              SizedBox(width: 6),
-                              Text(MyApp.ENABLE_LEADERBOARD ? widget.points.toString() : '_',
-                                  style: ProfileUserFonts.userValueText()),
-                            ],
-                          )
-                        ],
+                      color: Colors.grey,
+                      child: OutlinedButton(
+                        onPressed: () {  },
+                        child: Text('Edit Profile'),
                       ),
                     )
                   ],
                 ),
-                SizedBox(height: 14),
+                SizedBox(height: 12),
+                Text(widget.name,
+                    style: ProfileUserFonts.usernameText()),
+                SizedBox(height: 6),
                 Text(widget.bio,maxLines: 2,
                     overflow: TextOverflow.ellipsis, style: ProfileUserFonts.userBioText())
               ],

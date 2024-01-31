@@ -51,12 +51,12 @@ class ProfileUserFonts {
 
   static TextStyle usernameText() {
     return TextStyle(
-        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+        fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.textColor);
   }
 
   static TextStyle userSubText() {
     return TextStyle(
-        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textColor);
+        fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textColor);jd
   }
 
   static TextStyle userValueText() {
@@ -66,11 +66,11 @@ class ProfileUserFonts {
 
   static TextStyle userBioText() {
     return TextStyle(
-        fontSize: 17, fontWeight: FontWeight.w400, color: AppColors.textColor);
+        fontSize: 18, fontWeight: FontWeight.w400, color: Color(0xFFBABABA));
   }
 }
 
-// In use
+// In use yhrn udr yht4hd tndt i ao4ejo
 class UserModelFonts {
   static TextStyle userRankingTitle() {
     return TextStyle(
