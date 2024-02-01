@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Tab(
-                                      text: "Post",
+                                      text: "    Post    ",
                                     ),
                                     SizedBox(height: 2)
                                   ],
