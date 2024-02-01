@@ -68,11 +68,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.centerLeft,
                 margin:
                     EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                child: Text('Profile', style: MainFonts.pageTitleText()),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('My Profile', style: MainFonts.pageTitleText()),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.transparentComponentColor,
+                          borderRadius: BorderRadius.circular(3.0)),
+                      padding: EdgeInsets.only(
+                          top: 4, bottom: 4, left: 4.5, right: 4.5),
+                      child: Text('#${1}',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.primaryColor30)),
+                    )
+                  ],
+                ),
               ),
             )),
         body: DefaultTabController(
-          length: 3,
+          length: 2,
           child: RefreshIndicator(
             onRefresh: () async {
               // _refresh();
@@ -82,48 +98,51 @@ class _ProfilePageState extends State<ProfilePage> {
                 return [
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      UserProfileModel(profileUrl: 'profileUrl', name: 'name', username: 'username', rank: 1, points: 1, bio: 'bio'),
+                      UserProfileModel(profileUrl: 'null', name: 'Jayesh18', username: 'username', rank: 1, points: 1, bio: 'I am flutter and android developer', gender: 'male',),
                     ]),
                   )
                 ];
               },
               body: Container(
+                margin: EdgeInsets.only(top: 10),
                 color: Colors.transparent,
                 child: Column(
                   children: [
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.all(10),
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: AppColors.transparentComponentColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: TabBar(
-                                indicator: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(10)),
-                                labelColor: Colors.white,
-                                unselectedLabelColor: Colors.white,
-                                tabs: [
-                                  Tab(
-                                    text: "Post",
-                                  ),
-                                  Tab(
-                                    text: "Comments",
-                                  ),
-                                  Tab(
-                                    text: "Likes",
-                                  ),
-                                ]),
-                          ),
-                          Container(
-                            color: Colors.grey,
-                            height: 0.3,
-                          )
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          height: 52,
+                          child: TabBar(
+                              indicatorSize: TabBarIndicatorSize.label,
+                            indicatorWeight: 2,
+                              labelColor: Colors.white,
+                              unselectedLabelColor: Colors.white,
+                              tabs: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Tab(
+                                      text: "  Post  ",
+                                    ),
+                                    SizedBox(height: 2)
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Tab(
+                                      text: "Comments",
+                                    ),
+                                    SizedBox(height: 2)
+                                  ],
+                                ),
+                              ]),
+                        ),
+                        Container(
+                          color: Colors.grey,
+                          height: 0.3,
+                        )
+                      ],
                     ),
                     Expanded(
                       child: TabBarView(
