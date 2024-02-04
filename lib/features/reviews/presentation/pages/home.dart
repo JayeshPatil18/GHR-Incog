@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(55),
+          preferredSize: Size.fromHeight(70),
           child: SafeArea(
             child: Column(
               children: [
@@ -396,6 +396,10 @@ class _HomePageState extends State<HomePage> {
                             color: AppColors.primaryColor30,
                             height: 34, width: 34),
                       ),
+
+                      Image.asset('assets/icons/ghrp.png',
+                          color: AppColors.primaryColor30,
+                          height: 49, width: 49),
 
                       // **********************************************************
                       // notification comment
@@ -421,7 +425,7 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       body: Column(
         children: [
-          const SizedBox(height: 80),
+          const SizedBox(height: 98),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
                   stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),

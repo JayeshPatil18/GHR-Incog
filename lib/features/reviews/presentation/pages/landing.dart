@@ -55,8 +55,8 @@ class _LandingPageState extends State<LandingPage> {
             backgroundColor: AppColors.secondaryColor10,
             elevation: AppElevations.fabButtonElev,
             child: Container(
-              width: 28,
-              height: 28,
+              width: 26,
+              height: 26,
               decoration: BoxDecoration(
       color: Colors.transparent,
       borderRadius: BorderRadius.all(Radius.circular(50)),
