@@ -104,14 +104,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 ];
               },
               body: Container(
-                margin: EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(top: 16),
                 color: Colors.transparent,
                 child: Column(
                   children: [
                     Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 10),
                           height: 52,
                           child: TabBar(
                               indicatorSize: TabBarIndicatorSize.label,
@@ -123,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Tab(
-                                      text: "    Post    ",
+                                      text: "  Posts  ",
                                     ),
                                     SizedBox(height: 2)
                                   ],
@@ -131,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Column(
                                   children: [
                                     Tab(
-                                      text: "Comments",
+                                      text: "  Media  ",
                                     ),
                                     SizedBox(height: 2)
                                   ],
