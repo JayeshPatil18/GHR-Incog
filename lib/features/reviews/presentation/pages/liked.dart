@@ -33,6 +33,11 @@ class _LikedPageState extends State<LikedPage> {
   void initState() {
     MyApp.initUserId();
     super.initState();
+
+    _focusNode.addListener(() {
+      setState(() {
+      });
+    });
   }
   
   @override
@@ -40,79 +45,64 @@ class _LikedPageState extends State<LikedPage> {
     MyApp.initUserId();
     return Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(76),
+            preferredSize: Size.fromHeight(72),
             child: SafeArea(
               child: Column(
                 children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 12, bottom: 12, right: 20, left: 20),
-                        child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            child: TextField(
-                              style: MainFonts.searchText(color: AppColors.primaryColor30),
-                              focusNode: _focusNode,
-                              controller: searchTextController,
-                              // cursorHeight: TextCursorHeight.cursorHeight,
-                              onChanged: (value) {
-                                setState(() {
-                                  LikedPage.searchText =
-                                      value.trim().toLowerCase();
-                                });
-                              },
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    top: 2, bottom: 2, left: 20, right: 20),
-                                fillColor: AppColors.transparentComponentColor,
-                                filled: true,
-                                hintText: 'Search Products',
-                                hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
-                                prefixIcon: Icon(Icons.search_rounded, color: AppColors.transparentComponentColor,),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      18),
-                                  borderSide: const BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10, right: 16, left: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            style: MainFonts.searchText(color: AppColors.primaryColor30),
+                            focusNode: _focusNode,
+                            controller: searchTextController,
+                            onChanged: (value) {
+                              setState(() {
+                                LikedPage.searchText =
+                                    value.trim().toLowerCase();
+                              });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 2, bottom: 2),
+                              fillColor: AppColors.transparentComponentColor,
+                              filled: true,
+                              hintText: 'Search Products',
+                              hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
+                              prefixIcon: Icon(Icons.search_rounded, color: AppColors.transparentComponentColor,),
+                              suffixIcon: LikedPage.searchText == "" ? null : GestureDetector(
+                                  onTap: () {
+                                    searchTextController.text = '';
+                                    setState(() {
+                                      LikedPage.searchText = '';
+                                    });
+                                  },
+                                  child: Icon(Icons.cancel_rounded, color: AppColors.transparentComponentColor,)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                    18),
+                                borderSide: const BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
                                 ),
                               ),
                             ),
                           ),
-                          Positioned(
-                              right: 8,
-                              child: searchTextController.text != '' ? GestureDetector(
-                                onTap: () {
-                                  searchTextController.text = '';
-                                  setState(() {
-                                    LikedPage.searchText = '';
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 4),
-                                  child: Icon(Icons.cancel_rounded,
-                                      color: AppColors.transparentComponentColor),
-                                ),
-                              ) : SizedBox(width: 0, height: 0,)),
-
-                          // Positioned(
-                          //     right: 8,
-                          //     child: CircleIconContainer(
-                          //         icon: const Icon(Icons.search,
-                          //             color: AppColors.primaryColor30),
-                          //         containerColor: AppColors.secondaryColor10,
-                          //         containerSize: 40)),
-                        ],
-              ),
-                      ),
+                        ),
+                        _focusNode.hasFocus ? Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: GestureDetector(
+                              onTap: () {
+                                _focusNode.unfocus();
+                              },
+                              child: Text('Cancel', style: MainFonts.searchText(color: AppColors.primaryColor30))),
+                        ) : SizedBox()
+                      ],
                     ),
-                    Text('Cancel', style: MainFonts.searchText(color: AppColors.primaryColor30),)
-                  ],
-                ),
+                  ),
                   Line()
                 ],
               ),
