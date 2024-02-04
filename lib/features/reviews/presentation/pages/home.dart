@@ -428,9 +428,6 @@ class _HomePageState extends State<HomePage> {
                     final documents;
                     if (snapshot.data != null) {
                       documents = snapshot.data!.docs;
-                      if(documents.length < 1){
-                        return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
-                      }
 
                       List<UploadReviewModel> documentList = [];
                       List<UploadReviewModel> postsList = [];
@@ -442,39 +439,43 @@ class _HomePageState extends State<HomePage> {
                         }
                       }
 
-                      return ListView.builder(
-                          padding: EdgeInsets.only(bottom: 100),
-                          itemCount: postsList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            UploadReviewModel post = postsList[index];
+                      if(postsList.isNotEmpty){
+                        return ListView.builder(
+                            padding: EdgeInsets.only(bottom: 100),
+                            itemCount: postsList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              UploadReviewModel post = postsList[index];
 
-                            int commentCount = 0;
-                            bool isCommented = false;
-                            for(UploadReviewModel i in documentList){
-                              if(post.postId == i.parentId){
-                                if(MyApp.userId == i.userId){
-                                  isCommented = true;
+                              int commentCount = 0;
+                              bool isCommented = false;
+                              for(UploadReviewModel i in documentList){
+                                if(post.postId == i.parentId){
+                                  if(MyApp.userId == i.userId){
+                                    isCommented = true;
+                                  }
+                                  commentCount++;
                                 }
-                                commentCount++;
+
                               }
 
-                            }
-
-                            return PostModel(
-                              commentCount: commentCount,
-                              isCommented: isCommented,
-                              date: post.date,
-                              likedBy: post.likedBy,
-                              mediaUrl: post.mediaUrl,
-                              gender: post.gender,
-                              userProfileUrl: post.userProfileUrl,
-                              parentId: post.parentId,
-                              postId: post.postId,
-                              text: post.text,
-                              userId: post.userId,
-                              username: post.username,
-                            );
-                          });
+                              return PostModel(
+                                commentCount: commentCount,
+                                isCommented: isCommented,
+                                date: post.date,
+                                likedBy: post.likedBy,
+                                mediaUrl: post.mediaUrl,
+                                gender: post.gender,
+                                userProfileUrl: post.userProfileUrl,
+                                parentId: post.parentId,
+                                postId: post.postId,
+                                text: post.text,
+                                userId: post.userId,
+                                username: post.username,
+                              );
+                            });
+                      } else{
+                        return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
+                      }
                     } else {
                       return Center(child: CircularProgressIndicator());
                     }

@@ -129,7 +129,8 @@ class _UserProfileModelState extends State<UserProfileModel> {
                 ),
                 SizedBox(height: 8),
                 widget.bio.isEmpty ? SizedBox(height: 0) : Text(widget.bio,maxLines: 2,
-                    overflow: TextOverflow.ellipsis, style: ProfileUserFonts.userBioText())
+                    overflow: TextOverflow.ellipsis, style: ProfileUserFonts.userBioText()),
+                SizedBox(height: 16)
               ],
             ),
           ),
