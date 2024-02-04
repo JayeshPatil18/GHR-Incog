@@ -24,7 +24,7 @@ class ViewImage extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       body: PhotoView(
-        imageProvider: isNetworkImage ? NetworkImage(imageUrl) : FileImage(io.File(imageUrl)) as ImageProvider,
+        imageProvider: isNetworkImage ? CachedNetworkImageProvider(imageUrl) : FileImage(io.File(imageUrl)) as ImageProvider,
         minScale: PhotoViewComputedScale.contained * 0.8,
         maxScale: PhotoViewComputedScale.covered * 1.8,
         initialScale: PhotoViewComputedScale.contained,
