@@ -392,7 +392,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        child: Image.asset('assets/icons/menu.png',
+                        child: Image.asset('assets/icons/menus.png',
                             color: AppColors.primaryColor30,
                             height: 34, width: 34),
                       ),
@@ -404,7 +404,8 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).pushNamed('notification');
                         },
                         child: Image.asset(
-                            'assets/icons/notification.png',
+                            'assets/icons/bell.png',
+                            color: AppColors.primaryColor30,
                             height: AppIconSize.appIcons,
                             width: AppIconSize.appIcons),
                       )

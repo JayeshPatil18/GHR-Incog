@@ -87,7 +87,6 @@ class _ProfilePageState extends State<ProfilePage> {
             }
           }
           return Scaffold(
-              backgroundColor: AppColors.backgroundColor60,
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(72),
                   child: SafeArea(
@@ -114,6 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   )),
+              backgroundColor: Colors.transparent,
               body: DefaultTabController(
                 length: 2,
                 child: RefreshIndicator(

@@ -58,6 +58,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    // PreLoading Images
+    precacheImage(AssetImage("assets/icons/menus.png"), context);
+    precacheImage(AssetImage("assets/icons/bell.png"), context);
+
+    precacheImage(AssetImage("assets/icons/like.png"), context);
+    precacheImage(AssetImage("assets/icons/reply.png"), context);
+    precacheImage(AssetImage("assets/icons/like-fill.png"), context);
+    precacheImage(AssetImage("assets/icons/reply-fill.png"), context);
+
+    precacheImage(AssetImage("assets/icons/plus.png"), context);
+    precacheImage(AssetImage("assets/icons/home.png"), context);
+    precacheImage(AssetImage("assets/icons/search.png"), context);
+    precacheImage(AssetImage("assets/icons/activity.png"), context);
+    precacheImage(AssetImage("assets/icons/user.png"), context);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

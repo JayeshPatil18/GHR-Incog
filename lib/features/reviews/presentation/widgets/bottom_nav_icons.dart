@@ -6,14 +6,14 @@ import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar
 
 import '../../../../constants/color.dart';
 
-List<Widget> bottomNavIcons = [  
+List<Widget> bottomNavIcons = [
   Consumer<BottomNavigationProvider>(
     builder: ((context, value, child) {
       return Container(
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.home, color: value.currentIndex == 0 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
+      child: Image.asset('assets/icons/home.png', color: value.currentIndex == 0 ? AppColors.secondaryColor10 : AppColors.lightTextColor));
     }),
   ),
 
@@ -23,7 +23,7 @@ List<Widget> bottomNavIcons = [
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.favorite, color: value.currentIndex == 1 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
+      child: Image.asset('assets/icons/search.png', color: value.currentIndex == 1 ? AppColors.secondaryColor10 : AppColors.lightTextColor));
     }),
   ),
 
@@ -33,7 +33,7 @@ Consumer<BottomNavigationProvider>(
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.leaderboard, color: value.currentIndex == 2 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
+      child: Image.asset('assets/icons/activity.png', color: value.currentIndex == 2 ? AppColors.secondaryColor10 : AppColors.lightTextColor));
     }),
   ),
 
@@ -43,7 +43,7 @@ Consumer<BottomNavigationProvider>(
         color: Colors.transparent,
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
-      child: Icon(Icons.person, color: value.currentIndex == 3 ? AppColors.secondaryColor10 : AppColors.lightTextColor, size: AppIconSize.bottomNavBarIcons));
+      child: Image.asset('assets/icons/user.png', color: value.currentIndex == 3 ? AppColors.secondaryColor10 : AppColors.lightTextColor));
     }),
   ),
 ];

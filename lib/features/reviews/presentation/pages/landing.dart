@@ -55,8 +55,8 @@ class _LandingPageState extends State<LandingPage> {
             backgroundColor: AppColors.secondaryColor10,
             elevation: AppElevations.fabButtonElev,
             child: Container(
-              width: 70,
-              height: 70,
+              width: 28,
+              height: 28,
               decoration: BoxDecoration(
       color: Colors.transparent,
       borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -69,11 +69,7 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ],
     ),
-              child: Icon(
-              Icons.add, // Replace with the desired icon
-              size: 35, // You can adjust the size of the icon
-              color: AppColors.primaryColor30, // You can adjust the color of the icon
-          ),
+              child: Image.asset('assets/icons/plus.png', color: AppColors.primaryColor30),
             ),
             onPressed: () {
               if(MyApp.userId == -1){
