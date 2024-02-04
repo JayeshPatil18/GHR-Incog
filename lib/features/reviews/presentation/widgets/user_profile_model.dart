@@ -82,7 +82,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           side: const BorderSide(
-                            width: 1.0,
+                            width: 1.2,
                             color: AppColors.textColor,
                           ),
                         ),
