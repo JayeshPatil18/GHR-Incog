@@ -66,7 +66,7 @@ class ProfileUserFonts {
 
   static TextStyle userBioText() {
     return TextStyle(
-        fontSize: 16, fontWeight: FontWeight.w400, color: Color(0xFFBABABA));
+        fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.bioTextColor);
   }
 
   static TextStyle editText() {
@@ -152,6 +152,12 @@ class ReviewModelFonts {
 
 // In use
 class MainFonts {
+
+  static TextStyle searchText({Color color = AppColors.bioTextColor, double size = 16, FontWeight weight = FontWeight.w400}) {
+    return TextStyle(
+        fontSize: size, fontWeight: weight, color: color);
+  }
+
   static TextStyle uploadButtonText({double size = 22, FontWeight weight = FontWeight.w500}) {
     return TextStyle(
         fontSize: size, fontWeight: weight, color: AppColors.textColor);
