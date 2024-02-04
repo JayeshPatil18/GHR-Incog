@@ -1,22 +1,22 @@
 class User {
   final String bio;
-  final String fullName;
-  final String password;
-  final String phoneNumber;
-  final int points;
+  final String email;
+  final String gender;
   final String profileUrl;
   final int rank;
+  final int score;
+  final int status;
   final int uid;
   final String username;
 
   User({
     required this.bio,
-    required this.fullName,
-    required this.password,
-    required this.phoneNumber,
-    required this.points,
+    required this.email,
+    required this.gender,
     required this.profileUrl,
     required this.rank,
+    required this.score,
+    required this.status,
     required this.uid,
     required this.username,
   });
@@ -24,13 +24,13 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       bio: map['bio'] ?? '',
-      fullName: map['fullname'] ?? '',
-      password: map['password'] ?? '',
-      phoneNumber: map['phoneno'] ?? '',
-      points: map['points'] ?? 0,
+      email: map['email'] ?? '',
+      gender: map['gender'] ?? '',
       profileUrl: map['profileurl'] ?? '',
       rank: map['rank'] ?? 0,
-      uid: map['uid'] ?? 0,
+      score: map['score'] ?? '',
+      status: map['status'] ?? 0,
+      uid: map['userid'] ?? 0,
       username: map['username'] ?? '',
     );
   }
@@ -38,13 +38,13 @@ class User {
   Map<String, dynamic> toMap() {
     return {
       'bio': bio,
-      'fullname': fullName,
-      'password': password,
-      'phoneno': phoneNumber,
-      'points': points,
+      'email': email,
+      'gender': gender,
       'profileurl': profileUrl,
       'rank': rank,
-      'uid': uid,
+      'score': score,
+      'status': status,
+      'userid': uid,
       'username': username,
     };
   }

@@ -42,6 +42,40 @@ class UsersRepo {
     }
   }
 
+  Future<int> logoutUser() async {
+
+    try {
+      List<String>? details = await getLoginDetails();
+      int userId = -1;
+
+      if (details != null) {
+        userId = int.parse(details[0]);
+      }
+
+      var document = await userFireInstance
+          .doc('usersdoc')
+          .get();
+
+      List<Map<String, dynamic>> usersData =
+      List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
+
+      for (var user in usersData) {
+        if (user['userid'] == userId) {
+          user['status'] = 0;
+        }
+      }
+
+      await userFireInstance.doc('usersdoc').update({
+        'userslist': usersData
+      });
+
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+
   Future<int> updateProfile(File? selectedImage, String name, String username, String bio) async {
 
     try {

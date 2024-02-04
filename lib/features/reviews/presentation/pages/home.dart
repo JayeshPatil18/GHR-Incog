@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/icon_size.dart';
+import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
 import 'package:review_app/features/authentication/presentation/widgets/choose_gender.dart';
 import 'package:review_app/features/reviews/data/repositories/review_repo.dart';
 import 'package:review_app/features/reviews/presentation/pages/upload_review.dart';
@@ -16,6 +17,7 @@ import 'package:review_app/features/reviews/presentation/widgets/circle_button.d
 import 'package:review_app/features/reviews/presentation/widgets/dropdown.dart';
 import 'package:review_app/features/reviews/presentation/widgets/review_model.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/main.dart';
 
 import '../../../../constants/boarder.dart';
@@ -311,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
-                              title: Text('Want to ${MyApp.userId == -1 ? 'Login' : 'Logout'}?'),
+                              title: Text('Want to Logout ?'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -320,12 +322,18 @@ class _HomePageState extends State<HomePage> {
                                   child: const Text('Cancel'),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    clearSharedPrefs();
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('login');
+                                  onPressed: () async{
+                                    UsersRepo userRepo = UsersRepo();
+                                    int result = await userRepo.logoutUser();
+                                    if(result == 1){
+                                      clearSharedPrefs();
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('signup');
+                                    } else{
+                                      mySnackBarShow(context, 'Something went wrong!');
+                                    }
                                   },
                                   child: const Text('OK'),
                                 ),

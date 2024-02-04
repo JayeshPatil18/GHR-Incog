@@ -96,7 +96,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       profileImageUrl = user?.profileUrl ?? '';
     });
-    nameController.text = user?.fullName ?? '_';
+    nameController.text = '_';
     usernameController.text = user?.username ?? '_';
     bioController.text = user?.bio ?? '_';
   }

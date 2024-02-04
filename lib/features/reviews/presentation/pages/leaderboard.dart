@@ -121,10 +121,10 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                             return UserModel(
                                 uId: user.uid,
                                 profileUrl: user.profileUrl,
-                                name: user.fullName,
+                                name: 'user.fullName',
                                 username: user.username,
                                 rank: user.rank,
-                                points: user.points);
+                                points: user.score);
                           },
                         );
                       } else {
@@ -207,10 +207,10 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                 return UserModel(
                                     uId: user.uid,
                                     profileUrl: user.profileUrl,
-                                    name: user.fullName,
+                                    name: 'user.fullName',
                                     username: user.username,
                                     rank: user.rank,
-                                    points: user.points);
+                                    points: user.score);
                               },
                             );
                           } else {

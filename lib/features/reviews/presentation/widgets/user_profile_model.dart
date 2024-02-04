@@ -14,21 +14,19 @@ import 'image_shimmer.dart';
 
 class UserProfileModel extends StatefulWidget {
   final String profileUrl;
-  final String name;
   final String username;
   final String gender;
   final int rank;
-  final int points;
+  final int score;
   final String bio;
 
   const UserProfileModel(
       {super.key,
       required this.profileUrl,
-      required this.name,
       required this.username,
       required this.gender,
       required this.rank,
-      required this.points,
+      required this.score,
       required this.bio});
 
   @override
@@ -100,7 +98,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                   children: [
                     Row(
                       children: [
-                        Text(widget.name,
+                        Text(widget.username,
                             style: ProfileUserFonts.usernameText()),
                         SizedBox(width: 6,),
                         Container(
@@ -122,7 +120,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                           borderRadius: BorderRadius.circular(10.0)),
                       padding: EdgeInsets.only(
                           top: 3, bottom: 3, left: 8, right: 8),
-                      child: Text('Scores: ${widget.points}',
+                      child: Text('Scores: ${widget.score}',
                           style: TextStyle(
                               fontSize: 12,
                               color: AppColors.primaryColor30)),
@@ -130,7 +128,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                   ],
                 ),
                 SizedBox(height: 8),
-                Text(widget.bio,maxLines: 2,
+                widget.bio.isEmpty ? SizedBox(height: 0) : Text(widget.bio,maxLines: 2,
                     overflow: TextOverflow.ellipsis, style: ProfileUserFonts.userBioText())
               ],
             ),

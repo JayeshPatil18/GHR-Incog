@@ -98,7 +98,44 @@ class _ProfilePageState extends State<ProfilePage> {
                 return [
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      UserProfileModel(profileUrl: 'null', name: 'Jayesh18', username: 'username', rank: 1, points: 1, bio: 'I am flutter and android developer', gender: 'male',),
+                      StreamBuilder<QuerySnapshot>(
+                        stream: UsersRepo.userFireInstance.snapshots(),
+                        builder: (context, snapshot) {
+
+                          final documents;
+                          if (snapshot != null) {
+                            documents = snapshot.data?.docs;
+                            List<Map<String, dynamic>> usersData = [];
+                            User? user;
+
+                            if (documents != null && documents.isNotEmpty) {
+                              final firstDocument = documents[0];
+
+                              if (firstDocument != null &&
+                                  firstDocument.data() != null &&
+                                  firstDocument.data().containsKey('userslist')) {
+                                usersData = List<Map<String, dynamic>>.from(
+                                    firstDocument.data()['userslist']);
+
+                                List<User> usersList = usersData
+                                    .map((userData) => User.fromMap(userData))
+                                    .toList();
+
+                                List<User> users = usersList
+                                    .where((user) => user.uid == MyApp.userId)
+                                    .toList();
+                                user = users.first;
+                              }
+                            }
+
+                            return UserProfileModel(profileUrl: user?.profileUrl ?? 'null', username: user?.username ?? '', rank: user?.rank ?? -1, score: user?.score ?? -1, bio: user?.bio ?? '', gender: user?.gender ?? '',);
+                          } else {
+                            return Container(
+                                height: 400,
+                                child: Center(child: CircularProgressIndicator()));
+                          }
+                        }
+                      ),
                     ]),
                   )
                 ];
