@@ -12,7 +12,6 @@ import 'image_shimmer.dart';
 
 class UserModel extends StatefulWidget {
   final String profileUrl;
-  final String name;
   final String username;
   final int uId;
   final int rank;
@@ -21,7 +20,6 @@ class UserModel extends StatefulWidget {
   const UserModel(
       {super.key,
       required this.profileUrl,
-      required this.name,
       required this.username,
       required this.uId,
       required this.rank,
@@ -34,84 +32,91 @@ class UserModel extends StatefulWidget {
 class _UserModelState extends State<UserModel> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 14),
-        decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(AppBoarderRadius.userModelRadius),
-            color: AppColors.primaryColor30,
-            boxShadow: ContainerShadow.boxShadow),
-        child: Container(
-          child: ListTile(
-            title: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(widget.uId));
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.textColor,
-                          width: 1.5,
-                        ),
-                      ),
-                      child: widget.profileUrl == 'null'
-                          ? CircleAvatar(
-                              backgroundImage: AssetImage("assets/icons/user.png"),
-                              radius: 40,
-                            )
-                          : CircleAvatar(
-                              radius: 40,
-                              child: ClipOval(
-                                  child: CustomImageShimmer(
-                                      imageUrl: widget.profileUrl,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      fit: BoxFit.cover)),
-                            )),
-                  SizedBox(width: 20),
-                  Flexible(
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.name,
-                            style: UserModelFonts.userRankingTitle(),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            '@${widget.username}',
-                            style: UserModelFonts.userRankingSubTitle(),
-                          ),
-                        ],
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: widget.profileUrl == 'null' || widget.profileUrl.isEmpty
+                      ? CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 25,
+                    child: ClipOval(
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: AppColors.transparentComponentColor,
+                        child: Icon(Icons.person, color: AppColors.lightTextColor, size: 35),
                       ),
                     ),
+                  ) : CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 25,
+                    child: ClipOval(
+                        child: CustomImageShimmer(
+                            imageUrl: widget.profileUrl,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.cover)),
                   ),
-                ],
-              ),
-            ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(suffixOfNumber(widget.rank),
-                    style: UserModelFonts.userRankingTitle()),
-                SizedBox(height: 6),
-                Text('Pts. ${widget.points}',
-                    style: UserModelFonts.userRankingSubTitle()),
+                ),
+                SizedBox(width: 10,),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                            widget.username.length > 20
+                                ? widget.username.substring(0, 20) + '...'
+                                : widget.username,
+                            style: MainFonts.lableText(
+                                fontSize: 17, weight: FontWeight.w500)),
+                        SizedBox(width: 6),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.transparentComponentColor,
+                              borderRadius: BorderRadius.circular(3.0)),
+                          padding: EdgeInsets.only(
+                              top: 2, bottom: 2, left: 3.5, right: 3.5),
+                          child: Center(
+                            child: Text('male'.isNotEmpty ? 'male'[0].toUpperCase() : ' - ',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    color: AppColors.primaryColor30)),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.transparentComponentColor,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      padding: EdgeInsets.only(
+                          top: 3, bottom: 3, left: 8, right: 8),
+                      child: Text('Scores: ${widget.points}',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: AppColors.primaryColor30)),
+                    )
+                  ],
+                ),
               ],
             ),
-            contentPadding:
-                EdgeInsets.only(top: 10, bottom: 10, left: 16, right: 16),
-            onTap: () {},
-            onLongPress: () {},
-          ),
-        ));
+            Text('#${widget.rank}',
+                style: MainFonts.lableText(
+                    fontSize: 17, weight: FontWeight.w500)),
+          ],
+        ),
+        SizedBox(height: 35)
+      ],
+    );
   }
 }

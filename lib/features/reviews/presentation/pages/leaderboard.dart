@@ -121,7 +121,6 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                             return UserModel(
                                 uId: user.uid,
                                 profileUrl: user.profileUrl,
-                                name: 'user.fullName',
                                 username: user.username,
                                 rank: user.rank,
                                 points: user.score);
@@ -207,7 +206,6 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                 return UserModel(
                                     uId: user.uid,
                                     profileUrl: user.profileUrl,
-                                    name: 'user.fullName',
                                     username: user.username,
                                     rank: user.rank,
                                     points: user.score);

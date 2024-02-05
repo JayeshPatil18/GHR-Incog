@@ -9,12 +9,15 @@ import '../../../../constants/cursor.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
+import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
+import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/line.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
+import '../widgets/user_model.dart';
 
 class LikedPage extends StatefulWidget {
   const LikedPage({super.key});
@@ -56,6 +59,7 @@ class _LikedPageState extends State<LikedPage> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            textInputAction: TextInputAction.search,
                             textAlignVertical: TextAlignVertical.center,
                             style: MainFonts.searchText(color: AppColors.primaryColor30),
                             focusNode: _focusNode,
@@ -71,7 +75,7 @@ class _LikedPageState extends State<LikedPage> {
                                   top: 2, bottom: 2),
                               fillColor: AppColors.transparentComponentColor,
                               filled: true,
-                              hintText: 'Search Products',
+                              hintText: 'Search Posts, Profiles',
                               hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
                               prefixIcon: Icon(Icons.search_rounded, color: AppColors.transparentComponentColor,),
                               suffixIcon: LikedPage.searchText == "" ? null : GestureDetector(
@@ -109,121 +113,63 @@ class _LikedPageState extends State<LikedPage> {
               ),
             )),
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          const SizedBox(height: 98),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(top: 20, bottom: 100, right: 20, left: 20),
-              child: Column(
-                children: [
-                  Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: 'widget.userProfileUrl' == 'null' || 'widget.userProfileUrl'.isEmpty
-                                  ? CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 18,
-                                child: ClipOval(
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    color: AppColors.transparentComponentColor,
-                                    child: Icon(Icons.person, color: AppColors.lightTextColor,),
-                                  ),
-                                ),
-                              ) : CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: 18,
-                                child: ClipOval(
-                                    child: CustomImageShimmer(
-                                        imageUrl: 'widget.userProfileUrl',
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover)),
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            Text(
-                                'widget.username'.length > 20
-                                    ? 'widget.username'.substring(0, 20) + '...'
-                                    : 'widget.username',
-                                style: MainFonts.lableText(
-                                    fontSize: 16, weight: FontWeight.w500)),
-                            SizedBox(width: 6),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: AppColors.transparentComponentColor,
-                                  borderRadius: BorderRadius.circular(3.0)),
-                              padding: EdgeInsets.only(
-                                  top: 2, bottom: 2, left: 3.5, right: 3.5),
-                              child: Text('widget.gender'.isNotEmpty ? 'widget.gender'[0].toUpperCase() : ' - ',
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      color: AppColors.primaryColor30)),
-                            )
-                          ],
-                        ),
-                        Text('widget.date'.substring(0, 10).replaceAll('-', '/'),
-                            style: MainFonts.miniText(
-                                fontSize: 11, color: AppColors.lightTextColor)),
-                      ],
-                    ),)
-                ],
-              ),
+      body: _focusNode.hasFocus ? SizedBox() : SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+              child: Text('Top Scores', style: MainFonts.pageTitleText(fontSize: 22)),
             ),
-          ),
-              // Review GridView
-              // Expanded(
-              //     child: StreamBuilder<QuerySnapshot>(
-              //         stream: ReviewRepo.reviewFireInstance.where('likedBy', arrayContains: MyApp.userId).orderBy('date', descending: true).snapshots(),
-              //         builder: (context, snapshot) {
-              //           final documents;
-              //           if (snapshot.data != null) {
-              //             documents = snapshot.data!.docs;
-              //             if(documents.length < 1){
-              //               return Center(child: Text('No Review Liked', style: MainFonts.filterText(color: AppColors.textColor)));
-              //             }
-              //             return GridView.builder(
-              //                 padding: EdgeInsets.only(
-              //                     top: 10, bottom: 100, left: 20, right: 20),
-              //                 gridDelegate:
-              //                     const SliverGridDelegateWithFixedCrossAxisCount(
-              //                         crossAxisSpacing: 20,
-              //                         mainAxisSpacing: 20,
-              //                         crossAxisCount: 2,
-              //                         childAspectRatio: (100 / 158)),
-              //                 scrollDirection: Axis.vertical,
-              //                 itemCount: documents.length,
-              //                 itemBuilder: (BuildContext context, int index) {
-              //                   UploadReviewModel review =
-              //                       UploadReviewModel.fromMap(documents[index]
-              //                           .data() as Map<String, dynamic>);
-              //
-              //                   return ReviewModel(
-              //                       reviewId: review.postId,
-              //                       imageUrl: review.mediaUrl,
-              //                       price: review.price,
-              //                       isLiked: review.likedBy.contains(MyApp.userId),
-              //                       title: review.text,
-              //                       brand: review.brand,
-              //                       category: review.category,
-              //                       date: review.date
-              //                           .substring(0, 10)
-              //                           .replaceAll('-', '/'),
-              //                       rating: review.rating);
-              //                 });
-              //           } else {
-              //             return Center(child: CircularProgressIndicator());
-              //           }
-              //         })),
-        ],
+            Container(
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: UsersRepo.userFireInstance.snapshots(),
+                  builder: (context, snapshot) {
+                    final documents;
+                    if (snapshot.data != null) {
+                      documents = snapshot.data!.docs;
+                      List<Map<String, dynamic>> usersData =
+                      List<Map<String, dynamic>>.from(
+                          documents[0].data()['userslist']);
+
+                      List<User> usersList = usersData
+                          .map((userData) => User.fromMap(userData))
+                          .toList();
+
+                      usersList.sort((a, b) => a.rank.compareTo(b.rank));
+
+                      if (usersList.length < 1) {
+                        return Center(
+                            child: Text('No Users',
+                                style: MainFonts.filterText(
+                                    color: AppColors.textColor)));
+                      }
+                      return ListView.builder(
+                          shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(
+                            top: 10, left: 14, right: 14, bottom: 90),
+                        itemCount: usersList.length,
+                        itemBuilder: (context, index) {
+                          User user = usersList[index];
+
+                          return UserModel(
+                              uId: user.uid,
+                              profileUrl: user.profileUrl,
+                              username: user.username,
+                              rank: user.rank,
+                              points: user.score);
+                        },
+                      );
+                    } else {
+                      return Container(
+                          margin: EdgeInsets.only(top: 80),
+                          child: Center(child: CircularProgressIndicator()));
+                    }
+                  }),
+            ),
+          ],
+        ),
       )
     );
   }
