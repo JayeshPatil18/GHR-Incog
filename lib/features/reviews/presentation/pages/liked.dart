@@ -11,6 +11,7 @@ import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
+import '../widgets/image_shimmer.dart';
 import '../widgets/line.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
@@ -111,6 +112,73 @@ class _LikedPageState extends State<LikedPage> {
       body: Column(
         children: [
           const SizedBox(height: 98),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: 20, bottom: 100, right: 20, left: 20),
+              child: Column(
+                children: [
+                  Container(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: 'widget.userProfileUrl' == 'null' || 'widget.userProfileUrl'.isEmpty
+                                  ? CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 18,
+                                child: ClipOval(
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    color: AppColors.transparentComponentColor,
+                                    child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                  ),
+                                ),
+                              ) : CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 18,
+                                child: ClipOval(
+                                    child: CustomImageShimmer(
+                                        imageUrl: 'widget.userProfileUrl',
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover)),
+                              ),
+                            ),
+                            SizedBox(width: 10,),
+                            Text(
+                                'widget.username'.length > 20
+                                    ? 'widget.username'.substring(0, 20) + '...'
+                                    : 'widget.username',
+                                style: MainFonts.lableText(
+                                    fontSize: 16, weight: FontWeight.w500)),
+                            SizedBox(width: 6),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.transparentComponentColor,
+                                  borderRadius: BorderRadius.circular(3.0)),
+                              padding: EdgeInsets.only(
+                                  top: 2, bottom: 2, left: 3.5, right: 3.5),
+                              child: Text('widget.gender'.isNotEmpty ? 'widget.gender'[0].toUpperCase() : ' - ',
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: AppColors.primaryColor30)),
+                            )
+                          ],
+                        ),
+                        Text('widget.date'.substring(0, 10).replaceAll('-', '/'),
+                            style: MainFonts.miniText(
+                                fontSize: 11, color: AppColors.lightTextColor)),
+                      ],
+                    ),)
+                ],
+              ),
+            ),
+          ),
               // Review GridView
               // Expanded(
               //     child: StreamBuilder<QuerySnapshot>(
