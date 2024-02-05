@@ -122,7 +122,7 @@ class _PostModelState extends State<PostModel> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    AutoSizeText(
+                    widget.text.isEmpty ? SizedBox() : AutoSizeText(
                       widget.text,
                       maxLines: postModelTextMaxLines,
                       style: MainFonts.postMainText(size: 16),
