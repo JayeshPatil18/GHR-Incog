@@ -17,6 +17,7 @@ import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/line.dart';
 import '../widgets/review_model.dart';
+import '../widgets/search_tabs.dart';
 import '../widgets/shadow.dart';
 import '../widgets/user_model.dart';
 
@@ -83,7 +84,7 @@ class _LikedPageState extends State<LikedPage> {
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                     top: 2, bottom: 2),
-                                fillColor: AppColors.transparentComponentColor,
+                                fillColor: AppColors.transparentComponentColor.withOpacity(0.1/2),
                                 filled: true,
                                 hintText: 'Search Posts, Profiles',
                                 hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
@@ -140,10 +141,46 @@ class _LikedPageState extends State<LikedPage> {
   }
 }
 class SearchResultPage extends StatelessWidget {
+  static var searchInstance = ReviewRepo.reviewFireInstance.orderBy('date', descending: true);
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text('Display your search results here.', style: MainFonts.hintFieldText(),)
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+          children: [
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: AppColors.transparentComponentColor.withOpacity(0.1/2),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TabBar(
+                      indicator: BoxDecoration(
+                          color: AppColors.transparentComponentColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10)),
+                      labelColor: AppColors.primaryColor30,
+                      labelStyle: MainFonts.searchText(weight: FontWeight.w500, size: 15),
+                      unselectedLabelColor: AppColors.lightTextColor,
+                      tabs: [
+                        Tab(
+                          text: "Posts",
+                        ),
+                        Tab(
+                          text: "Profiles",
+                        ),
+                      ]),
+                ),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [PostsTab(), ProfilesTab()],
+              ),
+            ),
+          ]
+      ),
     );
   }
 }
