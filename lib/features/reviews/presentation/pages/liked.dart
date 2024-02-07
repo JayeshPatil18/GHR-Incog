@@ -141,7 +141,7 @@ class _LikedPageState extends State<LikedPage> {
   }
 }
 class SearchResultPage extends StatelessWidget {
-  static var searchInstance = ReviewRepo.reviewFireInstance.orderBy('date', descending: true);
+  static String searchText = '';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

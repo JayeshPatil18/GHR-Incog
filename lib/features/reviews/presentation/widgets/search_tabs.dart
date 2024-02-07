@@ -38,7 +38,7 @@ class PostsTabState extends State<PostsTab> {
   Widget build(BuildContext context) {
     return Container(
         child: StreamBuilder<QuerySnapshot>(
-            stream: SearchResultPage.searchInstance.snapshots(),
+            stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
             builder: (context, snapshot) {
               final documents;
               if (snapshot.data != null) {
@@ -138,7 +138,7 @@ class ProfilesTabState extends State<ProfilesTab> {
   Widget build(BuildContext context) {
     return Container(
       child: StreamBuilder<QuerySnapshot>(
-          stream: SearchResultPage.searchInstance.snapshots(),
+          stream: UsersRepo.userFireInstance.snapshots(),
           builder: (context, snapshot) {
             final documents;
             if (snapshot.data != null) {
