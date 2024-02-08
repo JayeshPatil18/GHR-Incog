@@ -54,12 +54,18 @@ class PostsTabState extends State<PostsTab> {
                   }
                 }
 
-                if(postsList.isNotEmpty){
+                List<UploadReviewModel> resultPosts = postsList.skipWhile((UploadReviewModel element) {
+                  return !(element.text.toLowerCase().contains(LikedPage.searchText.toLowerCase()));
+                }).toList();
+
+                print('####${LikedPage.searchText}');
+
+                if(resultPosts.isNotEmpty){
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: 100),
-                      itemCount: postsList.length,
+                      itemCount: resultPosts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        UploadReviewModel post = postsList[index];
+                        UploadReviewModel post = resultPosts[index];
 
                         int commentCount = 0;
                         bool isCommented = false;

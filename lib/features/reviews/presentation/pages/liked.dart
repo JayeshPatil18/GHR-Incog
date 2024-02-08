@@ -141,7 +141,6 @@ class _LikedPageState extends State<LikedPage> {
   }
 }
 class SearchResultPage extends StatelessWidget {
-  static String searchText = '';
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
