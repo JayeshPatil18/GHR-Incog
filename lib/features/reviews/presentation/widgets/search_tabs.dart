@@ -9,7 +9,8 @@ import 'package:review_app/features/reviews/presentation/widgets/user_model.dart
 import '../../../../constants/color.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
-import '../../../authentication/data/repositories/users_repo.dart';
+import '../../..'
+    '/authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
@@ -58,8 +59,6 @@ class PostsTabState extends State<PostsTab> {
                   return !(element.text.toLowerCase().contains(LikedPage.searchText.toLowerCase()));
                 }).toList();
 
-                print('####${LikedPage.searchText}');
-
                 if(resultPosts.isNotEmpty){
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: 100),
@@ -95,7 +94,7 @@ class PostsTabState extends State<PostsTab> {
                         );
                       });
                 } else{
-                  return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
+                  return Center(child: Text('No Results', style: MainFonts.filterText(color: AppColors.textColor)));
                 }
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -157,21 +156,22 @@ class ProfilesTabState extends State<ProfilesTab> {
                   .map((userData) => User.fromMap(userData))
                   .toList();
 
-              // Sort order according to rank
-              usersList.sort((a, b) => a.rank.compareTo(b.rank));
+              List<User> resultProfiles = usersList.skipWhile((User element) {
+                return !(element.username.toLowerCase().startsWith(LikedPage.searchText.toLowerCase()));
+              }).toList();
 
-              if (usersList.length < 1) {
+              if (resultProfiles.length < 1) {
                 return Center(
-                    child: Text('No Users',
+                    child: Text('No Results',
                         style: MainFonts.filterText(
                             color: AppColors.textColor)));
               }
               return ListView.builder(
                 padding: EdgeInsets.only(
                     top: 16, left: 14, right: 14, bottom: 90),
-                itemCount: usersList.length,
+                itemCount: resultProfiles.length,
                 itemBuilder: (context, index) {
-                  User user = usersList[index];
+                  User user = resultProfiles[index];
 
                   return UserModel(
                       uId: user.uid,
