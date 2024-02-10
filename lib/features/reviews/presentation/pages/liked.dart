@@ -217,7 +217,7 @@ class TopScoresList extends StatelessWidget {
                       return Center(
                           child: Text('No Users',
                               style: MainFonts.filterText(
-                                  color: AppColors.textColor)));
+                                  color: AppColors.lightTextColor)));
                     }
                     return ListView.builder(
                       shrinkWrap: true,

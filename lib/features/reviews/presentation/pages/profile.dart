@@ -247,7 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 child: Text('No Post',
                                                     style: MainFonts.filterText(
                                                         color:
-                                                        AppColors.textColor)));
+                                                        AppColors.lightTextColor)));
                                           }
                                         } else {
                                           return Center(
@@ -314,7 +314,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 child: Text('No Media',
                                                     style: MainFonts.filterText(
                                                         color:
-                                                        AppColors.textColor)));
+                                                        AppColors.lightTextColor)));
                                           }
                                         } else {
                                           return Center(

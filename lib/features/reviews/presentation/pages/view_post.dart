@@ -33,6 +33,7 @@ import '../widgets/dropdown.dart';
 import '../widgets/post_model.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
+import '../widgets/view_post_model.dart';
 
 class ViewPost extends StatefulWidget {
   final String postId;
@@ -135,141 +136,107 @@ class _ViewPostState extends State<ViewPost> {
                               color: AppColors.textColor, size: 20),
                         ),
                         SizedBox(width: 10),
-                        Text('Review', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
+                        Text('View Post', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
                       ],
-                    ),
-                    BlocConsumer<UploadReviewBloc, UploadReviewState>(
-                        listener: (context, state) {
-                          if (state is UploadReviewSuccess) {
-                            FocusScope.of(context).unfocus();
-                            mySnackBarShow(context, 'Your Post sent.');
-                            Future.delayed(const Duration(milliseconds: 300), () {
-                              Navigator.of(context).pop();
-                            });
-                          } else if(state is UploadReviewFaild) {
-                            mySnackBarShow(context, 'Something went wrong.');
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is UploadReviewLoading) {
-                            return Container(
-                              height: 35,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.secondaryColor10,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            20)),
-                                    elevation: AppElevations.buttonElev,
-                                  ),
-                                  onPressed: () {
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5, right: 5),
-                                    child: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: Center(
-                                            child: CircularProgressIndicator(
-                                                strokeWidth:
-                                                2,
-                                                color:
-                                                AppColors.primaryColor30))),
-                                  )),
-                            );
-                          }
-                          return Container(
-                            height: 35,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: (postTextController.text.trim().length > 1) || _selectedMedia != null ? AppColors.secondaryColor10 : AppColors.transparentComponentColor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          20)),
-                                  elevation: AppElevations.buttonElev,
-                                ),
-                                onPressed: () async {
-
-                                  bool isValid =
-                                  _formKey.currentState!.validate();
-                                  if (isValid && (postTextController.text.trim().length > 1) || _selectedMedia != null) {
-                                    // Post Confession
-                                    FocusScope.of(context).unfocus();
-                                    BlocProvider.of<UploadReviewBloc>(context)
-                                        .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: '-1',
-                                    ));
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 5, right: 5),
-                                  child: Text('Post',
-                                      style: MainFonts.uploadButtonText(size: 16)),
-                                )),
-                          );
-                        }
                     ),
                   ],
                 ),
               ),
           Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
-                  builder: (context, snapshot) {
-                    final documents;
-                    if (snapshot.data != null) {
-                      documents = snapshot.data!.docs;
+            child: StreamBuilder<QuerySnapshot>(
+                stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
+                builder: (context, snapshot) {
+                  final documents;
+                  if (snapshot.data != null) {
+                    documents = snapshot.data!.docs;
 
-                      List<UploadReviewModel> documentList = [];
-                      List<UploadReviewModel> postsList = [];
-                      for(int i = 0; i < documents.length; i++){
-                        UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-                        documentList.add(post);
-                        if(post.parentId == "-1"){
-                          postsList.add(post);
+                    UploadReviewModel? postOfReplies;
+                    List<UploadReviewModel> documentList = [];
+                    List<UploadReviewModel> postsList = [];
+
+                    // Getting comment count
+                    int commentCount = 0;
+                    bool isCommented = false;
+
+                    for(int i = 0; i < documents.length; i++){
+                      UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                      documentList.add(post);
+
+                      if(post.postId == widget.postId){
+                        postOfReplies = post;
+                      } else if(post.parentId == widget.postId){
+                        postsList.add(post);
+                      }
+
+                      if(widget.postId == post.parentId){
+                        if(MyApp.userId == post.userId){
+                          isCommented = true;
                         }
+                        commentCount++;
                       }
-
-                      if(postsList.isNotEmpty){
-                        return ListView.builder(
-                            padding: EdgeInsets.only(bottom: 100),
-                            itemCount: postsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              UploadReviewModel post = postsList[index];
-
-                              int commentCount = 0;
-                              bool isCommented = false;
-                              for(UploadReviewModel i in documentList){
-                                if(post.postId == i.parentId){
-                                  if(MyApp.userId == i.userId){
-                                    isCommented = true;
-                                  }
-                                  commentCount++;
-                                }
-
-                              }
-
-                              return PostModel(
-                                commentCount: commentCount,
-                                isCommented: isCommented,
-                                date: post.date,
-                                likedBy: post.likedBy,
-                                mediaUrl: post.mediaUrl,
-                                gender: post.gender,
-                                userProfileUrl: post.userProfileUrl,
-                                parentId: post.parentId,
-                                postId: post.postId,
-                                text: post.text,
-                                userId: post.userId,
-                                username: post.username,
-                              );
-                            });
-                      } else{
-                        return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.textColor)));
-                      }
-                    } else {
-                      return Center(child: CircularProgressIndicator());
                     }
-                  })),
+
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                          ViewPostModel(
+                          commentCount: commentCount,
+                          isCommented: isCommented,
+                          date: postOfReplies?.date ?? '',
+                          likedBy: postOfReplies?.likedBy ?? [],
+                          mediaUrl: postOfReplies?.mediaUrl ?? '',
+                          gender: postOfReplies?.gender ?? '',
+                          userProfileUrl: postOfReplies?.userProfileUrl ?? '',
+                          parentId: postOfReplies?.parentId ?? '',
+                          postId: postOfReplies?.postId ?? '',
+                          text: postOfReplies?.text ?? '',
+                          userId: postOfReplies?.userId ?? -1,
+                          username: postOfReplies?.username ?? '',
+                        ),
+                            postsList.isNotEmpty ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.only(bottom: 100),
+                                itemCount: postsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  UploadReviewModel post = postsList[index];
+
+                                  int commentCount = 0;
+                                  bool isCommented = false;
+                                  for(UploadReviewModel i in documentList){
+                                    if(post.postId == i.parentId){
+                                      if(MyApp.userId == i.userId){
+                                        isCommented = true;
+                                      }
+                                      commentCount++;
+                                    }
+
+                                  }
+
+                                  return PostModel(
+                                    commentCount: commentCount,
+                                    isCommented: isCommented,
+                                    date: post.date,
+                                    likedBy: post.likedBy,
+                                    mediaUrl: post.mediaUrl,
+                                    gender: post.gender,
+                                    userProfileUrl: post.userProfileUrl,
+                                    parentId: post.parentId,
+                                    postId: post.postId,
+                                    text: post.text,
+                                    userId: post.userId,
+                                    username: post.username,
+                                  );
+                                }) : Container(
+                                margin: EdgeInsets.only(top: 40), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
+                          ],
+                        ),
+                      );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
             ],
           ),
         ),

@@ -105,7 +105,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                           return Center(
                               child: Text('No Users',
                                   style: MainFonts.filterText(
-                                      color: AppColors.textColor)));
+                                      color: AppColors.lightTextColor)));
                         }
                         return ScrollablePositionedList.builder(
                           padding: EdgeInsets.only(
@@ -190,7 +190,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                               return Center(
                                   child: Text('No Users',
                                       style: MainFonts.filterText(
-                                          color: AppColors.textColor)));
+                                          color: AppColors.lightTextColor)));
                             }
                             return ScrollablePositionedList.builder(
                               padding: EdgeInsets.only(
