@@ -15,7 +15,9 @@ import 'package:review_app/main.dart';
 
 import '../features/authentication/presentation/pages/signup.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
+import '../features/reviews/domain/entities/string_argument.dart';
 import '../features/reviews/domain/entities/verify_phoneno_argument.dart';
+import '../features/reviews/presentation/pages/view_post.dart';
 
 class RouteGenerator {
   Route<dynamic> generateRoute(RouteSettings settings) {
@@ -61,6 +63,14 @@ class RouteGenerator {
         int userId = idArguments.id;
         return MaterialPageRoute(
             builder: (_) => ViewProfile(userId: userId)
+        );
+
+      case 'view_post':
+        StringArguments strArguments = settings.arguments as StringArguments;
+
+        String postId = strArguments.str;
+        return MaterialPageRoute(
+            builder: (_) => ViewPost(postId: postId)
         );
 
       case 'signup':

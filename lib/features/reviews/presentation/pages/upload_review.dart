@@ -126,10 +126,10 @@ class _UploadReviewState extends State<UploadReview> {
                               Navigator.pop(context);
                             },
                             child: Icon(Icons.arrow_back_ios,
-                                color: AppColors.textColor, size: 22),
+                                color: AppColors.textColor, size: 20),
                           ),
                           SizedBox(width: 10),
-                          Text('Review', style: MainFonts.pageTitleText(fontSize: 24, weight: FontWeight.w400)),
+                          Text('Review', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
                         ],
                       ),
                       BlocConsumer<UploadReviewBloc, UploadReviewState>(
