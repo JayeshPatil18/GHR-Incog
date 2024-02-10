@@ -13,7 +13,7 @@ import '../../domain/entities/string_argument.dart';
 import 'image_shimmer.dart';
 import 'line.dart';
 
-class PostModel extends StatefulWidget {
+class RepliesModel extends StatefulWidget {
   final int commentCount;
   final bool isCommented;
   final String date;
@@ -27,7 +27,7 @@ class PostModel extends StatefulWidget {
   final int userId;
   final String username;
 
-  const PostModel({
+  const RepliesModel({
     super.key,
     required this.commentCount,
     required this.isCommented,
@@ -44,10 +44,10 @@ class PostModel extends StatefulWidget {
   });
 
   @override
-  State<PostModel> createState() => _PostModelState();
+  State<RepliesModel> createState() => _RepliesModelState();
 }
 
-class _PostModelState extends State<PostModel> {
+class _RepliesModelState extends State<RepliesModel> {
   int postModelTextMaxLines = 6;
   bool showMore = false;
 
@@ -59,38 +59,49 @@ class _PostModelState extends State<PostModel> {
       children: [
         Container(
           color: Colors.transparent,
-          padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 16),
+          padding: EdgeInsets.only(left: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
-                    ? CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                        radius: 18,
-                  child: ClipOval(
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: AppColors.transparentComponentColor,
-                      child: Icon(Icons.person, color: AppColors.lightTextColor,),
-                    ),
-                  ),
-                      ) : CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 18,
-                  child: ClipOval(
-                      child: CustomImageShimmer(
-                          imageUrl: widget.userProfileUrl,
+              Column(
+                children: [
+                  Container(
+                    child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
+                        ? CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 18,
+                      child: ClipOval(
+                        child: Container(
                           width: double.infinity,
                           height: double.infinity,
-                          fit: BoxFit.cover)),
-                ),
+                          color: AppColors.transparentComponentColor,
+                          child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                        ),
+                      ),
+                    ) : CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 18,
+                      child: ClipOval(
+                          child: CustomImageShimmer(
+                              imageUrl: widget.userProfileUrl,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover)),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    width: 2,
+                    height: 300,
+                    color: AppColors.transparentComponentColor,
+                  )
+                ],
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -220,14 +231,14 @@ class _PostModelState extends State<PostModel> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 20)
                   ],
                 ),
               ),
             ],
           ),
         ),
-        Line()
       ],
     );
   }

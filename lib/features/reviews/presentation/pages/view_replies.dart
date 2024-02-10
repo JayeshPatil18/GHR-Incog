@@ -26,7 +26,6 @@ import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
-import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
@@ -35,16 +34,17 @@ import '../widgets/post_model.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 import '../widgets/view_post_model.dart';
+import '../widgets/view_replies_model.dart';
 
-class ViewPost extends StatefulWidget {
+class ViewReplies extends StatefulWidget {
   final String postId;
-  const ViewPost({super.key, required this.postId});
+  const ViewReplies({super.key, required this.postId});
 
   @override
-  State<ViewPost> createState() => _ViewPostState();
+  State<ViewReplies> createState() => _ViewRepliesState();
 }
 
-class _ViewPostState extends State<ViewPost> {
+class _ViewRepliesState extends State<ViewReplies> {
   final FocusNode _focusPostTextNode = FocusNode();
   bool _hasPostTextFocus = false;
   TextEditingController postTextController = TextEditingController();
@@ -137,88 +137,84 @@ class _ViewPostState extends State<ViewPost> {
                               color: AppColors.textColor, size: 20),
                         ),
                         SizedBox(width: 10),
-                        Text('View Post', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
+                        Text('View Replies', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
                       ],
                     ),
                   ],
                 ),
               ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
-                builder: (context, snapshot) {
-                  final documents;
-                  if (snapshot.data != null) {
-                    documents = snapshot.data!.docs;
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
+                    builder: (context, snapshot) {
+                      final documents;
+                      if (snapshot.data != null) {
+                        documents = snapshot.data!.docs;
 
-                    UploadReviewModel? postOfReplies;
-                    List<UploadReviewModel> documentList = [];
-                    List<UploadReviewModel> postsList = [];
+                        UploadReviewModel? postOfReplies;
+                        List<UploadReviewModel> documentList = [];
+                        List<UploadReviewModel> postsList = [];
 
-                    // Getting comment count
-                    int commentCount = 0;
-                    bool isCommented = false;
+                        // Getting comment count
+                        int commentCount = 0;
+                        bool isCommented = false;
 
-                    for(int i = 0; i < documents.length; i++){
-                      UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-                      documentList.add(post);
+                        for(int i = 0; i < documents.length; i++){
+                          UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                          documentList.add(post);
 
-                      if(post.postId == widget.postId){
-                        postOfReplies = post;
-                      } else if(post.parentId == widget.postId){
-                        postsList.add(post);
-                      }
+                          if(post.postId == widget.postId){
+                            postOfReplies = post;
+                          } else if(post.parentId == widget.postId){
+                            postsList.add(post);
+                          }
 
-                      if(widget.postId == post.parentId){
-                        if(MyApp.userId == post.userId){
-                          isCommented = true;
+                          if(widget.postId == post.parentId){
+                            if(MyApp.userId == post.userId){
+                              isCommented = true;
+                            }
+                            commentCount++;
+                          }
                         }
-                        commentCount++;
-                      }
-                    }
 
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                          ViewPostModel(
-                          commentCount: commentCount,
-                          isCommented: isCommented,
-                          date: postOfReplies?.date ?? '',
-                          likedBy: postOfReplies?.likedBy ?? [],
-                          mediaUrl: postOfReplies?.mediaUrl ?? '',
-                          gender: postOfReplies?.gender ?? '',
-                          userProfileUrl: postOfReplies?.userProfileUrl ?? '',
-                          parentId: postOfReplies?.parentId ?? '',
-                          postId: postOfReplies?.postId ?? '',
-                          text: postOfReplies?.text ?? '',
-                          userId: postOfReplies?.userId ?? -1,
-                          username: postOfReplies?.username ?? '',
-                        ),
-                            postsList.isNotEmpty ? ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.only(bottom: 100),
-                                itemCount: postsList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  UploadReviewModel post = postsList[index];
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ViewPostModel(
+                                commentCount: commentCount,
+                                isCommented: isCommented,
+                                date: postOfReplies?.date ?? '',
+                                likedBy: postOfReplies?.likedBy ?? [],
+                                mediaUrl: postOfReplies?.mediaUrl ?? '',
+                                gender: postOfReplies?.gender ?? '',
+                                userProfileUrl: postOfReplies?.userProfileUrl ?? '',
+                                parentId: postOfReplies?.parentId ?? '',
+                                postId: postOfReplies?.postId ?? '',
+                                text: postOfReplies?.text ?? '',
+                                userId: postOfReplies?.userId ?? -1,
+                                username: postOfReplies?.username ?? '',
+                              ),
+                              postsList.isNotEmpty ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.only(bottom: 100, top: 20),
+                                  itemCount: postsList.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    UploadReviewModel post = postsList[index];
 
-                                  int commentCount = 0;
-                                  bool isCommented = false;
-                                  for(UploadReviewModel i in documentList){
-                                    if(post.postId == i.parentId){
-                                      if(MyApp.userId == i.userId){
-                                        isCommented = true;
+                                    int commentCount = 0;
+                                    bool isCommented = false;
+                                    for(UploadReviewModel i in documentList){
+                                      if(post.postId == i.parentId){
+                                        if(MyApp.userId == i.userId){
+                                          isCommented = true;
+                                        }
+                                        commentCount++;
                                       }
-                                      commentCount++;
+
                                     }
 
-                                  }
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(context, 'view_replies', arguments: StringArguments(post.postId));
-                                    },
-                                    child: PostModel(
+                                    return RepliesModel(
                                       commentCount: commentCount,
                                       isCommented: isCommented,
                                       date: post.date,
@@ -231,18 +227,17 @@ class _ViewPostState extends State<ViewPost> {
                                       text: post.text,
                                       userId: post.userId,
                                       username: post.username,
-                                    ),
-                                  );
-                                }) : Container(
-                                margin: EdgeInsets.only(top: 40), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
-                          ],
-                        ),
-                      );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
-          ),
+                                    );
+                                  }) : Container(
+                                  margin: EdgeInsets.only(top: 40), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ),
             ],
           ),
         ),

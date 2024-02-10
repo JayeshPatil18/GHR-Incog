@@ -10,6 +10,7 @@ import 'package:review_app/features/reviews/presentation/pages/upload_review.dar
 import 'package:review_app/features/authentication/presentation/pages/verify_phone.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_image.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_profile.dart';
+import 'package:review_app/features/reviews/presentation/pages/view_replies.dart';
 import 'package:review_app/features/reviews/presentation/pages/view_review.dart';
 import 'package:review_app/main.dart';
 
@@ -71,6 +72,14 @@ class RouteGenerator {
         String postId = strArguments.str;
         return MaterialPageRoute(
             builder: (_) => ViewPost(postId: postId)
+        );
+
+      case 'view_replies':
+        StringArguments strArguments = settings.arguments as StringArguments;
+
+        String postId = strArguments.str;
+        return MaterialPageRoute(
+            builder: (_) => ViewReplies(postId: postId)
         );
 
       case 'signup':

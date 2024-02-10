@@ -27,6 +27,7 @@ import '../../../../utils/dropdown_items.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
+import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
@@ -501,19 +502,24 @@ class _HomePageState extends State<HomePage> {
 
                                 }
 
-                                return PostModel(
-                                  commentCount: commentCount,
-                                  isCommented: isCommented,
-                                  date: post.date,
-                                  likedBy: post.likedBy,
-                                  mediaUrl: post.mediaUrl,
-                                  gender: post.gender,
-                                  userProfileUrl: post.userProfileUrl,
-                                  parentId: post.parentId,
-                                  postId: post.postId,
-                                  text: post.text,
-                                  userId: post.userId,
-                                  username: post.username,
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
+                                  },
+                                  child: PostModel(
+                                    commentCount: commentCount,
+                                    isCommented: isCommented,
+                                    date: post.date,
+                                    likedBy: post.likedBy,
+                                    mediaUrl: post.mediaUrl,
+                                    gender: post.gender,
+                                    userProfileUrl: post.userProfileUrl,
+                                    parentId: post.parentId,
+                                    postId: post.postId,
+                                    text: post.text,
+                                    userId: post.userId,
+                                    username: post.username,
+                                  ),
                                 );
                               });
                         } else{
