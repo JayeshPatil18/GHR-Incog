@@ -55,6 +55,7 @@ class _ViewPostModelState extends State<ViewPostModel> {
   Widget build(BuildContext context) {
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: () {
@@ -225,7 +226,11 @@ class _ViewPostModelState extends State<ViewPostModel> {
             ),
           ),
         ),
-        Line()
+        Line(),
+        Padding(
+          padding: const EdgeInsets.only(right: 10, left: 10, top: 20, bottom: 10),
+          child: Text('${widget.commentCount} Comments', style: MainFonts.pageTitleText(fontSize: 20, weight: FontWeight.w500)),
+        )
       ],
     );
   }
