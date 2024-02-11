@@ -279,6 +279,11 @@ class _ViewPostState extends State<ViewPost> {
                         filled: true,
                         hintText: 'Add a reply...',
                         hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
+                        suffix: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, 'upload', arguments: StringArguments(widget.postId));
+                            },
+                            child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
                               30),
@@ -351,9 +356,9 @@ class _ViewPostState extends State<ViewPost> {
                               listener: (context, state) {
                                 if (state is UploadReviewSuccess) {
                                   FocusScope.of(context).unfocus();
-                                  mySnackBarShow(context, 'Your Post sent.');
+                                  
                                   Future.delayed(const Duration(milliseconds: 300), () {
-                                    Navigator.of(context).pop();
+                                    mySnackBarShow(context, 'Your Post sent.');
                                   });
                                 } else if(state is UploadReviewFaild) {
                                   mySnackBarShow(context, 'Something went wrong.');
@@ -399,13 +404,10 @@ class _ViewPostState extends State<ViewPost> {
                                       ),
                                       onPressed: () async {
 
-                                        bool isValid =
-                                        _formKey.currentState!.validate();
-                                        if (isValid && (postTextController.text.trim().length > 1) || _selectedMedia != null) {
+                                        if ((postTextController.text.trim().length > 1) || _selectedMedia != null) {
                                           // Post Confession
-                                          FocusScope.of(context).unfocus();
                                           BlocProvider.of<UploadReviewBloc>(context)
-                                              .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: '-1',
+                                              .add(UploadClickEvent(mediaSelected: null, postText: postTextController.text.trim(), parentId: widget.postId,
                                           ));
                                         }
                                       },

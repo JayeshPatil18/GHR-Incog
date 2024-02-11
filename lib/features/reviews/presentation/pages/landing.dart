@@ -7,6 +7,7 @@ import 'package:review_app/features/reviews/presentation/widgets/loginRequiredBo
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../../../../main.dart';
 import '../../../../utils/methods.dart';
+import '../../domain/entities/string_argument.dart';
 import '../provider/bottom_nav_bar.dart';
 import '../widgets/bottom_nav_icons.dart';
 import 'home.dart';
@@ -75,7 +76,7 @@ class _LandingPageState extends State<LandingPage> {
               if(MyApp.userId == -1){
                 loginRequiredObj.showLoginRequiredDialog(context);
               } else{
-                Navigator.pushNamed(context, 'upload');
+                Navigator.pushNamed(context, 'upload', arguments: StringArguments('-1'));
               }
             },
           ),

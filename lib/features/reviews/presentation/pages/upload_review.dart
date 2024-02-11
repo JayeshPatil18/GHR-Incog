@@ -30,7 +30,8 @@ import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
 class UploadReview extends StatefulWidget {
-  const UploadReview({super.key});
+  final String parentId;
+  const UploadReview({super.key, required this.parentId});
 
   @override
   State<UploadReview> createState() => _UploadReviewState();
@@ -190,7 +191,7 @@ class _UploadReviewState extends State<UploadReview> {
                                       // Post Confession
                                       FocusScope.of(context).unfocus();
                                       BlocProvider.of<UploadReviewBloc>(context)
-                                          .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: '-1',
+                                          .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: widget.parentId,
                                       ));
                                     }
                                 },

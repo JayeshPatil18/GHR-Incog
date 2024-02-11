@@ -35,8 +35,12 @@ class RouteGenerator {
         );
 
       case 'upload':
+
+        StringArguments strArguments = settings.arguments as StringArguments;
+
+        String parentId = strArguments.str;
         return MaterialPageRoute(
-            builder: (_) => const UploadReview()
+            builder: (_) => UploadReview(parentId: parentId)
         );
 
       case 'view_image':
