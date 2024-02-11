@@ -258,6 +258,11 @@ class _ViewPostState extends State<ViewPost> {
                   children: [
                     TextField(
                       textAlignVertical: TextAlignVertical.center,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      minLines: 1,
+                      maxLines: 12,
+                      maxLength: AppValues.maxCharactersPost,
                       style: MainFonts.searchText(color: AppColors.primaryColor30),
                       focusNode: _focusPostTextNode,
                       controller: postTextController,
@@ -269,7 +274,7 @@ class _ViewPostState extends State<ViewPost> {
                       },
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(right: 20, left: 20,
-                            top: 2, bottom: 2),
+                            top: 10, bottom: 10),
                         fillColor: AppColors.transparentComponentColor.withOpacity(0.1/2),
                         filled: true,
                         hintText: 'Add a reply...',
@@ -285,7 +290,7 @@ class _ViewPostState extends State<ViewPost> {
                       ),
                     ),
                     !_hasPostTextFocus ? SizedBox() : Container(
-                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                      margin: EdgeInsets.only(left: 10, right: 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
