@@ -37,8 +37,9 @@ import '../widgets/view_post_model.dart';
 import '../widgets/view_replies_model.dart';
 
 class ViewReplies extends StatefulWidget {
+  final String parentPostId;
   final String postId;
-  const ViewReplies({super.key, required this.postId});
+  const ViewReplies({super.key, required this.parentPostId, required this.postId});
 
   @override
   State<ViewReplies> createState() => _ViewRepliesState();
@@ -151,56 +152,87 @@ class _ViewRepliesState extends State<ViewReplies> {
                       if (snapshot.data != null) {
                         documents = snapshot.data!.docs;
 
-                        UploadReviewModel? postOfReplies;
+                        UploadReviewModel? parentPost;
+                        UploadReviewModel? childPost;
                         List<UploadReviewModel> documentList = [];
-                        List<UploadReviewModel> postsList = [];
+                        List<UploadReviewModel> childPostList = [];
 
                         // Getting comment count
-                        int commentCount = 0;
-                        bool isCommented = false;
+
+                        int parentCommentCount = 0;
+                        bool isParentCommented = false;
+
+                        int childCommentCount = 0;
+                        bool isChildCommented = false;
 
                         for(int i = 0; i < documents.length; i++){
                           UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
                           documentList.add(post);
 
+                          if(post.postId == widget.parentPostId){
+                            parentPost = post;
+                          }
+
                           if(post.postId == widget.postId){
-                            postOfReplies = post;
+                            childPost = post;
                           } else if(post.parentId == widget.postId){
-                            postsList.add(post);
+                            childPostList.add(post);
                           }
 
                           if(widget.postId == post.parentId){
                             if(MyApp.userId == post.userId){
-                              isCommented = true;
+                              isChildCommented = true;
                             }
-                            commentCount++;
+                            childCommentCount++;
+                          }
+
+                          if(widget.parentPostId == post.parentId){
+                            if(MyApp.userId == post.userId){
+                              isParentCommented = true;
+                            }
+                            parentCommentCount++;
                           }
                         }
 
                         return SingleChildScrollView(
                           child: Column(
                             children: [
-                              ViewPostModel(
-                                commentCount: commentCount,
-                                isCommented: isCommented,
-                                date: postOfReplies?.date ?? '',
-                                likedBy: postOfReplies?.likedBy ?? [],
-                                mediaUrl: postOfReplies?.mediaUrl ?? '',
-                                gender: postOfReplies?.gender ?? '',
-                                userProfileUrl: postOfReplies?.userProfileUrl ?? '',
-                                parentId: postOfReplies?.parentId ?? '',
-                                postId: postOfReplies?.postId ?? '',
-                                text: postOfReplies?.text ?? '',
-                                userId: postOfReplies?.userId ?? -1,
-                                username: postOfReplies?.username ?? '',
+                              const SizedBox(height: 20),
+                              RepliesModel(
+                                commentCount: parentCommentCount,
+                                isCommented: isParentCommented,
+                                date: parentPost?.date ?? '',
+                                likedBy: parentPost?.likedBy ?? [],
+                                mediaUrl: parentPost?.mediaUrl ?? '',
+                                gender: parentPost?.gender ?? '',
+                                userProfileUrl: parentPost?.userProfileUrl ?? '',
+                                parentId: parentPost?.parentId ?? '',
+                                postId: parentPost?.postId ?? '',
+                                text: parentPost?.text ?? '',
+                                userId: parentPost?.userId ?? -1,
+                                username: parentPost?.username ?? '',
                               ),
-                              postsList.isNotEmpty ? ListView.builder(
+                              ViewPostModel(
+                                commentCount: childCommentCount,
+                                isCommented: isChildCommented,
+                                date: childPost?.date ?? '',
+                                likedBy: childPost?.likedBy ?? [],
+                                mediaUrl: childPost?.mediaUrl ?? '',
+                                gender: childPost?.gender ?? '',
+                                userProfileUrl: childPost?.userProfileUrl ?? '',
+                                parentId: childPost?.parentId ?? '',
+                                postId: childPost?.postId ?? '',
+                                text: childPost?.text ?? '',
+                                userId: childPost?.userId ?? -1,
+                                username: childPost?.username ?? '',
+                              ),
+                              childPostList.isNotEmpty ? ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   padding: EdgeInsets.only(bottom: 100, top: 20),
-                                  itemCount: postsList.length,
+                                  itemCount: childPostList.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    UploadReviewModel post = postsList[index];
+                                    UploadReviewModel post = childPostList[index];
 
                                     int commentCount = 0;
                                     bool isCommented = false;
@@ -211,7 +243,6 @@ class _ViewRepliesState extends State<ViewReplies> {
                                         }
                                         commentCount++;
                                       }
-
                                     }
 
                                     return RepliesModel(

@@ -17,7 +17,7 @@ import 'package:review_app/main.dart';
 import '../features/authentication/presentation/pages/signup.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/string_argument.dart';
-import '../features/reviews/domain/entities/verify_phoneno_argument.dart';
+import '../features/reviews/domain/entities/two_string_argument.dart';
 import '../features/reviews/presentation/pages/view_post.dart';
 
 class RouteGenerator {
@@ -75,11 +75,12 @@ class RouteGenerator {
         );
 
       case 'view_replies':
-        StringArguments strArguments = settings.arguments as StringArguments;
+        TwoStringArg strArguments = settings.arguments as TwoStringArg;
 
-        String postId = strArguments.str;
+        String parentPostId = strArguments.str1;
+        String postId = strArguments.str2;
         return MaterialPageRoute(
-            builder: (_) => ViewReplies(postId: postId)
+            builder: (_) => ViewReplies(parentPostId: parentPostId, postId: postId)
         );
 
       case 'signup':

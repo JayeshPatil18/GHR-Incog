@@ -27,6 +27,7 @@ import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
+import '../../domain/entities/two_string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
@@ -216,7 +217,7 @@ class _ViewPostState extends State<ViewPost> {
 
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(context, 'view_replies', arguments: StringArguments(post.postId));
+                                      Navigator.pushNamed(context, 'view_replies', arguments: TwoStringArg(widget.postId, post.postId));
                                     },
                                     child: PostModel(
                                       commentCount: commentCount,
