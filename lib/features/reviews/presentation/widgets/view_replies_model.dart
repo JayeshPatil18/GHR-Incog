@@ -54,14 +54,18 @@ class _RepliesModelState extends State<RepliesModel> {
   @override
   Widget build(BuildContext context) {
     final maxLines = showMore ? 100 : postModelTextMaxLines;
-    var horLineHeight = 40.0;
+    var horLineHeight = 28.0;
 
 
-    // Set in way that, it appear perfect line
-    if(widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty){
-      horLineHeight = 55 + 276;
+    // Set in way that, perfect line appear
+    if((widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty) && widget.text.isNotEmpty){
+      horLineHeight = 28+19;
+    } else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isEmpty){
+      horLineHeight = 28+276;
+    } else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isNotEmpty){
+      horLineHeight = 28+19+276;
     } else{
-
+      horLineHeight = 28.0;
     }
 
     return Column(
