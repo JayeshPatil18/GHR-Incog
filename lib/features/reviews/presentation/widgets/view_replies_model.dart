@@ -54,6 +54,15 @@ class _RepliesModelState extends State<RepliesModel> {
   @override
   Widget build(BuildContext context) {
     final maxLines = showMore ? 100 : postModelTextMaxLines;
+    var horLineHeight = 40.0;
+
+
+    // Set in way that, it appear perfect line
+    if(widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty){
+      horLineHeight = 55 + 276;
+    } else{
+
+    }
 
     return Column(
       children: [
@@ -93,7 +102,7 @@ class _RepliesModelState extends State<RepliesModel> {
                   Container(
                     margin: EdgeInsets.only(top: 10, bottom: 10),
                     width: 2,
-                    height: 300,
+                    height: horLineHeight,
                     color: AppColors.transparentComponentColor,
                   )
                 ],
