@@ -284,133 +284,136 @@ class _ViewPostState extends State<ViewPost> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
-                    !_hasPostTextFocus ? SizedBox() : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0).copyWith(
-                            left: 15,
-                            right: 15,
-                          ),
-                          child: Row(
+                    !_hasPostTextFocus ? SizedBox() : Container(
+                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0).copyWith(
+                          //     left: 15,
+                          //     right: 15,
+                          //   ),
+                          //   child: Row(
+                          //     children: [
+                          //       GestureDetector(
+                          //         onTap: () {
+                          //           pickImage(ImageSource.gallery);
+                          //         },
+                          //         child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.textColor),
+                          //       ),
+                          //       SizedBox(width: 14),
+                          //       GestureDetector(
+                          //         onTap: () {
+                          //           pickImage(ImageSource.camera);
+                          //         },
+                          //         child: Icon(Icons.camera_alt_outlined, color: AppColors.textColor),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  pickImage(ImageSource.gallery);
-                                },
-                                child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.textColor),
+                              Container(
+                                height: 30,
+                                width: 30,
+                                padding: EdgeInsets.all(4),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      backgroundColor: AppColors.transparentComponentColor,
+                                      value: progress,
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(currentCharacters < AppValues.maxCharactersPost ? AppColors.textColor : AppColors.errorColor),
+                                    ),
+                                    Text(
+                                      '${currentCharacters <= AppValues.maxCharactersPost ? currentCharacters : AppValues.maxCharactersPost}',
+                                      style: TextStyle(
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textColor
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(width: 14),
-                              GestureDetector(
-                                onTap: () {
-                                  pickImage(ImageSource.camera);
-                                },
-                                child: Icon(Icons.camera_alt_outlined, color: AppColors.textColor),
-                              ),
+                              SizedBox(width: 15)
                             ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              width: 30,
-                              padding: EdgeInsets.all(4),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  CircularProgressIndicator(
-                                    backgroundColor: AppColors.transparentComponentColor,
-                                    value: progress,
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(currentCharacters < AppValues.maxCharactersPost ? AppColors.textColor : AppColors.errorColor),
-                                  ),
-                                  Text(
-                                    '${currentCharacters <= AppValues.maxCharactersPost ? currentCharacters : AppValues.maxCharactersPost}',
-                                    style: TextStyle(
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.textColor
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 15)
-                          ],
-                        ),
-                        BlocConsumer<UploadReviewBloc, UploadReviewState>(
-                            listener: (context, state) {
-                              if (state is UploadReviewSuccess) {
-                                FocusScope.of(context).unfocus();
-                                mySnackBarShow(context, 'Your Post sent.');
-                                Future.delayed(const Duration(milliseconds: 300), () {
-                                  Navigator.of(context).pop();
-                                });
-                              } else if(state is UploadReviewFaild) {
-                                mySnackBarShow(context, 'Something went wrong.');
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is UploadReviewLoading) {
+                          BlocConsumer<UploadReviewBloc, UploadReviewState>(
+                              listener: (context, state) {
+                                if (state is UploadReviewSuccess) {
+                                  FocusScope.of(context).unfocus();
+                                  mySnackBarShow(context, 'Your Post sent.');
+                                  Future.delayed(const Duration(milliseconds: 300), () {
+                                    Navigator.of(context).pop();
+                                  });
+                                } else if(state is UploadReviewFaild) {
+                                  mySnackBarShow(context, 'Something went wrong.');
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is UploadReviewLoading) {
+                                  return Container(
+                                    height: 35,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.secondaryColor10,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  20)),
+                                          elevation: AppElevations.buttonElev,
+                                        ),
+                                        onPressed: () {
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 5, right: 5),
+                                          child: SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: Center(
+                                                  child: CircularProgressIndicator(
+                                                      strokeWidth:
+                                                      2,
+                                                      color:
+                                                      AppColors.primaryColor30))),
+                                        )),
+                                  );
+                                }
                                 return Container(
                                   height: 35,
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.secondaryColor10,
+                                        backgroundColor: (postTextController.text.trim().length > 1) || _selectedMedia != null ? AppColors.secondaryColor10 : AppColors.transparentComponentColor,
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
                                                 20)),
                                         elevation: AppElevations.buttonElev,
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
+
+                                        bool isValid =
+                                        _formKey.currentState!.validate();
+                                        if (isValid && (postTextController.text.trim().length > 1) || _selectedMedia != null) {
+                                          // Post Confession
+                                          FocusScope.of(context).unfocus();
+                                          BlocProvider.of<UploadReviewBloc>(context)
+                                              .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: '-1',
+                                          ));
+                                        }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 5, right: 5),
-                                        child: SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: Center(
-                                                child: CircularProgressIndicator(
-                                                    strokeWidth:
-                                                    2,
-                                                    color:
-                                                    AppColors.primaryColor30))),
+                                        child: Text('Post',
+                                            style: MainFonts.uploadButtonText(size: 16)),
                                       )),
                                 );
                               }
-                              return Container(
-                                height: 35,
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: (postTextController.text.trim().length > 1) || _selectedMedia != null ? AppColors.secondaryColor10 : AppColors.transparentComponentColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              20)),
-                                      elevation: AppElevations.buttonElev,
-                                    ),
-                                    onPressed: () async {
-
-                                      bool isValid =
-                                      _formKey.currentState!.validate();
-                                      if (isValid && (postTextController.text.trim().length > 1) || _selectedMedia != null) {
-                                        // Post Confession
-                                        FocusScope.of(context).unfocus();
-                                        BlocProvider.of<UploadReviewBloc>(context)
-                                            .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: '-1',
-                                        ));
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 5, right: 5),
-                                      child: Text('Post',
-                                          style: MainFonts.uploadButtonText(size: 16)),
-                                    )),
-                              );
-                            }
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
