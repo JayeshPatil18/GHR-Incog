@@ -259,6 +259,8 @@ class _ViewPostState extends State<ViewPost> {
                                           userId: post.userId,
                                           username: post.username,
                                         ),
+                                        // Change for model if reply is more than 1
+                                        // And also change Vertical Line for multi line
                                         Column(
                                           children: [
                                             Container(
