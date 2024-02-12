@@ -235,7 +235,7 @@ class _ViewPostState extends State<ViewPost> {
                                     ),
                                   );
                                 }) : Container(
-                                margin: EdgeInsets.only(top: 40), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
+                                margin: EdgeInsets.only(top: 40, bottom: 20), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
                           ],
                         ),
                       );

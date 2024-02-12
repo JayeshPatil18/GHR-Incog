@@ -26,6 +26,7 @@ class RepliesModel extends StatefulWidget {
   final String text;
   final int userId;
   final String username;
+  final VoidCallback? onCommentClick;
 
   const RepliesModel({
     super.key,
@@ -41,6 +42,7 @@ class RepliesModel extends StatefulWidget {
     required this.text,
     required this.userId,
     required this.username,
+    this.onCommentClick
   });
 
   @override
@@ -209,14 +211,17 @@ class _RepliesModelState extends State<RepliesModel> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          child: widget.isCommented ? Image.asset('assets/icons/reply-fill.png',
-                              color: AppColors.secondaryColor10,
-                              height: 19,
-                              width: 19) : Image.asset('assets/icons/reply.png',
-                              color: AppColors.primaryColor30,
-                              height: 19,
-                              width: 19),
+                        GestureDetector(
+                          onTap: widget.onCommentClick,
+                          child: Container(
+                            child: widget.isCommented ? Image.asset('assets/icons/reply-fill.png',
+                                color: AppColors.secondaryColor10,
+                                height: 19,
+                                width: 19) : Image.asset('assets/icons/reply.png',
+                                color: AppColors.primaryColor30,
+                                height: 19,
+                                width: 19),
+                          ),
                         ),
                         const SizedBox(width: 5),
                         Text(widget.commentCount.toString(), style: MainFonts.postMainText(size: 13)),

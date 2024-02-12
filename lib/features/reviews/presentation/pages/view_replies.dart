@@ -26,6 +26,7 @@ import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
+import '../../domain/entities/two_string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
@@ -199,6 +200,10 @@ class _ViewRepliesState extends State<ViewReplies> {
                             children: [
                               const SizedBox(height: 20),
                               RepliesModel(
+                                onCommentClick: () {
+                                  postTextController.text = '@${parentPost?.username ?? ' '}';
+                                  FocusScope.of(context).requestFocus(_focusPostTextNode);
+                                },
                                 commentCount: parentCommentCount,
                                 isCommented: isParentCommented,
                                 date: parentPost?.date ?? '',
@@ -213,6 +218,10 @@ class _ViewRepliesState extends State<ViewReplies> {
                                 username: parentPost?.username ?? '',
                               ),
                               ViewPostModel(
+                                onCommentClick: () {
+                                  postTextController.text = '@${childPost?.username ?? ' '}';
+                                  FocusScope.of(context).requestFocus(_focusPostTextNode);
+                                },
                                 commentCount: childCommentCount,
                                 isCommented: isChildCommented,
                                 date: childPost?.date ?? '',
@@ -246,6 +255,10 @@ class _ViewRepliesState extends State<ViewReplies> {
                                     }
 
                                     return RepliesModel(
+                                      onCommentClick: () {
+                                        postTextController.text = '@${post.username}';
+                                        FocusScope.of(context).requestFocus(_focusPostTextNode);
+                                      },
                                       commentCount: commentCount,
                                       isCommented: isCommented,
                                       date: post.date,
@@ -260,7 +273,7 @@ class _ViewRepliesState extends State<ViewReplies> {
                                       username: post.username,
                                     );
                                   }) : Container(
-                                  margin: EdgeInsets.only(top: 40), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
+                                  margin: EdgeInsets.only(top: 40, bottom: 20), child: Center(child: Text('No Replies', style: MainFonts.filterText(color: AppColors.lightTextColor)))),
                             ],
                           ),
                         );
@@ -268,6 +281,187 @@ class _ViewRepliesState extends State<ViewReplies> {
                         return Center(child: CircularProgressIndicator());
                       }
                     }),
+              ),
+              Container(
+                padding: const EdgeInsets.only(bottom: 10, top: 10, left: 10, right: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: AppColors.lightTextColor,
+                      width: 0.3,
+                    ),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    TextField(
+                      textAlignVertical: TextAlignVertical.center,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      minLines: 1,
+                      maxLines: 12,
+                      maxLength: AppValues.maxCharactersPost,
+                      style: MainFonts.searchText(color: AppColors.primaryColor30),
+                      focusNode: _focusPostTextNode,
+                      controller: postTextController,
+                      onChanged: (value) {
+                        _onTextChanged();
+                        if (currentCharacters > AppValues.maxCharactersPost) {
+                          mySnackBarShow(context, 'Character limit exceeded!');
+                        }
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(right: 20, left: 20,
+                            top: 10, bottom: 10),
+                        fillColor: AppColors.transparentComponentColor.withOpacity(0.1/2),
+                        filled: true,
+                        hintText: 'Add a reply...',
+                        hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
+                        suffix: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, 'upload', arguments: TwoStringArg(widget.postId, postTextController.text));
+                            },
+                            child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              30),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                    !_hasPostTextFocus ? SizedBox() : Container(
+                      margin: EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0).copyWith(
+                          //     left: 15,
+                          //     right: 15,
+                          //   ),
+                          //   child: Row(
+                          //     children: [
+                          //       GestureDetector(
+                          //         onTap: () {
+                          //           pickImage(ImageSource.gallery);
+                          //         },
+                          //         child: SvgPicture.asset('assets/svg/gallery.svg', color: AppColors.textColor),
+                          //       ),
+                          //       SizedBox(width: 14),
+                          //       GestureDetector(
+                          //         onTap: () {
+                          //           pickImage(ImageSource.camera);
+                          //         },
+                          //         child: Icon(Icons.camera_alt_outlined, color: AppColors.textColor),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                width: 30,
+                                padding: EdgeInsets.all(4),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      backgroundColor: AppColors.transparentComponentColor,
+                                      value: progress,
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(currentCharacters < AppValues.maxCharactersPost ? AppColors.textColor : AppColors.errorColor),
+                                    ),
+                                    Text(
+                                      '${currentCharacters <= AppValues.maxCharactersPost ? currentCharacters : AppValues.maxCharactersPost}',
+                                      style: TextStyle(
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.textColor
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 15)
+                            ],
+                          ),
+                          BlocConsumer<UploadReviewBloc, UploadReviewState>(
+                              listener: (context, state) {
+                                if (state is UploadReviewSuccess) {
+                                  FocusScope.of(context).unfocus();
+
+                                  Future.delayed(const Duration(milliseconds: 300), () {
+                                    mySnackBarShow(context, 'Your Post sent.');
+                                  });
+                                } else if(state is UploadReviewFaild) {
+                                  mySnackBarShow(context, 'Something went wrong.');
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is UploadReviewLoading) {
+                                  return Container(
+                                    height: 35,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.secondaryColor10,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(
+                                                  20)),
+                                          elevation: AppElevations.buttonElev,
+                                        ),
+                                        onPressed: () {
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 5, right: 5),
+                                          child: SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: Center(
+                                                  child: CircularProgressIndicator(
+                                                      strokeWidth:
+                                                      2,
+                                                      color:
+                                                      AppColors.primaryColor30))),
+                                        )),
+                                  );
+                                }
+                                return Container(
+                                  height: 35,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: (postTextController.text.trim().length > 1) || _selectedMedia != null ? AppColors.secondaryColor10 : AppColors.transparentComponentColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                20)),
+                                        elevation: AppElevations.buttonElev,
+                                      ),
+                                      onPressed: () async {
+
+                                        if ((postTextController.text.trim().length > 1) || _selectedMedia != null) {
+                                          // Post Confession
+                                          BlocProvider.of<UploadReviewBloc>(context)
+                                              .add(UploadClickEvent(mediaSelected: null, postText: postTextController.text.trim(), parentId: widget.postId,
+                                          ));
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 5, right: 5),
+                                        child: Text('Post',
+                                            style: MainFonts.uploadButtonText(size: 16)),
+                                      )),
+                                );
+                              }
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
