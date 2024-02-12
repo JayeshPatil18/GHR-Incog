@@ -15,6 +15,7 @@ import 'package:review_app/features/reviews/presentation/widgets/circle_button.d
 import 'package:review_app/features/reviews/presentation/widgets/line.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/utils/dropdown_items.dart';
+import 'package:rich_text_controller/rich_text_controller.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
@@ -49,7 +50,7 @@ class ViewReplies extends StatefulWidget {
 class _ViewRepliesState extends State<ViewReplies> {
   final FocusNode _focusPostTextNode = FocusNode();
   bool _hasPostTextFocus = false;
-  TextEditingController postTextController = TextEditingController();
+  late RichTextController postTextController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   int hasImagePicked = -1;
@@ -74,6 +75,13 @@ class _ViewRepliesState extends State<ViewReplies> {
   @override
   void initState() {
     super.initState();
+
+    postTextController = RichTextController(
+      patternMatchMap: {
+        RegExp(r'@\w+'): MainFonts.searchText(color: AppColors.secondaryColor10),
+      },
+      onMatch: (List<String> matches) {},
+    );
 
     _focusPostTextNode.addListener(() {
       setState(() {
@@ -201,7 +209,8 @@ class _ViewRepliesState extends State<ViewReplies> {
                               const SizedBox(height: 20),
                               RepliesModel(
                                 onCommentClick: () {
-                                  postTextController.text = '@${parentPost?.username ?? ' '}';
+                                  String usernameText = parentPost?.username ?? '';
+                                  postTextController.text = usernameText.isNotEmpty ? '@$usernameText ' : '';
                                   FocusScope.of(context).requestFocus(_focusPostTextNode);
                                 },
                                 commentCount: parentCommentCount,
@@ -219,7 +228,8 @@ class _ViewRepliesState extends State<ViewReplies> {
                               ),
                               ViewPostModel(
                                 onCommentClick: () {
-                                  postTextController.text = '@${childPost?.username ?? ' '}';
+                                  String usernameText = childPost?.username ?? '';
+                                  postTextController.text = usernameText.isNotEmpty ? '@$usernameText ' : '';
                                   FocusScope.of(context).requestFocus(_focusPostTextNode);
                                 },
                                 commentCount: childCommentCount,
@@ -256,7 +266,7 @@ class _ViewRepliesState extends State<ViewReplies> {
 
                                     return RepliesModel(
                                       onCommentClick: () {
-                                        postTextController.text = '@${post.username}';
+                                        postTextController.text = post.username.isNotEmpty ? '@${post.username} ' : '';
                                         FocusScope.of(context).requestFocus(_focusPostTextNode);
                                       },
                                       commentCount: commentCount,
