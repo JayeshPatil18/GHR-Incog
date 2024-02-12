@@ -430,7 +430,20 @@ class _ViewPostState extends State<ViewPost> {
                                                 ],
                                               ),
                                             ),
-                                            Line()
+                                            Container(
+                                              color: Colors.transparent,
+                                              padding: EdgeInsets.only(left: 10, right: 10, bottom: 16),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 38,
+                                                    color: AppColors.transparentComponentColor,
+                                                  ),
+                                                  Text('Show ${commentCount} more replies', style: MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
+                                                ],
+                                              ),
+                                            ),
+                                            Line(),
                                           ],
                                         ),
                                       ],
