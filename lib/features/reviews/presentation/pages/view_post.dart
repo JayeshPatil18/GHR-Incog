@@ -220,7 +220,7 @@ class _ViewPostState extends State<ViewPost> {
                                   for(UploadReviewModel i in documentList){
                                     if(post.postId == i.parentId){
 
-                                      if((postOfReplies?.username ?? '') == i.username){
+                                      if(((postOfReplies?.username ?? '') == i.username) && replyOfPoster == null){
                                         replyOfPoster = post;
                                       }
 
@@ -430,16 +430,47 @@ class _ViewPostState extends State<ViewPost> {
                                                 ],
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
+                                            commentCount < 2 ? SizedBox() : Container(
                                               padding: EdgeInsets.only(left: 10, right: 10, bottom: 16),
                                               child: Row(
                                                 children: [
                                                   Container(
                                                     width: 38,
-                                                    color: AppColors.transparentComponentColor,
+                                                    child: Center(
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            width: 3,
+                                                            height: 3,
+                                                            decoration: BoxDecoration(
+                                                                color: AppColors.transparentComponentColor,
+                                                                borderRadius: BorderRadius.circular(50.0)
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Container(
+                                                            width: 3,
+                                                            height: 3,
+                                                            decoration: BoxDecoration(
+                                                                color: AppColors.transparentComponentColor,
+                                                                borderRadius: BorderRadius.circular(50.0)
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Container(
+                                                            width: 3,
+                                                            height: 3,
+                                                            decoration: BoxDecoration(
+                                                                color: AppColors.transparentComponentColor,
+                                                                borderRadius: BorderRadius.circular(50.0)
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                  Text('Show ${commentCount} more replies', style: MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
+                                                  SizedBox(width: 10),
+                                                  Text('Show ${commentCount - 1} more replies', style: MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                                                 ],
                                               ),
                                             ),
