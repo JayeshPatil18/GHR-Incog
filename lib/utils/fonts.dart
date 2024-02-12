@@ -194,8 +194,8 @@ class MainFonts {
     return TextStyle(fontSize: size, color: AppColors.textColor);
   }
 
-  static TextStyle postMainText({double size = 18}) {
-    return TextStyle(fontSize: size, fontWeight: FontWeight.w300, color: AppColors.textColor);
+  static TextStyle postMainText({double size = 18, Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: size, fontWeight: FontWeight.w300, color: color);
   }
 
   static TextStyle settingLabel() {

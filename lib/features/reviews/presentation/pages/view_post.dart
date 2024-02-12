@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -33,10 +34,12 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
+import '../widgets/image_shimmer.dart';
 import '../widgets/post_model.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 import '../widgets/view_post_model.dart';
+import '../widgets/view_replies_model.dart';
 
 class ViewPost extends StatefulWidget {
   final String postId;
@@ -210,11 +213,17 @@ class _ViewPostState extends State<ViewPost> {
                                 itemCount: postsList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   UploadReviewModel post = postsList[index];
+                                  UploadReviewModel? replyOfPoster = null;
 
                                   int commentCount = 0;
                                   bool isCommented = false;
                                   for(UploadReviewModel i in documentList){
                                     if(post.postId == i.parentId){
+
+                                      if((postOfReplies?.username ?? '') == i.username){
+                                        replyOfPoster = post;
+                                      }
+
                                       if(MyApp.userId == i.userId){
                                         isCommented = true;
                                       }
@@ -223,11 +232,208 @@ class _ViewPostState extends State<ViewPost> {
 
                                   }
 
+                                  int postModelTextMaxLines = 6;
+                                  bool showMore = false;
+
+                                  final maxLines = showMore ? 100 : postModelTextMaxLines;
+
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(context, 'view_replies', arguments: TwoStringArg(widget.postId, post.postId));
                                     },
-                                    child: PostModel(
+                                    child: replyOfPoster != null ?
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 20),
+                                        RepliesModel(
+                                          commentCount: commentCount,
+                                          isCommented: isCommented,
+                                          date: post.date,
+                                          likedBy: post.likedBy,
+                                          mediaUrl: post.mediaUrl,
+                                          gender: post.gender,
+                                          userProfileUrl: post.userProfileUrl,
+                                          parentId: post.parentId,
+                                          postId: post.postId,
+                                          text: post.text,
+                                          userId: post.userId,
+                                          username: post.username,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              color: Colors.transparent,
+                                              padding: EdgeInsets.only(left: 10, right: 10, bottom: 16),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    child: replyOfPoster.userProfileUrl == 'null' || replyOfPoster.userProfileUrl.isEmpty
+                                                        ? CircleAvatar(
+                                                      backgroundColor: Colors.transparent,
+                                                      radius: 18,
+                                                      child: ClipOval(
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          height: double.infinity,
+                                                          color: AppColors.transparentComponentColor,
+                                                          child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                                        ),
+                                                      ),
+                                                    ) : CircleAvatar(
+                                                      backgroundColor: Colors.transparent,
+                                                      radius: 18,
+                                                      child: ClipOval(
+                                                          child: CustomImageShimmer(
+                                                              imageUrl: replyOfPoster.userProfileUrl,
+                                                              width: double.infinity,
+                                                              height: double.infinity,
+                                                              fit: BoxFit.cover)),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                    replyOfPoster.username.length > 20
+                                                                        ? replyOfPoster.username.substring(0, 20) + '...'
+                                                                        : replyOfPoster.username,
+                                                                    style: MainFonts.lableText(
+                                                                        fontSize: 16, weight: FontWeight.w500)),
+                                                                SizedBox(width: 6),
+                                                                Container(
+                                                                  decoration: BoxDecoration(
+                                                                      color: AppColors.transparentComponentColor,
+                                                                      borderRadius: BorderRadius.circular(3.0)),
+                                                                  padding: EdgeInsets.only(
+                                                                      top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                                                  child: Text(replyOfPoster.gender.isNotEmpty ? replyOfPoster.gender[0].toUpperCase() : ' - ',
+                                                                      style: TextStyle(
+                                                                          fontSize: 11,
+                                                                          color: AppColors.primaryColor30)),
+                                                                )
+                                                              ],
+                                                            ),
+                                                            Text(replyOfPoster.date.substring(0, 10).replaceAll('-', '/'),
+                                                                style: MainFonts.miniText(
+                                                                    fontSize: 11, color: AppColors.lightTextColor)),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 10),
+                                                        replyOfPoster.text.isEmpty ? SizedBox() : AutoSizeText(
+                                                          replyOfPoster.text,
+                                                          maxLines: postModelTextMaxLines,
+                                                          style: MainFonts.postMainText(size: 16),
+                                                          minFontSize: 16,
+                                                          overflowReplacement: Column(
+                                                            // This widget will be replaced.
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              Text(replyOfPoster.text,
+                                                                  maxLines: maxLines,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  style: MainFonts.postMainText(size: 16)),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    showMore = !showMore;
+                                                                  });
+                                                                },
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.only(top: 8.0),
+                                                                  child: Text(showMore ? 'See less' : 'See more',
+                                                                      style: MainFonts.lableText(
+                                                                          color: AppColors.secondaryColor10,
+                                                                          fontSize: 14,
+                                                                          weight: FontWeight.bold)),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        replyOfPoster.mediaUrl == 'null' || replyOfPoster.mediaUrl.isEmpty ? SizedBox(height: 0) : Column(
+                                                          children: [
+                                                            const SizedBox(height: 16),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                FocusScope.of(context).unfocus();
+                                                                Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(replyOfPoster?.mediaUrl ?? '' , true));
+                                                              },
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(20),
+                                                                ),
+                                                                width: MediaQuery.of(context).size.width,
+                                                                height: 260,
+                                                                child: ClipRRect(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    child: CustomImageShimmer(
+                                                                        imageUrl: replyOfPoster.mediaUrl,
+                                                                        width: double.infinity,
+                                                                        height: double.infinity,
+                                                                        fit: BoxFit.cover)),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          children: [
+                                                            Container(
+                                                              child: Image.asset('assets/icons/reply.png',
+                                                                  color: AppColors.primaryColor30,
+                                                                  height: 19,
+                                                                  width: 19),
+                                                            ),
+                                                            const SizedBox(width: 5),
+                                                            Text('Reply', style: MainFonts.postMainText(size: 13)),
+                                                            const SizedBox(width: 40),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                ReviewRepo reviewRepo = ReviewRepo();
+                                                                reviewRepo.likeReview(replyOfPoster?.postId ?? '', (replyOfPoster?.likedBy ?? []).contains(MyApp.userId));
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    child: replyOfPoster.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
+                                                                        color: AppColors.heartColor,
+                                                                        height: 19,
+                                                                        width: 19) : Image.asset('assets/icons/like.png',
+                                                                        color: AppColors.primaryColor30,
+                                                                        height: 19,
+                                                                        width: 19),
+                                                                  ),
+                                                                  const SizedBox(width: 5),
+                                                                  Text(replyOfPoster.likedBy.length.toString(),
+                                                                      style: MainFonts.postMainText(size: 12)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Line()
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                        : PostModel(
                                       commentCount: commentCount,
                                       isCommented: isCommented,
                                       date: post.date,
