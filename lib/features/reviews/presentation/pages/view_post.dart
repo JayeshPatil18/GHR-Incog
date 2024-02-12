@@ -281,7 +281,7 @@ class _ViewPostState extends State<ViewPost> {
                         hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
                         suffix: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, 'upload', arguments: StringArguments(widget.postId));
+                              Navigator.pushNamed(context, 'upload', arguments: TwoStringArg(widget.postId, postTextController.text));
                             },
                             child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,)),
                         border: OutlineInputBorder(

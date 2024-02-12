@@ -36,11 +36,12 @@ class RouteGenerator {
 
       case 'upload':
 
-        StringArguments strArguments = settings.arguments as StringArguments;
+        TwoStringArg strArguments = settings.arguments as TwoStringArg;
 
-        String parentId = strArguments.str;
+        String parentId = strArguments.str1;
+        String text = strArguments.str2;
         return MaterialPageRoute(
-            builder: (_) => UploadReview(parentId: parentId)
+            builder: (_) => UploadReview(parentId: parentId, text: text)
         );
 
       case 'view_image':

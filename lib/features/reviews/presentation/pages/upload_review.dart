@@ -31,7 +31,8 @@ import '../widgets/shadow.dart';
 
 class UploadReview extends StatefulWidget {
   final String parentId;
-  const UploadReview({super.key, required this.parentId});
+  final String text;
+  const UploadReview({super.key, required this.parentId, required this.text});
 
   @override
   State<UploadReview> createState() => _UploadReviewState();
@@ -71,6 +72,9 @@ class _UploadReviewState extends State<UploadReview> {
         _hasPostTextFocus = _focusPostTextNode.hasFocus;
       });
     });
+
+    postTextController.text = widget.text;
+    // FocusScope.of(context).requestFocus(_focusPostTextNode);
   }
 
   @override
@@ -229,6 +233,7 @@ class _UploadReviewState extends State<UploadReview> {
                                   child: Form(
                                     key: _formKey,
                                     child: TextFormField(
+                                      autofocus: true,
                                       maxLines: null,
                                       maxLength: AppValues.maxCharactersPost,
                                       controller: postTextController,
