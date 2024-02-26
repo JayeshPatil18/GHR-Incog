@@ -142,7 +142,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 color: AppColors.textColor, size: 20),
                           ),
                           SizedBox(width: 10),
-                          Text('Post', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
+                          Text(widget.parentId != '-1' ? 'Reply' : 'Post', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
                         ],
                       ),
                       BlocConsumer<UploadReviewBloc, UploadReviewState>(
