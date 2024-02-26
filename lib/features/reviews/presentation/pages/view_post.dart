@@ -615,6 +615,7 @@ class _ViewPostState extends State<ViewPost> {
                           BlocConsumer<UploadReviewBloc, UploadReviewState>(
                               listener: (context, state) {
                                 if (state is UploadReviewSuccess) {
+                                  postTextController.text = '';
                                   FocusScope.of(context).unfocus();
                                   
                                   Future.delayed(const Duration(milliseconds: 300), () {

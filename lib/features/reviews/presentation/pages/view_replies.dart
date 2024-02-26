@@ -210,7 +210,7 @@ class _ViewRepliesState extends State<ViewReplies> {
                               RepliesModel(
                                 onCommentClick: () {
                                   String usernameText = parentPost?.username ?? '';
-                                  postTextController.text = usernameText.isNotEmpty ? '@$usernameText ' : '';
+                                  postTextController.text = postTextController.text + (usernameText.isNotEmpty ? '@$usernameText ' : '');
                                   FocusScope.of(context).requestFocus(_focusPostTextNode);
                                 },
                                 commentCount: parentCommentCount,
@@ -229,7 +229,7 @@ class _ViewRepliesState extends State<ViewReplies> {
                               ViewPostModel(
                                 onCommentClick: () {
                                   String usernameText = childPost?.username ?? '';
-                                  postTextController.text = usernameText.isNotEmpty ? '@$usernameText ' : '';
+                                  postTextController.text = postTextController.text + (usernameText.isNotEmpty ? '@$usernameText ' : '');
                                   FocusScope.of(context).requestFocus(_focusPostTextNode);
                                 },
                                 commentCount: childCommentCount,
@@ -403,6 +403,7 @@ class _ViewRepliesState extends State<ViewReplies> {
                           BlocConsumer<UploadReviewBloc, UploadReviewState>(
                               listener: (context, state) {
                                 if (state is UploadReviewSuccess) {
+                                  postTextController.text = '';
                                   FocusScope.of(context).unfocus();
 
                                   Future.delayed(const Duration(milliseconds: 300), () {
