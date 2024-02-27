@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/shadow_color.dart';
+import 'package:review_app/features/reviews/presentation/pages/activity.dart';
 import 'package:review_app/features/reviews/presentation/widgets/loginRequiredBottomSheet.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import '../../../../main.dart';
@@ -30,7 +31,7 @@ class _LandingPageState extends State<LandingPage> {
   final screens = [
     HomePage(),
     LikedPage(),
-    LeaderBoardPage(),
+    ActivityPage(),
     ProfilePage(),
   ];
 
