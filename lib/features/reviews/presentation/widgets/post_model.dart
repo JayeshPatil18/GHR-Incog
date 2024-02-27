@@ -27,6 +27,8 @@ class PostModel extends StatefulWidget {
   final int userId;
   final String username;
 
+  final bool isActivityModel;
+
   const PostModel({
     super.key,
     required this.commentCount,
@@ -41,6 +43,7 @@ class PostModel extends StatefulWidget {
     required this.text,
     required this.userId,
     required this.username,
+    this.isActivityModel = false,
   });
 
   @override
@@ -64,29 +67,43 @@ class _PostModelState extends State<PostModel> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
-                    ? CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                        radius: 18,
-                  child: ClipOval(
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      color: AppColors.transparentComponentColor,
-                      child: Icon(Icons.person, color: AppColors.lightTextColor,),
-                    ),
-                  ),
-                      ) : CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 18,
-                  child: ClipOval(
-                      child: CustomImageShimmer(
-                          imageUrl: widget.userProfileUrl,
+              Stack(
+                children: [
+                  Container(
+                    padding: widget.isActivityModel ? EdgeInsets.only(right: 5, bottom: 3) : null,
+                    child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
+                        ? CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                            radius: 18,
+                      child: ClipOval(
+                        child: Container(
                           width: double.infinity,
                           height: double.infinity,
-                          fit: BoxFit.cover)),
-                ),
+                          color: AppColors.transparentComponentColor,
+                          child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                        ),
+                      ),
+                          ) : CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 18,
+                      child: ClipOval(
+                          child: CustomImageShimmer(
+                              imageUrl: widget.userProfileUrl,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover)),
+                    ),
+                  ),
+                  widget.isActivityModel ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                        child: Image.asset('assets/icons/like-fill.png',
+                            color: AppColors.heartColor,
+                            height: 20,
+                            width: 20)),
+                  ) : SizedBox(),
+                ],
               ),
               const SizedBox(width: 10),
               Expanded(

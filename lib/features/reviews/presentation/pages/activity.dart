@@ -195,6 +195,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                               }
 
                                               return PostModel(
+                                                isActivityModel: true,
                                                 commentCount: commentCount,
                                                 isCommented: isCommented,
                                                 date: post.date,
@@ -319,29 +320,43 @@ class _ActivityPageState extends State<ActivityPage> {
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              Container(
-                                                                child: post.userProfileUrl == 'null' || post.userProfileUrl.isEmpty
-                                                                    ? CircleAvatar(
-                                                                  backgroundColor: Colors.transparent,
-                                                                  radius: 18,
-                                                                  child: ClipOval(
-                                                                    child: Container(
-                                                                      width: double.infinity,
-                                                                      height: double.infinity,
-                                                                      color: AppColors.transparentComponentColor,
-                                                                      child: Icon(Icons.person, color: AppColors.lightTextColor,),
-                                                                    ),
-                                                                  ),
-                                                                ) : CircleAvatar(
-                                                                  backgroundColor: Colors.transparent,
-                                                                  radius: 18,
-                                                                  child: ClipOval(
-                                                                      child: CustomImageShimmer(
-                                                                          imageUrl: post.userProfileUrl,
+                                                              Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    padding: EdgeInsets.only(right: 5, bottom: 3),
+                                                                    child: post.userProfileUrl == 'null' || post.userProfileUrl.isEmpty
+                                                                        ? CircleAvatar(
+                                                                      backgroundColor: Colors.transparent,
+                                                                      radius: 18,
+                                                                      child: ClipOval(
+                                                                        child: Container(
                                                                           width: double.infinity,
                                                                           height: double.infinity,
-                                                                          fit: BoxFit.cover)),
-                                                                ),
+                                                                          color: AppColors.transparentComponentColor,
+                                                                          child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                                                        ),
+                                                                      ),
+                                                                    ) : CircleAvatar(
+                                                                      backgroundColor: Colors.transparent,
+                                                                      radius: 18,
+                                                                      child: ClipOval(
+                                                                          child: CustomImageShimmer(
+                                                                              imageUrl: post.userProfileUrl,
+                                                                              width: double.infinity,
+                                                                              height: double.infinity,
+                                                                              fit: BoxFit.cover)),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                    bottom: 0,
+                                                                    right: 0,
+                                                                    child: Container(
+                                                                        child: Image.asset('assets/icons/reply-fill.png',
+                                                                            color: AppColors.secondaryColor10,
+                                                                            height: 20,
+                                                                            width: 20)),
+                                                                  ),
+                                                                ],
                                                               ),
                                                               const SizedBox(width: 10),
                                                               Expanded(
