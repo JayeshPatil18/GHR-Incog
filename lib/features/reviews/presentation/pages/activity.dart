@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -13,9 +14,12 @@ import '../../../../utils/fonts.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
+import '../../domain/entities/string_argument.dart';
+import '../../domain/entities/two_string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/image_shimmer.dart';
+import '../widgets/line.dart';
 import '../widgets/post_model.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
@@ -280,38 +284,209 @@ class _ActivityPageState extends State<ActivityPage> {
                                                 }
                                               }
 
-                                              return Column(
-                                                children: [
-                                                  RepliesModel(
-                                                    commentCount: parentCommentCount,
-                                                    isCommented: isParentCommented,
-                                                    date: parentPost?.date ?? '',
-                                                    likedBy: parentPost?.likedBy ?? [],
-                                                    mediaUrl: parentPost?.mediaUrl ?? '',
-                                                    gender: parentPost?.gender ?? '',
-                                                    userProfileUrl: parentPost?.userProfileUrl ?? '',
-                                                    parentId: parentPost?.parentId ?? '',
-                                                    postId: parentPost?.postId ?? '',
-                                                    text: parentPost?.text ?? '',
-                                                    userId: parentPost?.userId ?? -1,
-                                                    username: parentPost?.username ?? '',
-                                                  ),
-                                                  PostModel(
-                                                    commentCount: commentCount,
-                                                    isCommented: isCommented,
-                                                    date: post.date,
-                                                    likedBy: post.likedBy,
-                                                    mediaUrl: post.mediaUrl,
-                                                    gender: post.gender,
-                                                    userProfileUrl:
-                                                    post.userProfileUrl,
-                                                    parentId: post.parentId,
-                                                    postId: post.postId,
-                                                    text: post.text,
-                                                    userId: post.userId,
-                                                    username: post.username,
-                                                  ),
-                                                ],
+                                              int postModelTextMaxLines = 6;
+                                              bool showMore = false;
+
+                                              final maxLines = showMore ? 100 : postModelTextMaxLines;
+
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pushNamed(context, 'view_post', arguments: StringArguments(parentPost?.postId ?? ''));
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(height: 20),
+                                                    RepliesModel(
+                                                      commentCount: parentCommentCount,
+                                                      isCommented: isParentCommented,
+                                                      date: parentPost?.date ?? '',
+                                                      likedBy: parentPost?.likedBy ?? [],
+                                                      mediaUrl: parentPost?.mediaUrl ?? '',
+                                                      gender: parentPost?.gender ?? '',
+                                                      userProfileUrl: parentPost?.userProfileUrl ?? '',
+                                                      parentId: parentPost?.parentId ?? '',
+                                                      postId: parentPost?.postId ?? '',
+                                                      text: parentPost?.text ?? '',
+                                                      userId: parentPost?.userId ?? -1,
+                                                      username: parentPost?.username ?? '',
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          color: Colors.transparent,
+                                                          padding: EdgeInsets.only(left: 10, right: 10, bottom: 16),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Container(
+                                                                child: post.userProfileUrl == 'null' || post.userProfileUrl.isEmpty
+                                                                    ? CircleAvatar(
+                                                                  backgroundColor: Colors.transparent,
+                                                                  radius: 18,
+                                                                  child: ClipOval(
+                                                                    child: Container(
+                                                                      width: double.infinity,
+                                                                      height: double.infinity,
+                                                                      color: AppColors.transparentComponentColor,
+                                                                      child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                                                    ),
+                                                                  ),
+                                                                ) : CircleAvatar(
+                                                                  backgroundColor: Colors.transparent,
+                                                                  radius: 18,
+                                                                  child: ClipOval(
+                                                                      child: CustomImageShimmer(
+                                                                          imageUrl: post.userProfileUrl,
+                                                                          width: double.infinity,
+                                                                          height: double.infinity,
+                                                                          fit: BoxFit.cover)),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(width: 10),
+                                                              Expanded(
+                                                                child: Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: [
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                                post.username.length > 20
+                                                                                    ? post.username.substring(0, 20) + '...'
+                                                                                    : post.username,
+                                                                                style: MainFonts.lableText(
+                                                                                    fontSize: 16, weight: FontWeight.w500)),
+                                                                            SizedBox(width: 6),
+                                                                            Container(
+                                                                              decoration: BoxDecoration(
+                                                                                  color: AppColors.transparentComponentColor,
+                                                                                  borderRadius: BorderRadius.circular(3.0)),
+                                                                              padding: EdgeInsets.only(
+                                                                                  top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                                                              child: Text(post.gender.isNotEmpty ? post.gender[0].toUpperCase() : ' - ',
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 11,
+                                                                                      color: AppColors.primaryColor30)),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        Text(post.date.substring(0, 10).replaceAll('-', '/'),
+                                                                            style: MainFonts.miniText(
+                                                                                fontSize: 11, color: AppColors.lightTextColor)),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 10),
+                                                                    post.text.isEmpty ? SizedBox() : AutoSizeText(
+                                                                      post.text,
+                                                                      maxLines: postModelTextMaxLines,
+                                                                      style: MainFonts.postMainText(size: 16),
+                                                                      minFontSize: 16,
+                                                                      overflowReplacement: Column(
+                                                                        // This widget will be replaced.
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: <Widget>[
+                                                                          Text(post.text,
+                                                                              maxLines: maxLines,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: MainFonts.postMainText(size: 16)),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                showMore = !showMore;
+                                                                              });
+                                                                            },
+                                                                            child: Padding(
+                                                                              padding: EdgeInsets.only(top: 8.0),
+                                                                              child: Text(showMore ? 'See less' : 'See more',
+                                                                                  style: MainFonts.lableText(
+                                                                                      color: AppColors.secondaryColor10,
+                                                                                      fontSize: 14,
+                                                                                      weight: FontWeight.bold)),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    post.mediaUrl == 'null' || post.mediaUrl.isEmpty ? SizedBox(height: 0) : Column(
+                                                                      children: [
+                                                                        const SizedBox(height: 16),
+                                                                        GestureDetector(
+                                                                          onTap: () {
+                                                                            FocusScope.of(context).unfocus();
+                                                                            Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(post.mediaUrl , true));
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.circular(20),
+                                                                            ),
+                                                                            width: MediaQuery.of(context).size.width,
+                                                                            height: 260,
+                                                                            child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(10),
+                                                                                child: CustomImageShimmer(
+                                                                                    imageUrl: post.mediaUrl,
+                                                                                    width: double.infinity,
+                                                                                    height: double.infinity,
+                                                                                    fit: BoxFit.cover)),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(height: 16),
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                                      children: [
+                                                                        Container(
+                                                                          child: isCommented ? Image.asset('assets/icons/reply-fill.png',
+                                                                              color: AppColors.secondaryColor10,
+                                                                              height: 19,
+                                                                              width: 19) : Image.asset('assets/icons/reply.png',
+                                                                              color: AppColors.primaryColor30,
+                                                                              height: 19,
+                                                                              width: 19),
+                                                                        ),
+                                                                        const SizedBox(width: 5),
+                                                                        Text(commentCount.toString(), style: MainFonts.postMainText(size: 13)),
+                                                                        const SizedBox(width: 40),
+                                                                        GestureDetector(
+                                                                          onTap: () {
+                                                                            ReviewRepo reviewRepo = ReviewRepo();
+                                                                            reviewRepo.likeReview(post.postId, post.likedBy.contains(MyApp.userId));
+                                                                          },
+                                                                          child: Row(
+                                                                            children: [
+                                                                              Container(
+                                                                                child: post.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
+                                                                                    color: AppColors.heartColor,
+                                                                                    height: 19,
+                                                                                    width: 19) : Image.asset('assets/icons/like.png',
+                                                                                    color: AppColors.primaryColor30,
+                                                                                    height: 19,
+                                                                                    width: 19),
+                                                                              ),
+                                                                              const SizedBox(width: 5),
+                                                                              Text(post.likedBy.length.toString(),
+                                                                                  style: MainFonts.postMainText(size: 12)),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Line()
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               );
                                             });
                                       } else{
