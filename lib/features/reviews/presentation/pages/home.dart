@@ -49,6 +49,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   LoginRequiredState loginRequiredObj = LoginRequiredState();
 
   final FocusNode _focusNode = FocusNode();
@@ -157,6 +159,7 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
     MyApp.initUserId();
     return Scaffold(
+      key: _scaffoldKey,
       drawer: Drawer(
         backgroundColor: Colors.transparent,
         child: Container(
@@ -413,7 +416,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Scaffold.of(context).openDrawer();
+                      _scaffoldKey.currentState!.openDrawer();
                     },
                     child: Image.asset('assets/icons/menus.png',
                         color: AppColors.primaryColor30,
