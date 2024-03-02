@@ -198,8 +198,8 @@ class MainFonts {
     return TextStyle(fontSize: size, fontWeight: FontWeight.w300, color: color);
   }
 
-  static TextStyle settingLabel() {
-    return const TextStyle(fontSize: 18, color: AppColors.textColor);
+  static TextStyle settingLabel({Color color = AppColors.textColor}) {
+    return TextStyle(fontSize: 18, color: color);
   }
 
   static miniText({double fontSize = 12, Color color = AppColors.textColor}) {

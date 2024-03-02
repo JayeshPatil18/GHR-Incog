@@ -172,19 +172,13 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(top: 28, left: 20, right: 20),
                     width: double.infinity,
                     height: 100,
-                    color: Colors.white,
                     child: Text('Settings', style: MainFonts.pageTitleText()),
                   ),
                   InkWell(
                     onTap: () {
-                      if(MyApp.userId == -1){
-                        loginRequiredObj.showLoginRequiredDialog(context);
-                      } else{
-                        Navigator.of(context).pushNamed('editprofile');
-                      }
+                      Navigator.of(context).pushNamed('editprofile');
                     },
                     child: Container(
-                        color: Colors.white,
                         padding: EdgeInsets.all(20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   Icons.edit_outlined,
                                   size: 20,
-                                  color: AppColors.textColor,
+                                  color: AppColors.primaryColor30,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
@@ -207,27 +201,22 @@ class _HomePageState extends State<HomePage> {
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
-                              color: AppColors.secondaryColor10,
+                              color: AppColors.primaryColor30,
                             ),
                           ],
                         )),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.iconLightColor,
+                    color: AppColors.transparentComponentColor,
                     width: double.infinity,
                     height: 1,
                   ),
                   InkWell(
                     onTap: () {
-                      if(MyApp.userId == -1){
-                        loginRequiredObj.showLoginRequiredDialog(context);
-                      } else{
-                        Navigator.of(context).pushNamed('changephoneno');
-                      }
+                      Navigator.of(context).pushNamed('privacypolicy');
                     },
                     child: Container(
-                        color: Colors.white,
                         padding: EdgeInsets.all(20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,13 +225,13 @@ class _HomePageState extends State<HomePage> {
                             Row(
                               children: [
                                 Icon(
-                                  Icons.numbers,
+                                  Icons.privacy_tip_outlined,
                                   size: 20,
-                                  color: AppColors.textColor,
+                                  color: AppColors.primaryColor30,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
-                                  child: Text('Change Phone number',
+                                  child: Text('Privacy Policy',
                                       style: MainFonts.settingLabel()),
                                 ),
                               ],
@@ -250,30 +239,24 @@ class _HomePageState extends State<HomePage> {
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
-                              color: AppColors.secondaryColor10,
+                              color: AppColors.primaryColor30,
                             ),
                           ],
                         )),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.iconLightColor,
+                    color: AppColors.transparentComponentColor,
                     width: double.infinity,
                     height: 1,
                   ),
                   InkWell(
                     onTap: () {
-                      if(MyApp.userId == -1){
-                        loginRequiredObj.showLoginRequiredDialog(context);
-                      } else{
-                        Navigator.of(context).pushNamed('updatepassowrd');
-                      }
+                      Navigator.of(context).pushNamed('termsandconditions');
                     },
                     child: Container(
-                        color: Colors.white,
                         padding: EdgeInsets.all(20),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
@@ -281,11 +264,11 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   Icons.lock_outlined,
                                   size: 20,
-                                  color: AppColors.textColor,
+                                  color: AppColors.primaryColor30,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
-                                  child: Text('Update Password',
+                                  child: Text('Terms and Conditions',
                                       style: MainFonts.settingLabel()),
                                 ),
                               ],
@@ -293,14 +276,14 @@ class _HomePageState extends State<HomePage> {
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
-                              color: AppColors.secondaryColor10,
+                              color: AppColors.primaryColor30,
                             ),
                           ],
                         )),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.iconLightColor,
+                    color: AppColors.transparentComponentColor,
                     width: double.infinity,
                     height: 1,
                   ),
@@ -343,7 +326,6 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: Container(
-                        color: Colors.white,
                         padding: EdgeInsets.all(20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -352,13 +334,13 @@ class _HomePageState extends State<HomePage> {
                             Row(
                               children: [
                                 Icon(
-                                  MyApp.userId == -1 ? Icons.login_rounded : Icons.logout_rounded,
+                                  Icons.logout_rounded,
                                   size: 20,
-                                  color: AppColors.textColor,
+                                  color: AppColors.primaryColor30,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(left: 10),
-                                  child: Text('${MyApp.userId == -1 ? 'Login' : 'Logout'}',
+                                  child: Text('Logout',
                                       style: MainFonts.settingLabel()),
                                 ),
                               ],
@@ -366,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
-                              color: AppColors.secondaryColor10,
+                              color: AppColors.primaryColor30,
                             ),
                           ],
                         )),

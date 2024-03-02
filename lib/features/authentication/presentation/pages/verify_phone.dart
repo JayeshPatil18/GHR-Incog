@@ -273,10 +273,10 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       String username = 'null';
 
       for (var userMap in data) {
-        if (userMap['email'].toString() == email && userMap['status'] == 1) {
-          return 0;
-        } else
-        if (userMap['email'].toString() == email && userMap['status'] == 0) {
+        // if (userMap['email'].toString() == email && userMap['status'] == 1) {
+        //   return 0;
+        // } else
+        if (userMap['email'].toString() == email) { //  && userMap['status'] == 0 // For One Time Login which is not covering all cases
           userId = userMap['userid'];
           username = userMap['username'];
 

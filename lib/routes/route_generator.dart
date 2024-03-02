@@ -18,6 +18,8 @@ import '../features/authentication/presentation/pages/signup.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/string_argument.dart';
 import '../features/reviews/domain/entities/two_string_argument.dart';
+import '../features/reviews/presentation/pages/privacy_policy.dart';
+import '../features/reviews/presentation/pages/terms_conditions.dart';
 import '../features/reviews/presentation/pages/view_post.dart';
 
 class RouteGenerator {
@@ -101,6 +103,16 @@ class RouteGenerator {
       case 'editprofile':
         return MaterialPageRoute(
             builder: (_) => const EditProfile()
+        );
+
+      case 'privacypolicy':
+        return MaterialPageRoute(
+            builder: (_) => const PrivacyPolicyPage()
+        );
+
+      case 'termsandconditions':
+        return MaterialPageRoute(
+            builder: (_) => const TermsAndConditionsPage()
         );
 
       case 'verifyphone':
