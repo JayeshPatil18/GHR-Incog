@@ -5,7 +5,7 @@ class User {
   final String profileUrl;
   final int rank;
   final int score;
-  final int status;
+  final String status;
   final int uid;
   final String username;
 
@@ -29,7 +29,7 @@ class User {
       profileUrl: map['profileurl'] ?? '',
       rank: map['rank'] ?? 0,
       score: map['score'] ?? '',
-      status: map['status'] ?? 0,
+      status: map['status'] ?? '',
       uid: map['userid'] ?? 0,
       username: map['username'] ?? '',
     );

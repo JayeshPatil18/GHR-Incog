@@ -19,6 +19,8 @@ class UsersRepo {
   Future<int> addUser(int length, String email, String gender, String username) async {
     try {
 
+      String deviceId = await getUniqueDeviceId();
+
       final snapshot = await _db.collection('users').doc('usersdoc');
 
       await snapshot.update({
@@ -29,10 +31,10 @@ class UsersRepo {
             'email': email,
             'gender': gender.toLowerCase(),
             'bio': '',
-            'rank': length,
+            'rank': length + 1,
             'score': 0,
             'username': username,
-            'status': 1,
+            'status': deviceId,
           },
         ]),
       });
@@ -42,9 +44,10 @@ class UsersRepo {
     }
   }
 
-  Future<int> logoutUser() async {
+  Future<int> logoutUser(String deviceId) async {
 
     try {
+
       List<String>? details = await getLoginDetails();
       int userId = -1;
 
@@ -61,13 +64,11 @@ class UsersRepo {
 
       for (var user in usersData) {
         if (user['userid'] == userId) {
-          user['status'] = 0;
+          if(user['status'] != deviceId){
+            return -1;
+          }
         }
       }
-
-      await userFireInstance.doc('usersdoc').update({
-        'userslist': usersData
-      });
 
       return 1;
     } catch (e) {

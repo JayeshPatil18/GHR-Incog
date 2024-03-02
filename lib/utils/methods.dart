@@ -1,8 +1,28 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/features/reviews/presentation/widgets/bottom_sheet.dart';
 import 'package:review_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+Future<String> getUniqueDeviceId() async {
+  String uniqueDeviceId = '';
+
+  var deviceInfo = DeviceInfoPlugin();
+
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    uniqueDeviceId = '${iosDeviceInfo.name}:${iosDeviceInfo.identifierForVendor}'; // unique ID on iOS
+  } else if(Platform.isAndroid) {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    uniqueDeviceId = '${androidDeviceInfo.device}:${androidDeviceInfo.id}' ; // unique ID on Android
+  }
+
+  return uniqueDeviceId;
+
+}
 
 String suffixOfNumber(int number) {
   if (number % 100 >= 11 && number % 100 <= 13) {

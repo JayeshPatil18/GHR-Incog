@@ -8,12 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
 import 'package:review_app/features/reviews/presentation/bloc/fetch_review/fetch_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/bloc/upload_review/upload_review_bloc.dart';
 import 'package:review_app/features/reviews/presentation/pages/home.dart';
 import 'package:review_app/features/reviews/presentation/pages/landing.dart';
 import 'package:review_app/features/reviews/presentation/pages/leaderboard.dart';
 import 'package:review_app/features/reviews/presentation/provider/bottom_nav_bar.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/routes/route_generator.dart';
 import 'package:review_app/utils/methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +47,27 @@ class MyApp extends StatelessWidget {
   static String LOGIN_DETAILS_KEY = 'loginDetails';
   static String DOWNLOAD_VALUE_KEY = 'isFirstTime';
   static bool ENABLE_LEADERBOARD = false;
+
+  static checkAnotherDeviceLogin(BuildContext context) async {
+    String deviceId = await getUniqueDeviceId();
+
+    UsersRepo usersRepo = UsersRepo();
+    int result = await usersRepo.logoutUser(deviceId);
+
+    if(result != 1){
+
+      mySnackBarShow(context, 'Just login from another device!');
+      clearSharedPrefs();
+
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Navigator.of(context)
+            .popUntil((route) => route.isFirst);
+        Navigator.of(context)
+            .pushReplacementNamed('signup');
+      });
+    }
+  }
+
 
   static initUserId() async {
     List<String>? details = await getLoginDetails();

@@ -123,7 +123,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                       if (isVerified) {
                         int isCredentialsStored =
                         await setUserCredentials(widget.email);
-                        if (isCredentialsStored == 1) {
+                        if (isCredentialsStored == -200) {
 
                           FocusScope.of(context).unfocus();
                           Future.delayed(const Duration(milliseconds: 300), () {
@@ -134,10 +134,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
 
                             Navigator.of(context).pushReplacementNamed('landing');
                           });
-                        } else if (isCredentialsStored == 0) {
-                          mySnackBarShow(context,
-                              'Already login in another device. Logout from there.');
-                        } else if (isCredentialsStored != -1 || isCredentialsStored != 1 || isCredentialsStored != 0) {
+                        } else if (isCredentialsStored != -1 || isCredentialsStored != -200) {
                           showCredentialsConfirm(context, isCredentialsStored, widget.email);
                         } else {
                           mySnackBarShow(context, 'Something went wrong.');
@@ -272,16 +269,15 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       int userId = -1;
       String username = 'null';
 
+      String deviceId = await getUniqueDeviceId();
+
       for (var userMap in data) {
-        // if (userMap['email'].toString() == email && userMap['status'] == 1) {
-        //   return 0;
-        // } else
-        if (userMap['email'].toString() == email) { //  && userMap['status'] == 0 // For One Time Login which is not covering all cases
+        if (userMap['email'].toString() == email) {
           userId = userMap['userid'];
           username = userMap['username'];
 
           // Update login status value
-          userMap['status'] = 1;
+          userMap['status'] = deviceId;
           await UsersRepo.userFireInstance.doc('usersdoc').update({
             'userslist': data
           });
@@ -295,7 +291,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
         updateLoginStatus(true);
         loginDetails(userId.toString(), username);
 
-        return 1;
+        return -200;
       }
     } catch (e) {
       print(e.toString());

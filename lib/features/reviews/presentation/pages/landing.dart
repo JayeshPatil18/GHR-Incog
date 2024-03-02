@@ -39,6 +39,7 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     MyApp.initUserId();
+    MyApp.checkAnotherDeviceLogin(context);
   }
 
   @override

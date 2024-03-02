@@ -307,17 +307,11 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 TextButton(
                                   onPressed: () async{
-                                    UsersRepo userRepo = UsersRepo();
-                                    int result = await userRepo.logoutUser();
-                                    if(result == 1){
-                                      clearSharedPrefs();
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
-                                      Navigator.of(context)
-                                          .pushReplacementNamed('signup');
-                                    } else{
-                                      mySnackBarShow(context, 'Something went wrong!');
-                                    }
+                                    clearSharedPrefs();
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('signup');
                                   },
                                   child: const Text('OK'),
                                 ),
