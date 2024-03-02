@@ -220,8 +220,8 @@ class _ViewPostState extends State<ViewPost> {
                                   for(UploadReviewModel i in documentList){
                                     if(post.postId == i.parentId){
 
-                                      if(((postOfReplies?.username ?? '') == i.username) && replyOfPoster == null){
-                                        replyOfPoster = post;
+                                      if(((postOfReplies?.username) == i.username) && replyOfPoster == null){
+                                        replyOfPoster = i;
                                       }
 
                                       if(MyApp.userId == i.userId){
