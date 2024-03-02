@@ -77,22 +77,14 @@ class UsersRepo {
   }
 
 
-  Future<int> updateProfile(File? selectedImage, String name, String username, String bio) async {
+  Future<int> updateProfile(String profileUrl, String username, String bio) async {
 
     try {
       List<String>? details = await getLoginDetails();
       int userId = -1;
-      String phoneNo = '';
 
       if (details != null) {
         userId = int.parse(details[0]);
-        phoneNo = details[2];
-      }
-
-      // Upload Image
-      String imageUrl = "null";
-      if(selectedImage != null){
-        imageUrl = await _uploadFile(userId, selectedImage);
       }
 
       var document = await userFireInstance
@@ -103,13 +95,10 @@ class UsersRepo {
       List<Map<String, dynamic>>.from(document.data()?["userslist"] ?? []);
 
       for (var user in usersData) {
-        if (user['uid'] == userId) {
-          user['fullname'] = name;
+        if (user['userid'] == userId) {
           user['username'] = username;
           user['bio'] = bio;
-          if(imageUrl != "null"){
-            user['profileurl'] = imageUrl;
-          }
+          user['profileurl'] = profileUrl;
         }
       }
 
