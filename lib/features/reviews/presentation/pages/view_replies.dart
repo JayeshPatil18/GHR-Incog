@@ -133,7 +133,7 @@ class _ViewRepliesState extends State<ViewReplies> {
               Container(
                 alignment: Alignment.centerLeft,
                 margin:
-                EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
