@@ -42,6 +42,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static List<String> profileIconList = [];
+
   static int userId = -1;
   static String LOGIN_KEY = 'isLoggedIn';
   static String LOGIN_DETAILS_KEY = 'loginDetails';
@@ -81,6 +83,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    getAllImageURLs();
 
     // PreLoading Images
     precacheImage(AssetImage("assets/icons/menus.png"), context);

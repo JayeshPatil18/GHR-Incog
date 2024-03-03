@@ -56,18 +56,19 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                 widget.profileUrl == 'null'
                             ? CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          radius: 40,
+                          radius: 35,
                           child: ClipOval(
                             child: Container(
                               width: double.infinity,
                               height: double.infinity,
                               color: AppColors.transparentComponentColor,
-                              child: Icon(Icons.person, color: AppColors.lightTextColor, size: 55,),
+                              child: Icon(Icons.person, color: AppColors.lightTextColor, size: 50,),
                             ),
                           ),
                         )
                             : CircleAvatar(
-                                radius: 40,
+                          backgroundColor: Colors.transparent,
+                                radius: 35,
                                 child: ClipOval(
                                     child: CustomImageShimmer(
                                         imageUrl: widget.profileUrl,
@@ -86,13 +87,15 @@ class _UserProfileModelState extends State<UserProfileModel> {
                             color: AppColors.textColor,
                           ),
                         ),
-                        onPressed: () {  },
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('editprofile');
+                        },
                         child: Text('Edit Profile', style: ProfileUserFonts.editText()),
                       ),
                     )
                   ],
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

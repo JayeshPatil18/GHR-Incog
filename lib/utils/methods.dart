@@ -4,8 +4,34 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/features/reviews/presentation/widgets/bottom_sheet.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+
+getAllImageURLs() async {
+
+  try {
+    firebase_storage.ListResult result = await firebase_storage
+        .FirebaseStorage.instance
+        .ref().child('profile_icons').listAll();
+
+    for (firebase_storage.Reference ref in result.items) {
+      String url = await firebase_storage.FirebaseStorage.instance
+          .ref(ref.fullPath)
+          .getDownloadURL();
+
+      if(!(MyApp.profileIconList.contains(url))){
+        MyApp.profileIconList.add(url);
+      }
+    }
+  } catch (e) {
+    print("Error fetching image URLs: $e");
+  }
+}
+
 
 Future<String> getUniqueDeviceId() async {
   String uniqueDeviceId = '';

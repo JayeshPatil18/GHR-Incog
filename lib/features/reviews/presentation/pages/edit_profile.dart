@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:review_app/features/reviews/presentation/widgets/choose_profile_icon.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../constants/boarder.dart';
@@ -29,10 +30,10 @@ class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<EditProfile> createState() => EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class EditProfileState extends State<EditProfile> {
 
   final FocusNode _focusUsernameNode = FocusNode();
   bool _hasUsernameFocus = false;
@@ -46,7 +47,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   TextEditingController genderController = TextEditingController();
-  String profileImageUrl = 'null';
+  static String profileImageUrl = 'null';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -83,6 +84,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   _loadProfileData() async {
+
     var document = await UsersRepo.userFireInstance.doc('usersdoc').get();
 
     List<Map<String, dynamic>> usersData =
@@ -246,13 +248,7 @@ class _EditProfileState extends State<EditProfile> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Stack(children: [
-                                    _selectedImage != null
-                                        ? CircleAvatar(
-                                      backgroundImage:
-                                      FileImage(_selectedImage!),
-                                      radius: 50,
-                                    )
-                                        : profileImageUrl == 'null'
+                                    profileImageUrl == 'null'
                                         ? CircleAvatar(
                                       backgroundColor: Colors.transparent,
                                       radius: 50,
@@ -266,11 +262,11 @@ class _EditProfileState extends State<EditProfile> {
                                       ),
                                     )
                                         : CircleAvatar(
+                                        backgroundColor: Colors.transparent,
                                         radius: 50,
                                         child: ClipOval(
                                             child: CustomImageShimmer(
-                                                imageUrl:
-                                                user?.profileUrl ?? '',
+                                                imageUrl: profileImageUrl,
                                                 width: double.infinity,
                                                 height: double.infinity,
                                                 fit: BoxFit.cover))),
@@ -481,7 +477,7 @@ class _EditProfileState extends State<EditProfile> {
                               UsersRepo userRepoObj = UsersRepo();
                               int status =
                               await userRepoObj.updateProfile(
-                                  'null',
+                                  profileImageUrl,
                                   usernameController.text.trim(),
                                   bioController.text.trim());
                               if (status == 1) {
@@ -549,181 +545,12 @@ class _EditProfileState extends State<EditProfile> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
         ),
-        builder: (context) =>
-            DraggableScrollableSheet(
-                expand: false,
-                initialChildSize: 0.95,
-                maxChildSize: 0.95,
-                minChildSize: 0.40,
-                builder: (context, scrollContoller) =>
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: AppColors.mainGradient
-                      ),
-                      padding: EdgeInsets.only(left: 10, right: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(10),
-                            width: 60,
-                            height: 7,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.transparentComponentColor),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.only(top: 20, bottom: 20, left: 10, right: 10),
-                              child: Text('Select Profile Picture', style: MainFonts.lableText(color: AppColors.primaryColor30))),
-                          Expanded(
-                            child: StreamBuilder<QuerySnapshot>(
-                                stream: ReviewRepo.reviewFireInstance
-                                    .orderBy('date', descending: true)
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  final documents;
-                                  if (snapshot.data != null) {
-                                    documents = snapshot.data!.docs;
-
-                                    List<UploadReviewModel> documentList = [];
-                                    List<UploadReviewModel> postsList = [];
-                                    for (int i = 0;
-                                    i < documents.length;
-                                    i++) {
-                                      UploadReviewModel post =
-                                      UploadReviewModel.fromMap(
-                                          documents[i].data()
-                                          as Map<String, dynamic>);
-                                      documentList.add(post);
-                                      if (post.parentId == "-1" && post.mediaUrl != 'null') {
-                                        postsList.add(post);
-                                      }
-                                    }
-
-                                    if(postsList.isNotEmpty){
-                                      return GridView.builder(
-                                          padding: EdgeInsets.only(right: 20, left: 20,
-                                              bottom: 20, top: 10),
-                                          gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisSpacing: 40,
-                                            mainAxisSpacing: 40,
-                                            crossAxisCount: 3,),
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: postsList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            UploadReviewModel post =
-                                            postsList[index];
-
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(post.mediaUrl , true));
-                                              },
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.transparent,
-                                                radius: 50,
-                                                child: ClipOval(
-                                                  child: CustomImageShimmer(
-                                                      imageUrl: post.mediaUrl,
-                                                      width: double.infinity,
-                                                      height: double.infinity,
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              ),
-                                            );
-                                          });
-                                    } else{
-                                      return Center(
-                                          child: Text('No Media',
-                                              style: MainFonts.filterText(
-                                                  color:
-                                                  AppColors.lightTextColor)));
-                                    }
-                                  } else {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  }
-                                }),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 20, top: 20, left: 20, right: 10),
-                            child: Container(
-                              height: 55,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.secondaryColor10,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(AppBoarderRadius.buttonRadius)),
-                                    elevation: AppElevations.buttonElev,
-                                  ),
-                                  onPressed: () async {
-                                    FocusScope.of(context).unfocus();
-                                      bool isValid =
-                                      _formKey.currentState!.validate();
-                                      if (isValid) {
-                                        UsersRepo usersRepo = UsersRepo();
-                                        List<String>? details =
-                                        await getLoginDetails();
-                                        String username = details?[1] ?? '';
-
-                                        int validUsername = 0;
-
-                                        if (usernameController.text.toLowerCase() ==
-                                            username.toLowerCase()) {
-                                          validUsername = 1;
-                                        } else {
-                                          validUsername = await usersRepo
-                                              .validUsernameCheck(
-                                              usernameController.text);
-                                        }
-
-                                        if (validUsername == 1) {
-                                          UsersRepo userRepoObj = UsersRepo();
-                                          int status =
-                                          await userRepoObj.updateProfile(
-                                              'null',
-                                              usernameController.text.trim(),
-                                              bioController.text.trim());
-                                          if (status == 1) {
-                                            FocusScope.of(context).unfocus();
-                                            mySnackBarShow(
-                                                context, 'Profile Updated.');
-                                            Future.delayed(
-                                                const Duration(milliseconds: 300),
-                                                    () {
-                                                  Navigator.of(context).pop();
-                                                });
-                                          } else if (status == -1) {
-                                            logOut();
-                                          } else {
-                                            mySnackBarShow(context,
-                                                'Something went wrong! Try again.');
-                                          }
-                                        } else if (validUsername == -1) {
-                                          mySnackBarShow(context,
-                                              'This username is already in use! Try Another.');
-                                        } else if (validUsername == 0) {
-                                          mySnackBarShow(context,
-                                              'Something went wrong! Try again.');
-                                        }
-                                      }
-                                  },
-                                  child: Text('Update', style: AuthFonts.authButtonText())),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ))).whenComplete(_onBottomSheetClosed);
+        builder: (context) => ChooseProfileIcon()).whenComplete(_onBottomSheetClosed);
   }
 
   void _onBottomSheetClosed() {
-    Timer(Duration(milliseconds: AppValues.closeDelay), () {
-      profileImageUrl = 'null';
+    setState(() {
+
     });
   }
 }

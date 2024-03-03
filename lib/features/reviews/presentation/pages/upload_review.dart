@@ -232,6 +232,7 @@ class _UploadReviewState extends State<UploadReview> {
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: CircleAvatar(
+                                    backgroundColor: Colors.transparent,
                                     backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
                                     radius: 22,
                                   ),
