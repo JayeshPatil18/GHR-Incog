@@ -42,6 +42,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static String profileImageUrl = 'null';
+
   static List<String> profileIconList = [];
 
   static int userId = -1;

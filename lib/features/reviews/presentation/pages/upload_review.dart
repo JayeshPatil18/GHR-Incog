@@ -20,6 +20,7 @@ import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
+import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
@@ -27,6 +28,7 @@ import '../../domain/entities/image_argument.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
+import '../widgets/image_shimmer.dart';
 import '../widgets/review_model.dart';
 import '../widgets/shadow.dart';
 
@@ -231,10 +233,27 @@ class _UploadReviewState extends State<UploadReview> {
                               children: [
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
-                                  child: CircleAvatar(
+                                  child: MyApp.profileImageUrl == 'null' || MyApp.profileImageUrl.isEmpty
+                                      ? CircleAvatar(
                                     backgroundColor: Colors.transparent,
-                                    backgroundImage: NetworkImage('https://i.insider.com/61e9ac1cda4bc600181aaf63?width=700'),
                                     radius: 22,
+                                    child: ClipOval(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        color: AppColors.transparentComponentColor,
+                                        child: Icon(Icons.person, color: AppColors.lightTextColor, size: 32),
+                                      ),
+                                    ),
+                                  ) : CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    radius: 25,
+                                    child: ClipOval(
+                                        child: CustomImageShimmer(
+                                            imageUrl: MyApp.profileImageUrl,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            fit: BoxFit.cover)),
                                   ),
                                 ),
                                 const SizedBox(width: 10),

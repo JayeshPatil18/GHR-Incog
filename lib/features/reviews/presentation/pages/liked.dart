@@ -14,6 +14,7 @@ import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
+import '../widgets/dialog_box.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/line.dart';
 import '../widgets/review_model.dart';
@@ -137,7 +138,23 @@ class _LikedPageState extends State<LikedPage> {
       });
       return false;
     }
-    return true;
+    final value = await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return CustomDialogBox(title: Text('Are you sure you want to exit?', style: TextStyle(fontSize: 18)), content: null, textButton1: TextButton(
+            child: Text('Yes, exit', style: TextStyle(color: Colors.grey)),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ), textButton2: TextButton(
+            child: Text('No'),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ));
+        }
+    );
+    return value != null ? value : true;
   }
 }
 class SearchResultPage extends StatelessWidget {

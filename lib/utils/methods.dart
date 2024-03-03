@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+
+int getRandomNumber(int maxRange) {
+  return Random().nextInt(maxRange);
+}
 
 getAllImageURLs() async {
 

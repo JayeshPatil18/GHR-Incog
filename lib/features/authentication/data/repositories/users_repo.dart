@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:review_app/main.dart';
 import 'package:review_app/utils/methods.dart';
 
 class UsersRepo {
@@ -19,6 +21,13 @@ class UsersRepo {
   Future<int> addUser(int length, String email, String gender, String username) async {
     try {
 
+      int profileIconListLength = MyApp.profileIconList.length;
+      String profileIcon = 'null';
+      if(profileIconListLength != 0){
+        int randomNumber = getRandomNumber(profileIconListLength);
+        profileIcon = MyApp.profileIconList[randomNumber];
+      }
+
       String deviceId = await getUniqueDeviceId();
 
       final snapshot = await _db.collection('users').doc('usersdoc');
@@ -27,7 +36,7 @@ class UsersRepo {
         'userslist': FieldValue.arrayUnion([
           {
             'userid': length,
-            'profileurl': 'null',
+            'profileurl': profileIcon,
             'email': email,
             'gender': gender.toLowerCase(),
             'bio': '',
@@ -64,6 +73,7 @@ class UsersRepo {
 
       for (var user in usersData) {
         if (user['userid'] == userId) {
+          MyApp.profileImageUrl = user['profileurl'];
           if(user['status'] != deviceId){
             return -1;
           }
@@ -111,6 +121,7 @@ class UsersRepo {
       } on Exception catch (e) {
         return -1;
       }
+      MyApp.profileImageUrl = profileUrl;
       return 1;
     } catch (e) {
       return 0;

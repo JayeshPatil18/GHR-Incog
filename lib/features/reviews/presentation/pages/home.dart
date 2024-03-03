@@ -32,6 +32,7 @@ import '../../domain/entities/upload_review.dart';
 import '../bloc/fetch_review/fetch_review_bloc.dart';
 import '../bloc/fetch_review/fetch_review_event.dart';
 import '../bloc/fetch_review/fetch_review_state.dart';
+import '../widgets/dialog_box.dart';
 import '../widgets/line.dart';
 import '../widgets/loginRequiredBottomSheet.dart';
 import '../widgets/post_model.dart';
@@ -158,357 +159,369 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     BlocProvider.of<FetchReviewBloc>(context).add(FetchReview());
     MyApp.initUserId();
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: Drawer(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(gradient: AppColors.mainGradient),
-          margin: EdgeInsets.only(top: 26),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: <Widget>[
-                  Container(
-                    alignment: AlignmentDirectional.centerStart,
-                    padding: EdgeInsets.only(top: 28, left: 20, right: 20),
-                    width: double.infinity,
-                    height: 100,
-                    child: Text('Settings', style: MainFonts.pageTitleText()),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('editprofile');
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.edit_outlined,
-                                  size: 20,
-                                  color: AppColors.primaryColor30,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text('Edit Profile',
-                                      style: MainFonts.settingLabel()),
-                                ),
-                              ],
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: AppColors.primaryColor30,
-                            ),
-                          ],
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.transparentComponentColor,
-                    width: double.infinity,
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('privacypolicy');
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.privacy_tip_outlined,
-                                  size: 20,
-                                  color: AppColors.primaryColor30,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text('Privacy Policy',
-                                      style: MainFonts.settingLabel()),
-                                ),
-                              ],
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: AppColors.primaryColor30,
-                            ),
-                          ],
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.transparentComponentColor,
-                    width: double.infinity,
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('termsandconditions');
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.lock_outlined,
-                                  size: 20,
-                                  color: AppColors.primaryColor30,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text('Terms and Conditions',
-                                      style: MainFonts.settingLabel()),
-                                ),
-                              ],
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: AppColors.primaryColor30,
-                            ),
-                          ],
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    color: AppColors.transparentComponentColor,
-                    width: double.infinity,
-                    height: 1,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            AlertDialog(
-                              contentPadding: EdgeInsets.all(10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+    return WillPopScope(
+      onWillPop: () async {
+        final value = await showDialog<bool>(
+            context: context,
+            builder: (context) {
+              return CustomDialogBox(title: Text('Are you sure you want to exit?', style: TextStyle(fontSize: 18)), content: null, textButton1: TextButton(
+                child: Text('Yes, exit', style: TextStyle(color: Colors.grey)),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ), textButton2: TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ));
+            }
+        );
+
+        return value == true;
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(gradient: AppColors.mainGradient),
+            margin: EdgeInsets.only(top: 26),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: AlignmentDirectional.centerStart,
+                      padding: EdgeInsets.only(top: 28, left: 20, right: 20),
+                      width: double.infinity,
+                      height: 100,
+                      child: Text('Settings', style: MainFonts.pageTitleText()),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('editprofile');
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.edit_outlined,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('Edit Profile',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
                               ),
-                              title: Text('Want to Logout ?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context, 'Cancel');
-                                  },
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () async{
-                                    clearSharedPrefs();
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('signup');
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                      );
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.logout_rounded,
-                                  size: 20,
-                                  color: AppColors.primaryColor30,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text('Logout',
-                                      style: MainFonts.settingLabel()),
-                                ),
-                              ],
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20,
-                              color: AppColors.primaryColor30,
-                            ),
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-            ],
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      color: AppColors.transparentComponentColor,
+                      width: double.infinity,
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('privacypolicy');
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.privacy_tip_outlined,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('Privacy Policy',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      color: AppColors.transparentComponentColor,
+                      width: double.infinity,
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('termsandconditions');
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.lock_outlined,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('Terms and Conditions',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      color: AppColors.transparentComponentColor,
+                      width: double.infinity,
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              CustomDialogBox(title: Text('Want to Logout ?', style: TextStyle(fontSize: 18)), content: null, textButton1: TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text('Cancel'),
+                              ), textButton2: TextButton(
+                                onPressed: () async{
+                                  clearSharedPrefs();
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('signup');
+                                },
+                                child: const Text('OK'),
+                              ),),
+                        );
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.logout_rounded,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('Logout',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      // appBar: PreferredSize(
-      //     preferredSize: Size.fromHeight(70),
-      //     child: SafeArea(
-      //       child: Column(
-      //         children: [
-      //           Container(
-      //             alignment: Alignment.centerLeft,
-      //             margin:
-      //             EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 GestureDetector(
-      //                   onTap: () {
-      //                     Scaffold.of(context).openDrawer();
-      //                   },
-      //                   child: Image.asset('assets/icons/menus.png',
-      //                       color: AppColors.primaryColor30,
-      //                       height: 34, width: 34),
-      //                 ),
-      //
-      //                 Image.asset('assets/icons/ghrp.png',
-      //                     color: AppColors.primaryColor30,
-      //                     height: 49, width: 49),
-      //
-      //                 // **********************************************************
-      //                 // notification comment
-      //                 GestureDetector(
-      //                   onTap: () {
-      //                     Navigator.of(context).pushNamed('notification');
-      //                   },
-      //                   child: Image.asset(
-      //                       'assets/icons/bell.png',
-      //                       color: AppColors.primaryColor30,
-      //                       height: AppIconSize.appIcons,
-      //                       width: AppIconSize.appIcons),
-      //                 )
-      //                 // **********************************************************
-      //               ],
-      //             ),
-      //           ),
-      //           Line()
-      //         ],
-      //       ),
-      //     )),
-      backgroundColor: Colors.transparent,
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              margin:
-              EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      _scaffoldKey.currentState!.openDrawer();
-                    },
-                    child: Image.asset('assets/icons/menus.png',
-                        color: AppColors.primaryColor30,
-                        height: 34, width: 34),
-                  ),
+        // appBar: PreferredSize(
+        //     preferredSize: Size.fromHeight(70),
+        //     child: SafeArea(
+        //       child: Column(
+        //         children: [
+        //           Container(
+        //             alignment: Alignment.centerLeft,
+        //             margin:
+        //             EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        //             child: Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //               children: [
+        //                 GestureDetector(
+        //                   onTap: () {
+        //                     Scaffold.of(context).openDrawer();
+        //                   },
+        //                   child: Image.asset('assets/icons/menus.png',
+        //                       color: AppColors.primaryColor30,
+        //                       height: 34, width: 34),
+        //                 ),
+        //
+        //                 Image.asset('assets/icons/ghrp.png',
+        //                     color: AppColors.primaryColor30,
+        //                     height: 49, width: 49),
+        //
+        //                 // **********************************************************
+        //                 // notification comment
+        //                 GestureDetector(
+        //                   onTap: () {
+        //                     Navigator.of(context).pushNamed('notification');
+        //                   },
+        //                   child: Image.asset(
+        //                       'assets/icons/bell.png',
+        //                       color: AppColors.primaryColor30,
+        //                       height: AppIconSize.appIcons,
+        //                       width: AppIconSize.appIcons),
+        //                 )
+        //                 // **********************************************************
+        //               ],
+        //             ),
+        //           ),
+        //           Line()
+        //         ],
+        //       ),
+        //     )),
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                margin:
+                EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _scaffoldKey.currentState!.openDrawer();
+                      },
+                      child: Image.asset('assets/icons/menus.png',
+                          color: AppColors.primaryColor30,
+                          height: 34, width: 34),
+                    ),
 
-                  Image.asset('assets/icons/ghrp.png',
-                      color: AppColors.primaryColor30,
-                      height: 49, width: 49),
-
-                  // **********************************************************
-                  // notification comment
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('notification');
-                    },
-                    child: Image.asset(
-                        'assets/icons/bell.png',
+                    Image.asset('assets/icons/ghrp.png',
                         color: AppColors.primaryColor30,
-                        height: AppIconSize.appIcons,
-                        width: AppIconSize.appIcons),
-                  )
-                  // **********************************************************
-                ],
+                        height: 49, width: 49),
+
+                    // **********************************************************
+                    // notification comment
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('notification');
+                      },
+                      child: Image.asset(
+                          'assets/icons/bell.png',
+                          color: AppColors.primaryColor30,
+                          height: AppIconSize.appIcons,
+                          width: AppIconSize.appIcons),
+                    )
+                    // **********************************************************
+                  ],
+                ),
               ),
-            ),
-            Line(),
-            Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
-                    builder: (context, snapshot) {
-                      final documents;
-                      if (snapshot.data != null) {
-                        documents = snapshot.data!.docs;
+              Line(),
+              Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: ReviewRepo.reviewFireInstance.orderBy('date', descending: true).snapshots(),
+                      builder: (context, snapshot) {
+                        final documents;
+                        if (snapshot.data != null) {
+                          documents = snapshot.data!.docs;
 
-                        List<UploadReviewModel> documentList = [];
-                        List<UploadReviewModel> postsList = [];
-                        for(int i = 0; i < documents.length; i++){
-                          UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
-                          documentList.add(post);
-                          if(post.parentId == "-1"){
-                            postsList.add(post);
+                          List<UploadReviewModel> documentList = [];
+                          List<UploadReviewModel> postsList = [];
+                          for(int i = 0; i < documents.length; i++){
+                            UploadReviewModel post = UploadReviewModel.fromMap(documents[i].data() as Map<String, dynamic>);
+                            documentList.add(post);
+                            if(post.parentId == "-1"){
+                              postsList.add(post);
+                            }
                           }
-                        }
 
-                        if(postsList.isNotEmpty){
-                          return ListView.builder(
-                              padding: EdgeInsets.only(bottom: 100),
-                              itemCount: postsList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                UploadReviewModel post = postsList[index];
+                          if(postsList.isNotEmpty){
+                            return ListView.builder(
+                                padding: EdgeInsets.only(bottom: 100),
+                                itemCount: postsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  UploadReviewModel post = postsList[index];
 
-                                int commentCount = 0;
-                                bool isCommented = false;
-                                for(UploadReviewModel i in documentList){
-                                  if(post.postId == i.parentId){
-                                    if(MyApp.userId == i.userId){
-                                      isCommented = true;
+                                  int commentCount = 0;
+                                  bool isCommented = false;
+                                  for(UploadReviewModel i in documentList){
+                                    if(post.postId == i.parentId){
+                                      if(MyApp.userId == i.userId){
+                                        isCommented = true;
+                                      }
+                                      commentCount++;
                                     }
-                                    commentCount++;
+
                                   }
 
-                                }
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
-                                  },
-                                  child: PostModel(
-                                    commentCount: commentCount,
-                                    isCommented: isCommented,
-                                    date: post.date,
-                                    likedBy: post.likedBy,
-                                    mediaUrl: post.mediaUrl,
-                                    gender: post.gender,
-                                    userProfileUrl: post.userProfileUrl,
-                                    parentId: post.parentId,
-                                    postId: post.postId,
-                                    text: post.text,
-                                    userId: post.userId,
-                                    username: post.username,
-                                  ),
-                                );
-                              });
-                        } else{
-                          return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.lightTextColor)));
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
+                                    },
+                                    child: PostModel(
+                                      commentCount: commentCount,
+                                      isCommented: isCommented,
+                                      date: post.date,
+                                      likedBy: post.likedBy,
+                                      mediaUrl: post.mediaUrl,
+                                      gender: post.gender,
+                                      userProfileUrl: post.userProfileUrl,
+                                      parentId: post.parentId,
+                                      postId: post.postId,
+                                      text: post.text,
+                                      userId: post.userId,
+                                      username: post.username,
+                                    ),
+                                  );
+                                });
+                          } else{
+                            return Center(child: Text('No Post', style: MainFonts.filterText(color: AppColors.lightTextColor)));
+                          }
+                        } else {
+                          return Center(child: CircularProgressIndicator());
                         }
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    })),
-          ],
+                      })),
+            ],
+          ),
         ),
       ),
     );

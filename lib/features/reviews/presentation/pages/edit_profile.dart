@@ -388,6 +388,7 @@ class EditProfileState extends State<EditProfile> {
                             ),
                             Container(
                               child: TextFormField(
+                                readOnly: true,
                                 controller: genderController,
                                 autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
