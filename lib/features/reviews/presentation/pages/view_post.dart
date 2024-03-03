@@ -27,6 +27,7 @@ import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
+import '../../domain/entities/id_argument.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/two_string_argument.dart';
@@ -270,28 +271,33 @@ class _ViewPostState extends State<ViewPost> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Container(
-                                                    child: replyOfPoster.userProfileUrl == 'null' || replyOfPoster.userProfileUrl.isEmpty
-                                                        ? CircleAvatar(
-                                                      backgroundColor: Colors.transparent,
-                                                      radius: 18,
-                                                      child: ClipOval(
-                                                        child: Container(
-                                                          width: double.infinity,
-                                                          height: double.infinity,
-                                                          color: AppColors.transparentComponentColor,
-                                                          child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                        navigateToUserProfile(context, replyOfPoster?.userId ?? -1);
+                                                    },
+                                                    child: Container(
+                                                      child: replyOfPoster.userProfileUrl == 'null' || replyOfPoster.userProfileUrl.isEmpty
+                                                          ? CircleAvatar(
+                                                        backgroundColor: Colors.transparent,
+                                                        radius: 18,
+                                                        child: ClipOval(
+                                                          child: Container(
+                                                            width: double.infinity,
+                                                            height: double.infinity,
+                                                            color: AppColors.transparentComponentColor,
+                                                            child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                                                          ),
                                                         ),
+                                                      ) : CircleAvatar(
+                                                        backgroundColor: Colors.transparent,
+                                                        radius: 18,
+                                                        child: ClipOval(
+                                                            child: CustomImageShimmer(
+                                                                imageUrl: replyOfPoster.userProfileUrl,
+                                                                width: double.infinity,
+                                                                height: double.infinity,
+                                                                fit: BoxFit.cover)),
                                                       ),
-                                                    ) : CircleAvatar(
-                                                      backgroundColor: Colors.transparent,
-                                                      radius: 18,
-                                                      child: ClipOval(
-                                                          child: CustomImageShimmer(
-                                                              imageUrl: replyOfPoster.userProfileUrl,
-                                                              width: double.infinity,
-                                                              height: double.infinity,
-                                                              fit: BoxFit.cover)),
                                                     ),
                                                   ),
                                                   const SizedBox(width: 10),
@@ -303,27 +309,32 @@ class _ViewPostState extends State<ViewPost> {
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
-                                                            Row(
-                                                              children: [
-                                                                Text(
-                                                                    replyOfPoster.username.length > 20
-                                                                        ? replyOfPoster.username.substring(0, 20) + '...'
-                                                                        : replyOfPoster.username,
-                                                                    style: MainFonts.lableText(
-                                                                        fontSize: 16, weight: FontWeight.w500)),
-                                                                SizedBox(width: 6),
-                                                                Container(
-                                                                  decoration: BoxDecoration(
-                                                                      color: AppColors.transparentComponentColor,
-                                                                      borderRadius: BorderRadius.circular(3.0)),
-                                                                  padding: EdgeInsets.only(
-                                                                      top: 2, bottom: 2, left: 3.5, right: 3.5),
-                                                                  child: Text(replyOfPoster.gender.isNotEmpty ? replyOfPoster.gender[0].toUpperCase() : ' - ',
-                                                                      style: TextStyle(
-                                                                          fontSize: 11,
-                                                                          color: AppColors.primaryColor30)),
-                                                                )
-                                                              ],
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                navigateToUserProfile(context, replyOfPoster?.userId ?? -1);
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                      replyOfPoster.username.length > 20
+                                                                          ? replyOfPoster.username.substring(0, 20) + '...'
+                                                                          : replyOfPoster.username,
+                                                                      style: MainFonts.lableText(
+                                                                          fontSize: 16, weight: FontWeight.w500)),
+                                                                  SizedBox(width: 6),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                        color: AppColors.transparentComponentColor,
+                                                                        borderRadius: BorderRadius.circular(3.0)),
+                                                                    padding: EdgeInsets.only(
+                                                                        top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                                                    child: Text(replyOfPoster.gender.isNotEmpty ? replyOfPoster.gender[0].toUpperCase() : ' - ',
+                                                                        style: TextStyle(
+                                                                            fontSize: 11,
+                                                                            color: AppColors.primaryColor30)),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
                                                             Text(replyOfPoster.date.substring(0, 10).replaceAll('-', '/'),
                                                                 style: MainFonts.miniText(

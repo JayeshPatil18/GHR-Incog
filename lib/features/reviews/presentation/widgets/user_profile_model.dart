@@ -13,6 +13,7 @@ import '../../../../utils/methods.dart';
 import 'image_shimmer.dart';
 
 class UserProfileModel extends StatefulWidget {
+  final bool hideEditBtn;
   final String profileUrl;
   final String username;
   final String gender;
@@ -22,6 +23,7 @@ class UserProfileModel extends StatefulWidget {
 
   const UserProfileModel(
       {super.key,
+      this.hideEditBtn = false,
       required this.profileUrl,
       required this.username,
       required this.gender,
@@ -76,7 +78,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                                         height: double.infinity,
                                         fit: BoxFit.cover)),
                               )),
-                    Container(
+                    widget.hideEditBtn ? SizedBox() : Container(
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(

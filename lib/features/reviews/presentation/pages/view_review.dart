@@ -311,7 +311,7 @@ class _ViewReviewState extends State<ViewReview> {
                             //           ),
                             //           InkWell(
                             //             onTap: () {
-                            //               Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(review?.userId ?? -1));
+                            //               navigateToUserProfile(context, review?.userId ?? -1);
                             //             },
                             //             child: Text(('@${review?.username ?? ''}').length > 20
                             //                 ? ('@${review?.username ?? ''}').substring(0, 19) + '...'

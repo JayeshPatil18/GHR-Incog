@@ -89,28 +89,33 @@ class _RepliesModelState extends State<RepliesModel> {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
-                            ? CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 18,
-                          child: ClipOval(
-                            child: Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              color: AppColors.transparentComponentColor,
-                              child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                      GestureDetector(
+                        onTap: () {
+                          navigateToUserProfile(context, widget.userId);
+                        },
+                        child: Container(
+                          child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
+                              ? CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 18,
+                            child: ClipOval(
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                color: AppColors.transparentComponentColor,
+                                child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                              ),
                             ),
+                          ) : CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 18,
+                            child: ClipOval(
+                                child: CustomImageShimmer(
+                                    imageUrl: widget.userProfileUrl,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover)),
                           ),
-                        ) : CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 18,
-                          child: ClipOval(
-                              child: CustomImageShimmer(
-                                  imageUrl: widget.userProfileUrl,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover)),
                         ),
                       ),
                       Container(
@@ -131,27 +136,32 @@ class _RepliesModelState extends State<RepliesModel> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                    widget.username.length > 20
-                                        ? widget.username.substring(0, 20) + '...'
-                                        : widget.username,
-                                    style: MainFonts.lableText(
-                                        fontSize: 16, weight: FontWeight.w500)),
-                                SizedBox(width: 6),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: AppColors.transparentComponentColor,
-                                      borderRadius: BorderRadius.circular(3.0)),
-                                  padding: EdgeInsets.only(
-                                      top: 2, bottom: 2, left: 3.5, right: 3.5),
-                                  child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
-                                      style: TextStyle(
-                                          fontSize: 11,
-                                          color: AppColors.primaryColor30)),
-                                )
-                              ],
+                            GestureDetector(
+                              onTap: () {
+                                navigateToUserProfile(context, widget.userId);
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                      widget.username.length > 20
+                                          ? widget.username.substring(0, 20) + '...'
+                                          : widget.username,
+                                      style: MainFonts.lableText(
+                                          fontSize: 16, weight: FontWeight.w500)),
+                                  SizedBox(width: 6),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColors.transparentComponentColor,
+                                        borderRadius: BorderRadius.circular(3.0)),
+                                    padding: EdgeInsets.only(
+                                        top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                    child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: AppColors.primaryColor30)),
+                                  )
+                                ],
+                              ),
                             ),
                             Text(widget.date.substring(0, 10).replaceAll('-', '/'),
                                 style: MainFonts.miniText(

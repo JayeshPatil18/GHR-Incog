@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
 import 'package:review_app/features/reviews/presentation/widgets/bottom_sheet.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/main.dart';
@@ -11,6 +12,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../features/reviews/domain/entities/id_argument.dart';
+import '../features/reviews/domain/entities/user.dart';
+
+Future<List<int>> getUserIdList() async {
+  UsersRepo usersRepo = UsersRepo();
+  List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
+  List<User> usersList = data
+      .map((userData) => User.fromMap(userData))
+      .toList();
+  List<int> userIds = [];
+
+  for (User user in usersList) {
+    userIds.add(user.uid);
+  }
+
+  return userIds;
+}
+
+navigateToUserProfile(BuildContext context, int userId) async{
+  List<int> userIds = await getUserIdList();
+  if(userIds.contains(userId)){
+    Navigator.pushNamed(context, 'view_profile', arguments: IdArguments(userId));
+  } else{
+    // Show Message User not exist
+  }
+}
 
 int getRandomNumber(int maxRange) {
   return Random().nextInt(maxRange);
