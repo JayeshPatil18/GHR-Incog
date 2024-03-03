@@ -154,7 +154,7 @@ class _LikedPageState extends State<LikedPage> {
           ));
         }
     );
-    return value != null ? value : true;
+    return value != null ? value : false;
   }
 }
 class SearchResultPage extends StatelessWidget {
