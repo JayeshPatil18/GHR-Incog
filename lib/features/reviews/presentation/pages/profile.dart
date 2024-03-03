@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('My Profile', style: MainFonts.pageTitleText()),
-                            Container(
+                            MyApp.ENABLE_LEADERBOARD ? Container(
                               decoration: BoxDecoration(
                                   color: AppColors.transparentComponentColor,
                                   borderRadius: BorderRadius.circular(3.0)),
@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: AppColors.primaryColor30)),
-                            )
+                            ) : SizedBox()
                           ],
                         ),
                       ),

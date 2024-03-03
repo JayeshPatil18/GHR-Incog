@@ -117,7 +117,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                         )
                       ],
                     ),
-                    Container(
+                    MyApp.ENABLE_LEADERBOARD ? Container(
                       decoration: BoxDecoration(
                           color: AppColors.transparentComponentColor,
                           borderRadius: BorderRadius.circular(10.0)),
@@ -127,7 +127,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                           style: TextStyle(
                               fontSize: 12,
                               color: AppColors.primaryColor30)),
-                    )
+                    ) : SizedBox()
                   ],
                 ),
                 SizedBox(height: 8),

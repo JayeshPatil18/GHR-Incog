@@ -5,6 +5,7 @@ import 'package:review_app/constants/boarder.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
+import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import '../../domain/entities/id_argument.dart';
@@ -39,7 +40,7 @@ class _UserModelState extends State<UserModel> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: MyApp.ENABLE_LEADERBOARD ? CrossAxisAlignment.start : CrossAxisAlignment.center,
               children: [
                 Container(
                   child: widget.profileUrl == 'null' || widget.profileUrl.isEmpty
@@ -95,7 +96,7 @@ class _UserModelState extends State<UserModel> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    Container(
+                    MyApp.ENABLE_LEADERBOARD ? Container(
                       decoration: BoxDecoration(
                           color: AppColors.transparentComponentColor,
                           borderRadius: BorderRadius.circular(10.0)),
@@ -105,14 +106,14 @@ class _UserModelState extends State<UserModel> {
                           style: TextStyle(
                               fontSize: 10,
                               color: AppColors.primaryColor30)),
-                    )
+                    ) : SizedBox()
                   ],
                 ),
               ],
             ),
-            Text('#${widget.rank}',
+            MyApp.ENABLE_LEADERBOARD ? Text('#${widget.rank}',
                 style: MainFonts.lableText(
-                    fontSize: 17, weight: FontWeight.w500)),
+                    fontSize: 17, weight: FontWeight.w500)) : SizedBox(),
           ],
         ),
         SizedBox(height: 35)

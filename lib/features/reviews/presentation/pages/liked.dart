@@ -205,7 +205,7 @@ class TopScoresList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _LikedPageState._focusNode.hasFocus ? SizedBox() : SingleChildScrollView(
-      child: Column(
+      child: MyApp.ENABLE_LEADERBOARD ? Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -261,7 +261,7 @@ class TopScoresList extends StatelessWidget {
                 }),
           ),
         ],
-      ),
+      ) : SizedBox(),
     );
   }
 }
