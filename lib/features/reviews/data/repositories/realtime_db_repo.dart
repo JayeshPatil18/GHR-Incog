@@ -5,6 +5,21 @@ import 'package:review_app/main.dart';
 
 class RealTimeDbService {
 
+  Future<int> uploadFeedback(int userId, String feedback) async {
+    try {
+
+      final DateTime now = DateTime.now();
+      String date = now.toString().split('.')[0];
+      DatabaseReference databaseReference = FirebaseDatabase.instance.ref('feedbacks');
+      databaseReference.child('$date @$userId').set(feedback);
+
+      return 1;
+    } catch (error) {
+      print('Error uploading feedback data: $error');
+      return -1;
+    }
+  }
+
   Future<void> updateDownloads() async {
     try {
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref('downloads');

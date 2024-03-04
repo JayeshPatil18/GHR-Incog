@@ -18,6 +18,7 @@ import '../features/authentication/presentation/pages/signup.dart';
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/string_argument.dart';
 import '../features/reviews/domain/entities/two_string_argument.dart';
+import '../features/reviews/presentation/pages/feedback.dart';
 import '../features/reviews/presentation/pages/privacy_policy.dart';
 import '../features/reviews/presentation/pages/terms_conditions.dart';
 import '../features/reviews/presentation/pages/view_post.dart';
@@ -71,6 +72,12 @@ class RouteGenerator {
         int userId = idArguments.id;
         return MaterialPageRoute(
             builder: (_) => ViewProfile(userId: userId)
+        );
+
+      case 'feedback':
+
+        return MaterialPageRoute(
+            builder: (_) => FeedbackPage()
         );
 
       case 'view_post':

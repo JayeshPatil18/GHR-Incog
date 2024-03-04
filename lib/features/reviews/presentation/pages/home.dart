@@ -239,6 +239,44 @@ class _HomePageState extends State<HomePage> {
                     ),
                     InkWell(
                       onTap: () {
+                        Navigator.of(context).pushNamed('feedback');
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.feedback_outlined,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('Feedback',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      color: AppColors.transparentComponentColor,
+                      width: double.infinity,
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
                         Navigator.of(context).pushNamed('privacypolicy');
                       },
                       child: Container(
