@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'features/reviews/data/repositories/realtime_db_repo.dart';
-import 'features/reviews/presentation/pages/liked.dart';
+import 'features/reviews/presentation/pages/search.dart';
 import 'features/reviews/presentation/pages/profile.dart';
 
 Future<void> main() async {

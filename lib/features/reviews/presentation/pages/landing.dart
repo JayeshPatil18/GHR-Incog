@@ -13,7 +13,7 @@ import '../../domain/entities/two_string_argument.dart';
 import '../provider/bottom_nav_bar.dart';
 import '../widgets/bottom_nav_icons.dart';
 import 'home.dart';
-import 'liked.dart';
+import 'search.dart';
 import 'leaderboard.dart';
 import 'profile.dart';
 
@@ -30,7 +30,7 @@ class _LandingPageState extends State<LandingPage> {
   
   final screens = [
     HomePage(),
-    LikedPage(),
+    SearchPage(),
     ActivityPage(),
     ProfilePage(),
   ];

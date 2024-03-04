@@ -22,16 +22,16 @@ import '../widgets/search_tabs.dart';
 import '../widgets/shadow.dart';
 import '../widgets/user_model.dart';
 
-class LikedPage extends StatefulWidget {
-  const LikedPage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   static String searchText = '';
 
   @override
-  State<LikedPage> createState() => _LikedPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _LikedPageState extends State<LikedPage> {
+class _SearchPageState extends State<SearchPage> {
 
   TextEditingController searchTextController = TextEditingController();
   static final FocusNode _focusNode = FocusNode();
@@ -78,7 +78,7 @@ class _LikedPageState extends State<LikedPage> {
                               controller: searchTextController,
                               onChanged: (value) {
                                 setState(() {
-                                  LikedPage.searchText =
+                                  SearchPage.searchText =
                                       value.trim().toLowerCase();
                                 });
                               },
@@ -90,11 +90,11 @@ class _LikedPageState extends State<LikedPage> {
                                 hintText: 'Search Posts, Profiles',
                                 hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
                                 prefixIcon: Icon(Icons.search_rounded, color: AppColors.transparentComponentColor,),
-                                suffixIcon: LikedPage.searchText == "" ? null : GestureDetector(
+                                suffixIcon: SearchPage.searchText == "" ? null : GestureDetector(
                                     onTap: () {
                                       searchTextController.text = '';
                                       setState(() {
-                                        LikedPage.searchText = '';
+                                        SearchPage.searchText = '';
                                       });
                                     },
                                     child: Icon(Icons.cancel_rounded, color: AppColors.transparentComponentColor,)),
@@ -204,7 +204,7 @@ class SearchResultPage extends StatelessWidget {
 class TopScoresList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _LikedPageState._focusNode.hasFocus ? SizedBox() : SingleChildScrollView(
+    return _SearchPageState._focusNode.hasFocus ? SizedBox() : SingleChildScrollView(
       child: MyApp.ENABLE_LEADERBOARD ? Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

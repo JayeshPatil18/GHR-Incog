@@ -14,7 +14,7 @@ import '../../..'
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
-import '../pages/liked.dart';
+import '../pages/search.dart';
 
 class PostsTab extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class PostsTabState extends State<PostsTab> {
                 }
 
                 List<UploadReviewModel> resultPosts = postsList.skipWhile((UploadReviewModel element) {
-                  return !(element.text.toLowerCase().contains(LikedPage.searchText.toLowerCase()));
+                  return !(element.text.toLowerCase().contains(SearchPage.searchText.toLowerCase()));
                 }).toList();
 
                 if(resultPosts.isNotEmpty){
@@ -157,7 +157,7 @@ class ProfilesTabState extends State<ProfilesTab> {
                   .toList();
 
               List<User> resultProfiles = usersList.skipWhile((User element) {
-                return !(element.username.toLowerCase().startsWith(LikedPage.searchText.toLowerCase()));
+                return !(element.username.toLowerCase().startsWith(SearchPage.searchText.toLowerCase()));
               }).toList();
 
               if (resultProfiles.length < 1) {
