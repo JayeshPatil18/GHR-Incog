@@ -69,6 +69,7 @@ dependencies:
   rich_text_controller: ^1.4.2
   device_info_plus: ^8.2.2
   timer_builder: ^2.0.0
+  email_otp: ^2.0.1
 
 
 dev_dependencies:

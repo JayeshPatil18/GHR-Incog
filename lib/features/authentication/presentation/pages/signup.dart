@@ -6,7 +6,8 @@ import 'package:review_app/constants/color.dart';
 import 'package:review_app/constants/elevation.dart';
 import 'package:review_app/constants/values.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
-
+import 'package:email_otp/email_otp.dart';
+import 'package:review_app/main.dart';
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../utils/fonts.dart';
@@ -16,8 +17,9 @@ import '../../../reviews/presentation/widgets/shadow.dart';
 import '../../data/repositories/users_repo.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  static EmailOTP emailAuth = EmailOTP();
 
+  const SignUpPage({super.key});
   static String verify = "";
 
   @override
@@ -25,6 +27,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
   final FocusNode _focusEmailNode = FocusNode();
   bool _hasEmailFocus = false;
 
@@ -33,8 +36,13 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _validateInput(String? input, int index) {
+
+    List<String> patternsList = [];
     if (input != null) {
       input = input.trim();
+
+      List<String> separatedStrings = MyApp.emailPattern.split('@');
+      patternsList = separatedStrings.where((str) => str.isNotEmpty).toList();
     }
 
     switch (index) {
@@ -42,6 +50,20 @@ class _SignUpPageState extends State<SignUpPage> {
         // Write logic to check email from this college.
         if (input == null || input.isEmpty) {
           return 'Enter college email';
+        } else if(patternsList != null && patternsList.isNotEmpty){
+          bool isAnyPatternMatch = false;
+          for (String element in patternsList) {
+            if (input.contains('@${element}')) {
+              isAnyPatternMatch = true;
+              break;
+            }
+          }
+
+          if(!isAnyPatternMatch){
+            return 'Enter college email of ${AppValues.collegeNameCode}, Pune';
+          }
+        } else if(!(input.contains('@ghrcem.raisoni.net'))){
+          return 'Enter college email of ${AppValues.collegeNameCode}, Pune';
         }
         break;
 
@@ -83,20 +105,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           BorderRadius.circular(AppBoarderRadius.buttonRadius)),
                   elevation: AppElevations.buttonElev,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   FocusScope.of(context).unfocus();
                   bool isValid = _formKey.currentState!.validate();
                   if (isValid) {
-                    bool isOtpSent = sendOtp(emailController.text.trim());
+                    bool isOtpSent = await sendOtp(emailController.text.trim());
                     if (isOtpSent) {
                       FocusScope.of(context).unfocus();
+                      mySnackBarShow(context, 'OTP has been sent.');
+
                       Future.delayed(const Duration(milliseconds: 300), () {
                         Navigator.of(context).pushNamed('verifyphone',
                             arguments:
                                 VerifyArguments(emailController.text.trim()));
                       });
                     } else {
-                      mySnackBarShow(context, 'Something went wrong.');
+                      mySnackBarShow(context, 'Oops, OTP send failed.');
                     }
                   }
                 },
@@ -186,8 +210,18 @@ class _SignUpPageState extends State<SignUpPage> {
         ));
   }
 
-  bool sendOtp(String email) {
-    // Write code to send verification
-    return true;
+  Future<bool> sendOtp(String email) async {
+    SignUpPage.emailAuth.setConfig(
+        appEmail: "jp7470484@gmail.com",
+        appName: "Email OTP",
+        userEmail: email,
+        otpLength: 6,
+        otpType: OTPType.digitsOnly);
+
+    if (await SignUpPage.emailAuth.sendOTP() == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

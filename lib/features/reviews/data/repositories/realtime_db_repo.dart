@@ -34,4 +34,10 @@ class RealTimeDbService {
     DatabaseEvent event = await databaseReference.once();
     return event.snapshot.value.toString();
   }
+
+  Future<String?> getEmailAddressPattern() async {
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref('emailpatterns');
+    DatabaseEvent event = await databaseReference.once();
+    return event.snapshot.value.toString();
+  }
 }

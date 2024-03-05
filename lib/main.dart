@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static String profileImageUrl = 'null';
+  static String emailPattern = '';
 
   static List<String> profileIconList = [];
 
@@ -72,6 +73,12 @@ class MyApp extends StatelessWidget {
     }
   }
 
+  getEmailPattern() async{
+    RealTimeDbService realTimeDbService = RealTimeDbService();
+    String? pattern = await realTimeDbService.getEmailAddressPattern();
+    MyApp.emailPattern = pattern!;
+  }
+
 
   static initUserId() async {
     List<String>? details = await getLoginDetails();
@@ -86,6 +93,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    getEmailPattern();
     getAllImageURLs();
 
     // PreLoading Images

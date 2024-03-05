@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:email_otp/email_otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
+import 'package:review_app/features/authentication/presentation/pages/signup.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
@@ -47,9 +49,11 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {
-          return 'Enter Code';
-        } else if (!isNumeric(input) || input.length != 6) {
-          return 'Invalid Code';
+          return 'Enter OTP';
+        } else if (!isNumeric(input)) {
+          return 'Invalid OTP';
+        } else if (input.length != 6) {
+          return 'Enter 6-digit OTP';
         }
         break;
 
@@ -114,40 +118,42 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                 ),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
-                  if(!isLoading) {
+                  if (!isLoading) {
                     setIsLoading(true);
 
                     bool isValid = _formKey.currentState!.validate();
                     if (isValid) {
-                      bool isVerified = verifyOtp(codeController.text.trim());
+                      bool isVerified = await verifyOtp(codeController.text.trim());
                       if (isVerified) {
                         int isCredentialsStored =
                         await setUserCredentials(widget.email);
                         if (isCredentialsStored == -200) {
-
                           FocusScope.of(context).unfocus();
                           Future.delayed(const Duration(milliseconds: 300), () {
-
                             // Remove all backtrack pages
                             Navigator.popUntil(
                                 context, (route) => route.isFirst);
 
-                            Navigator.of(context).pushReplacementNamed('landing');
+                            Navigator.of(context).pushReplacementNamed(
+                                'landing');
                           });
-                        } else if (isCredentialsStored != -1 || isCredentialsStored != -200) {
-                          showCredentialsConfirm(context, isCredentialsStored, widget.email);
+                        } else if (isCredentialsStored != -1 ||
+                            isCredentialsStored != -200) {
+                          showCredentialsConfirm(
+                              context, isCredentialsStored, widget.email);
                         } else {
                           mySnackBarShow(context, 'Something went wrong.');
                         }
                       } else {
-                        mySnackBarShow(context, 'Invalid code.');
+                        mySnackBarShow(context, 'Invalid OTP.');
                       }
                     }
 
                     setIsLoading(false);
                   }
                 },
-                child: isLoading == false ? Text('Continue', style: AuthFonts.authButtonText()) : SizedBox(
+                child: isLoading == false ? Text(
+                    'Continue', style: AuthFonts.authButtonText()) : SizedBox(
                     width: 30,
                     height: 30,
                     child: Center(
@@ -197,7 +203,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                               fillColor: AppColors.transparentComponentColor,
                               filled: true,
                               hintText:
-                              'Enter 6-digit Code',
+                              'Enter 6-digit OTP',
                               hintStyle: MainFonts.hintFieldText(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
@@ -223,13 +229,10 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.warning,
-                                    color: AppColors.lightTextColor, size: 12),
-                                SizedBox(width: 6),
                                 Flexible(
-                                  child: Text('Check your email box also spam.',
+                                  child: Text('An email has been sent to your college email address. Please check your email inbox, including the spam folder.',
                                       style:
-                                      AuthFonts.authMsgText(fontSize: 12)),
+                                      AuthFonts.authMsgText(fontSize: 14)),
                                 ),
                               ],
                             ),
@@ -256,8 +259,13 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
   //   }
   // }
 
-  bool verifyOtp(String otp) {
+  Future<bool> verifyOtp(String otp) async {
+    if (await SignUpPage.emailAuth.verifyOTP (otp: otp)
+    == true) {
     return true;
+    } else {
+    return false;
+    }
   }
 
   Future<int> setUserCredentials(String email) async {
@@ -287,7 +295,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
 
       if (userId == -1) {
         return length;
-      } else{
+      } else {
         updateLoginStatus(true);
         loginDetails(userId.toString(), username);
 
@@ -299,11 +307,12 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     }
   }
 
-  void showCredentialsConfirm(BuildContext context, int length, String email) async {
+  void showCredentialsConfirm(BuildContext context, int length,
+      String email) async {
     showModalBottomSheet(
         isDismissible: false,
         enableDrag: false,
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         context: context,
         isScrollControlled: false,
         shape: const RoundedRectangleBorder(
@@ -319,11 +328,9 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
                       ChooseGender(email: email, length: length)),
             )).whenComplete(() async {
       var isLoggedIn = await checkLoginStatus();
-      if(isLoggedIn){
-
+      if (isLoggedIn) {
         FocusScope.of(context).unfocus();
         Future.delayed(const Duration(milliseconds: 200), () {
-
           // Remove all backtrack pages
           Navigator.popUntil(
               context, (route) => route.isFirst);

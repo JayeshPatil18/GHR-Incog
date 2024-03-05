@@ -3,5 +3,6 @@ class AppValues {
   static var progresBarWidth = 4.0;
   static int closeDelay = 400;
   static String collegeName = 'G. H. Raisoni College';
+  static String collegeNameCode = 'GHRCEM';
   static int maxCharactersPost = 1000;
 }
