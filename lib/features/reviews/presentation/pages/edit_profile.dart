@@ -328,7 +328,7 @@ class EditProfileState extends State<EditProfile> {
                                   ),
                               ),
                             ),
-                            SizedBox(height: 30),
+                            SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
                               child: Text('Bio',
@@ -380,7 +380,7 @@ class EditProfileState extends State<EditProfile> {
                                   style:
                                   AuthFonts.authMsgText(fontSize: 11, color: AppColors.transparentComponentColor)),
                             ),
-                            SizedBox(height: 30),
+                            SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10, left: 5),
                               child: Text('Gender',
