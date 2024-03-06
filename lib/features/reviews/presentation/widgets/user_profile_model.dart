@@ -8,6 +8,7 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 import 'package:review_app/main.dart';
 
 import '../../../../constants/color.dart';
+import '../../../../constants/cryptography.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 import 'image_shimmer.dart';
@@ -16,6 +17,7 @@ class UserProfileModel extends StatefulWidget {
   final bool hideEditBtn;
   final String profileUrl;
   final String username;
+  final String email;
   final String gender;
   final int rank;
   final int score;
@@ -26,6 +28,7 @@ class UserProfileModel extends StatefulWidget {
       this.hideEditBtn = false,
       required this.profileUrl,
       required this.username,
+      required this.email,
       required this.gender,
       required this.rank,
       required this.score,
@@ -36,6 +39,12 @@ class UserProfileModel extends StatefulWidget {
 }
 
 class _UserProfileModelState extends State<UserProfileModel> {
+  String getDepartment() {
+    if(widget.email.isEmpty || widget.email == null){
+      return '';
+    }
+    return getDepartmentFromEmail(widget.email.contains(AppValues.defaultEmailFormat) ? widget.email : CryptographyConfig.decryptText(widget.email, CryptographyConfig.key, CryptographyConfig.iv)).toUpperCase();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -116,12 +125,19 @@ class _UserProfileModelState extends State<UserProfileModel> {
                               style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.primaryColor30)),
-                        )
+                        ),
+                        SizedBox(width: 6),
+                        Container(
+                          child: Text('${getDepartment()}',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.lightTextColor)),
+                        ),
                       ],
                     ),
                     MyApp.ENABLE_LEADERBOARD ? Container(
                       decoration: BoxDecoration(
-                          color: AppColors.transparentComponentColor,
+                          color: AppColors.transparentComponentColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10.0)),
                       padding: EdgeInsets.only(
                           top: 3, bottom: 3, left: 8, right: 8),

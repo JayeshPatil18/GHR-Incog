@@ -122,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Text('My Profile', style: MainFonts.pageTitleText()),
                             MyApp.ENABLE_LEADERBOARD ? Container(
                               decoration: BoxDecoration(
-                                  color: AppColors.transparentComponentColor,
+                                  color: AppColors.transparentComponentColor.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(3.0)),
                               padding: EdgeInsets.only(
                                   top: 4, bottom: 4, left: 4.5, right: 4.5),
@@ -146,6 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             UserProfileModel(
                               profileUrl: user?.profileUrl ?? 'null',
                               username: user?.username ?? '',
+                              email: user?.email ?? '',
                               rank: user?.rank ?? -1,
                               score: user?.score ?? -1,
                               bio: user?.bio ?? '',

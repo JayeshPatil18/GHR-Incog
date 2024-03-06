@@ -15,6 +15,24 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../features/reviews/domain/entities/id_argument.dart';
 import '../features/reviews/domain/entities/user.dart';
 
+String getDepartmentFromEmail(String emailAddress){
+
+  if(emailAddress.isEmpty || emailAddress == null){
+    return '';
+  }
+
+  String emailFirstPart = emailAddress.split('@')[0];
+  String department = '';
+
+  for (int i = emailFirstPart.length - 1; i >= 0; i--) {
+    if(emailFirstPart[i] == '.'){
+      break;
+    }
+    department = emailFirstPart[i] + department;
+  }
+  return department;
+}
+
 Future<List<int>> getUserIdList() async {
   UsersRepo usersRepo = UsersRepo();
   List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();

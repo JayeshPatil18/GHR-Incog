@@ -62,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
           if(!isAnyPatternMatch){
             return 'Enter college email of ${AppValues.collegeNameCode}, Pune';
           }
-        } else if(!(input.contains('@ghrcem.raisoni.net'))){
+        } else if(!(input.contains(AppValues.defaultEmailFormat))){
           return 'Enter college email of ${AppValues.collegeNameCode}, Pune';
         }
         break;

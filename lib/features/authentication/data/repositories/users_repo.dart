@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:review_app/constants/cryptography.dart';
 import 'package:review_app/main.dart';
 import 'package:review_app/utils/methods.dart';
 
@@ -37,7 +38,7 @@ class UsersRepo {
           {
             'userid': length,
             'profileurl': profileIcon,
-            'email': email,
+            'email': CryptographyConfig.encryptText(email, CryptographyConfig.key, CryptographyConfig.iv),
             'gender': gender.toLowerCase(),
             'bio': '',
             'rank': length + 1,
