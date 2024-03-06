@@ -71,6 +71,7 @@ dependencies:
   timer_builder: ^2.0.0
   email_otp: ^2.0.1
   encrypt: ^5.0.1
+  intl: ^0.18.1
 
 
 dev_dependencies:

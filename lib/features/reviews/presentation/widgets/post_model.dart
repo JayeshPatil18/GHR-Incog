@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:review_app/features/reviews/domain/entities/id_argument.dart';
 import 'package:review_app/utils/methods.dart';
 
@@ -53,6 +54,13 @@ class PostModel extends StatefulWidget {
 class _PostModelState extends State<PostModel> {
   int postModelTextMaxLines = 6;
   bool showMore = false;
+
+  String formatDateTime(String dateTimeStr){
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+    String formattedDateTime = DateFormat.jm().add_yMMMd().format(dateTime);
+
+    return formattedDateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +156,7 @@ class _PostModelState extends State<PostModel> {
                             ],
                           ),
                         ),
-                        Text(widget.date.substring(0, 10).replaceAll('-', '/'),
+                        Text(formatDateTime(widget.date),
                             style: MainFonts.miniText(
                                 fontSize: 11, color: AppColors.lightTextColor)),
                       ],
