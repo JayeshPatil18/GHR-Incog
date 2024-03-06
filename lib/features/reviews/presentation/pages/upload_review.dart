@@ -236,18 +236,18 @@ class _UploadReviewState extends State<UploadReview> {
                                   child: MyApp.profileImageUrl == 'null' || MyApp.profileImageUrl.isEmpty
                                       ? CircleAvatar(
                                     backgroundColor: Colors.transparent,
-                                    radius: 22,
+                                    radius: 18,
                                     child: ClipOval(
                                       child: Container(
                                         width: double.infinity,
                                         height: double.infinity,
                                         color: AppColors.transparentComponentColor,
-                                        child: Icon(Icons.person, color: AppColors.lightTextColor, size: 32),
+                                        child: Icon(Icons.person, color: AppColors.lightTextColor, size: 28),
                                       ),
                                     ),
                                   ) : CircleAvatar(
                                     backgroundColor: Colors.transparent,
-                                    radius: 25,
+                                    radius: 18,
                                     child: ClipOval(
                                         child: CustomImageShimmer(
                                             imageUrl: MyApp.profileImageUrl,
