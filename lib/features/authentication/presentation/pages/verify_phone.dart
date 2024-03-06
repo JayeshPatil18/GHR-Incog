@@ -12,6 +12,7 @@ import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
+import '../../../../constants/cryptography.dart';
 import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../constants/values.dart';
@@ -280,7 +281,7 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       String deviceId = await getUniqueDeviceId();
 
       for (var userMap in data) {
-        if (userMap['email'].toString() == email) {
+        if ((userMap['email'].toString().contains(AppValues.defaultEmailFormat) ? userMap['email'] : CryptographyConfig.decryptText(userMap['email'], CryptographyConfig.key, CryptographyConfig.iv).toString()) == email) {
           userId = userMap['userid'];
           username = userMap['username'];
 

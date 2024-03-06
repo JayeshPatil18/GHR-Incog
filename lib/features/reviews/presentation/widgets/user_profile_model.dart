@@ -130,7 +130,7 @@ class _UserProfileModelState extends State<UserProfileModel> {
                         Container(
                           child: Text('${getDepartment()}',
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 16,
                                   color: AppColors.lightTextColor)),
                         ),
                       ],
