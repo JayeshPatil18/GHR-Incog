@@ -13,6 +13,7 @@ import '../../../../utils/fonts.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
+import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../widgets/dialog_box.dart';
@@ -313,7 +314,7 @@ class _ViewProfileState extends State<ViewProfile> {
 
                                                           return GestureDetector(
                                                             onTap: () {
-                                                              Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(post.mediaUrl , true));
+                                                              Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
                                                             },
                                                             child: Container(
                                                               child: ClipRRect(
