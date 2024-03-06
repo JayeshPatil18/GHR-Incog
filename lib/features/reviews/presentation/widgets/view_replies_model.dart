@@ -7,6 +7,7 @@ import 'package:review_app/utils/methods.dart';
 import '../../../../constants/color.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/method1.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
@@ -163,7 +164,7 @@ class _RepliesModelState extends State<RepliesModel> {
                                 ],
                               ),
                             ),
-                            Text(widget.date.substring(0, 10).replaceAll('-', '/'),
+                            Text(formatDateTime(widget.date),
                                 style: MainFonts.miniText(
                                     fontSize: 11, color: AppColors.lightTextColor)),
                           ],

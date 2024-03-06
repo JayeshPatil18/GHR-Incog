@@ -8,6 +8,7 @@ import 'package:review_app/utils/methods.dart';
 import '../../../../constants/color.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/method1.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
@@ -54,13 +55,6 @@ class PostModel extends StatefulWidget {
 class _PostModelState extends State<PostModel> {
   int postModelTextMaxLines = 6;
   bool showMore = false;
-
-  String formatDateTime(String dateTimeStr){
-    DateTime dateTime = DateTime.parse(dateTimeStr);
-    String formattedDateTime = DateFormat.jm().add_yMMMd().format(dateTime);
-
-    return formattedDateTime;
-  }
 
   @override
   Widget build(BuildContext context) {

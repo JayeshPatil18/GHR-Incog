@@ -24,6 +24,7 @@ import '../../../../constants/cursor.dart';
 import '../../../../constants/elevation.dart';
 import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/method1.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
@@ -336,7 +337,7 @@ class _ViewPostState extends State<ViewPost> {
                                                                 ],
                                                               ),
                                                             ),
-                                                            Text(replyOfPoster.date.substring(0, 10).replaceAll('-', '/'),
+                                                            Text(formatDateTime(replyOfPoster.date),
                                                                 style: MainFonts.miniText(
                                                                     fontSize: 11, color: AppColors.lightTextColor)),
                                                           ],

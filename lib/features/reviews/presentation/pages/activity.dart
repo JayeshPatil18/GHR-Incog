@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:review_app/features/reviews/presentation/widgets/dialog_box.dart';
+import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 import 'package:review_app/features/reviews/presentation/widgets/user_profile_model.dart';
 import 'package:review_app/main.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -12,6 +13,7 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 import '../../../../constants/boarder.dart';
 import '../../../../constants/color.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/method1.dart';
 import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
@@ -190,9 +192,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                               documents[i].data()
                                               as Map<String, dynamic>);
                                           documentList.add(post);
-                                          if (post.parentId == "-1") {
                                             postsList.add(post);
-                                          }
                                         }
 
                                         if(postsList.isNotEmpty){
@@ -216,21 +216,28 @@ class _ActivityPageState extends State<ActivityPage> {
                                                   }
                                                 }
 
-                                                return PostModel(
-                                                  isActivityModel: true,
-                                                  commentCount: commentCount,
-                                                  isCommented: isCommented,
-                                                  date: post.date,
-                                                  likedBy: post.likedBy,
-                                                  mediaUrl: post.mediaUrl,
-                                                  gender: post.gender,
-                                                  userProfileUrl:
-                                                  post.userProfileUrl,
-                                                  parentId: post.parentId,
-                                                  postId: post.postId,
-                                                  text: post.text,
-                                                  userId: post.userId,
-                                                  username: post.username,
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    if(post.parentId == '-1'){
+                                                      Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
+                                                    }
+                                                  },
+                                                  child: PostModel(
+                                                    isActivityModel: true,
+                                                    commentCount: commentCount,
+                                                    isCommented: isCommented,
+                                                    date: post.date,
+                                                    likedBy: post.likedBy,
+                                                    mediaUrl: post.mediaUrl,
+                                                    gender: post.gender,
+                                                    userProfileUrl:
+                                                    post.userProfileUrl,
+                                                    parentId: post.parentId,
+                                                    postId: post.postId,
+                                                    text: post.text,
+                                                    userId: post.userId,
+                                                    username: post.username,
+                                                  ),
                                                 );
                                               });
                                         } else{
@@ -314,7 +321,11 @@ class _ActivityPageState extends State<ActivityPage> {
 
                                                 return GestureDetector(
                                                   onTap: () {
-                                                    Navigator.pushNamed(context, 'view_post', arguments: StringArguments(parentPost?.postId ?? ''));
+                                                    if(parentPost?.parentId == '-1'){
+                                                      Navigator.pushNamed(context, 'view_post', arguments: StringArguments(parentPost?.postId ?? ''));
+                                                    } else{
+                                                      Navigator.pushNamed(context, 'view_replies', arguments: TwoStringArg(parentPost?.parentId ?? '', parentPost?.postId ?? ''));
+                                                    }
                                                   },
                                                   child: Column(
                                                     children: [
@@ -411,7 +422,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                                                               )
                                                                             ],
                                                                           ),
-                                                                          Text(post.date.substring(0, 10).replaceAll('-', '/'),
+                                                                          Text(formatDateTime(post.date),
                                                                               style: MainFonts.miniText(
                                                                                   fontSize: 11, color: AppColors.lightTextColor)),
                                                                         ],
