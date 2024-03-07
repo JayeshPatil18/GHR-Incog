@@ -66,7 +66,6 @@ class _RepliesModelState extends State<RepliesModel> {
     double singleTextHeight = 19;
     double imageHeight = 276;
 
-    // Multipled with numLines
     // Set in way that, perfect line appear
 
     // Only Text
