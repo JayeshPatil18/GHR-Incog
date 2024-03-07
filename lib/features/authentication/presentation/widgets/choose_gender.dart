@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:review_app/constants/color.dart';
 import 'package:review_app/features/authentication/presentation/pages/verify_phone.dart';
 import 'package:review_app/utils/fonts.dart';
+import 'package:vokativ/vokativ.dart';
 
 import '../../../../constants/boarder.dart';
 import '../../../../constants/cursor.dart';
@@ -80,6 +81,9 @@ class ChooseGenderState extends State<ChooseGender> {
     usernameController.text = VerifyPhoneNo.username;
 
     // Find gender of user using email address
+    setState(() {
+      VerifyPhoneNo.gender = Vokativ.isWoman(widget.email.split('.')[0]) ? 'Female' : 'Male';
+    });
   }
 
   @override

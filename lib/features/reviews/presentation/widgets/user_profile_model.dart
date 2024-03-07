@@ -110,30 +110,36 @@ class _UserProfileModelState extends State<UserProfileModel> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(widget.username,
-                            style: ProfileUserFonts.usernameText()),
-                        SizedBox(width: 6,),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: AppColors.transparentComponentColor,
-                              borderRadius: BorderRadius.circular(3.0)),
-                          padding: EdgeInsets.only(
-                              top: 2, bottom: 2, left: 3.5, right: 3.5),
-                          child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.primaryColor30)),
-                        ),
-                        SizedBox(width: 6),
-                        Container(
-                          child: Text('${getDepartment()}',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.lightTextColor)),
-                        ),
-                      ],
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Text('${widget.username.length > 10 && getDepartment().length > 4
+                              ? '${widget.username.substring(0, 10)}..'
+                              : widget.username}',
+                              style: ProfileUserFonts.usernameText()),
+                          SizedBox(width: 6,),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.transparentComponentColor,
+                                borderRadius: BorderRadius.circular(3.0)),
+                            padding: EdgeInsets.only(
+                                top: 2, bottom: 2, left: 3.5, right: 3.5),
+                            child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.primaryColor30)),
+                          ),
+                          SizedBox(width: 6),
+                          Container(
+                            child: Text('${getDepartment().length <= 10
+                                ? getDepartment()
+                                : '${getDepartment().substring(0, 10)}..'}',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.lightTextColor)),
+                          ),
+                        ],
+                      ),
                     ),
                     MyApp.ENABLE_LEADERBOARD ? Container(
                       decoration: BoxDecoration(

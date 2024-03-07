@@ -24,7 +24,7 @@ import '../../../reviews/presentation/widgets/sort_card.dart';
 import '../widgets/choose_gender.dart';
 
 class VerifyPhoneNo extends StatefulWidget {
-  static String gender = 'Male';
+  static String gender = '';
   static String username = '';
   final String email;
 
