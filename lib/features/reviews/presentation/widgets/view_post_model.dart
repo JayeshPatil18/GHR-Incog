@@ -11,6 +11,7 @@ import '../../../../utils/method1.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
+import 'custom_rich_text.dart';
 import 'image_shimmer.dart';
 import 'line.dart';
 
@@ -147,18 +148,24 @@ class _ViewPostModelState extends State<ViewPostModel> {
               widget.text.isEmpty ? SizedBox() : Column(
                 children: [
                   SizedBox(height: 16),
-                  AutoSizeText(
-                    widget.text,
+                  AutoSizeText.rich(
+                    CustomRichText.buildTextSpan(widget.text.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                     maxLines: postModelTextMaxLines,
                     style: MainFonts.postMainText(size: 16),
                     minFontSize: 16,
                     overflowReplacement: Column(
                       // This widget will be replaced.
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(widget.text,
+                        CustomRichText(
+                            wordsList: widget.text.split(RegExp(r'(?<=\s|\n)')),
+                            maxLines: null,
                             overflow: TextOverflow.ellipsis,
-                            style: MainFonts.postMainText(size: 16)),
+                            defaultStyle:
+                            MainFonts.postMainText(size: 16),
+                            highlightStyle:
+                            MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                       ],
                     ),
                   ),

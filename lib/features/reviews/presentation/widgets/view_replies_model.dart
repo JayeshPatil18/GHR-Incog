@@ -11,6 +11,7 @@ import '../../../../utils/method1.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
+import 'custom_rich_text.dart';
 import 'image_shimmer.dart';
 import 'line.dart';
 
@@ -170,19 +171,24 @@ class _RepliesModelState extends State<RepliesModel> {
                           ],
                         ),
                         SizedBox(height: 10),
-                        widget.text.isEmpty ? SizedBox() : AutoSizeText(
-                          widget.text,
+                        widget.text.isEmpty ? SizedBox() : AutoSizeText.rich(
+                          CustomRichText.buildTextSpan(widget.text.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                           maxLines: postModelTextMaxLines,
                           style: MainFonts.postMainText(size: 16),
                           minFontSize: 16,
                           overflowReplacement: Column(
                             // This widget will be replaced.
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(widget.text,
+                              CustomRichText(
+                                  wordsList: widget.text.split(RegExp(r'(?<=\s|\n)')),
                                   maxLines: maxLines,
                                   overflow: TextOverflow.ellipsis,
-                                  style: MainFonts.postMainText(size: 16)),
+                                  defaultStyle:
+                                  MainFonts.postMainText(size: 16),
+                                  highlightStyle:
+                                  MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {

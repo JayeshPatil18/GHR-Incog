@@ -336,7 +336,7 @@ class _ViewRepliesState extends State<ViewReplies> {
                                 Navigator.pushNamed(context, 'upload', arguments: TwoStringArg(widget.postId, postTextController.text));
                               },
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.only(right: 14),
                                 child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,),
                               )),
                         border: OutlineInputBorder(

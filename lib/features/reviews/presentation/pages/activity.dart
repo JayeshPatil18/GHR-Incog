@@ -21,6 +21,7 @@ import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/two_string_argument.dart';
 import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
+import '../widgets/custom_rich_text.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/line.dart';
 import '../widgets/post_model.dart';
@@ -428,19 +429,24 @@ class _ActivityPageState extends State<ActivityPage> {
                                                                         ],
                                                                       ),
                                                                       SizedBox(height: 10),
-                                                                      post.text.isEmpty ? SizedBox() : AutoSizeText(
-                                                                        post.text,
+                                                                      post.text.isEmpty ? SizedBox() : AutoSizeText.rich(
+                                                                        CustomRichText.buildTextSpan(post.text.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                                                                         maxLines: postModelTextMaxLines,
                                                                         style: MainFonts.postMainText(size: 16),
                                                                         minFontSize: 16,
                                                                         overflowReplacement: Column(
                                                                           // This widget will be replaced.
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                                           children: <Widget>[
-                                                                            Text(post.text,
+                                                                            CustomRichText(
+                                                                                wordsList: post.text.split(RegExp(r'(?<=\s|\n)')),
                                                                                 maxLines: maxLines,
                                                                                 overflow: TextOverflow.ellipsis,
-                                                                                style: MainFonts.postMainText(size: 16)),
+                                                                                defaultStyle:
+                                                                                MainFonts.postMainText(size: 16),
+                                                                                highlightStyle:
+                                                                                MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
                                                                             GestureDetector(
                                                                               onTap: () {
                                                                                 setState(() {
