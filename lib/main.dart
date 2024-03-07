@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
   static String emailPattern = '';
 
   static List<String> profileIconList = [];
+  static List<String> usernamesList = [];
 
   static int userId = -1;
   static String LOGIN_KEY = 'isLoggedIn';
@@ -73,6 +74,10 @@ class MyApp extends StatelessWidget {
     }
   }
 
+  getAllUsernames() async{
+    MyApp.usernamesList = await getUsernameList();
+  }
+
   getEmailPattern() async{
     RealTimeDbService realTimeDbService = RealTimeDbService();
     String? pattern = await realTimeDbService.getEmailAddressPattern();
@@ -93,6 +98,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    getAllUsernames();
     getEmailPattern();
     getAllImageURLs();
 

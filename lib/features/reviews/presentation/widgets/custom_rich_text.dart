@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:review_app/main.dart';
+
+import '../../../../utils/methods.dart';
 
 class CustomRichText extends StatelessWidget {
   final List<String> wordsList;
@@ -29,13 +32,18 @@ class CustomRichText extends StatelessWidget {
     );
   }
 
+  static isUsernameContains(String word) {
+    return MyApp.usernamesList.contains(word);
+  }
+
   static TextSpan buildTextSpan(List<String> wordsList, TextStyle defaultStyle, TextStyle? highlightStyle) {
+
     return TextSpan(
       children: [
         for (int i = 0; i < wordsList.length; i++) ...[
           TextSpan(
             text: wordsList[i],
-            style: (wordsList[i].startsWith('@') && trimString(wordsList[i]).toString().length != 1) ? highlightStyle : defaultStyle,
+            style: (wordsList[i].startsWith('@') && isUsernameContains(trimString(wordsList[i]).substring(1))) ? highlightStyle : defaultStyle,
           ),
         ],
       ],
