@@ -33,6 +33,21 @@ String getDepartmentFromEmail(String emailAddress){
   return department;
 }
 
+Future<List<String>> getUsernameList() async {
+  UsersRepo usersRepo = UsersRepo();
+  List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
+  List<User> usersList = data
+      .map((userData) => User.fromMap(userData))
+      .toList();
+  List<String> usernames = [];
+
+  for (User user in usersList) {
+    usernames.add(user.username);
+  }
+
+  return usernames;
+}
+
 Future<List<int>> getUserIdList() async {
   UsersRepo usersRepo = UsersRepo();
   List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();

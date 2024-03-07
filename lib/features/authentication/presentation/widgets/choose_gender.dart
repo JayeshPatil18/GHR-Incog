@@ -55,8 +55,28 @@ class ChooseGenderState extends State<ChooseGender> {
     }
   }
 
-  void setInitialDetails() {
-    VerifyPhoneNo.username = 'user${widget.length}';
+  void setInitialDetails() async{
+    List<String> usernames = await getUsernameList();
+
+    List<String> generatedUsernames = AppValues.generateUniqueUsernames(AppValues.randomUsername, 10000);
+
+    int i = 0;
+
+    while(i <= 100){
+      int randomNumber = getRandomNumber(generatedUsernames.length);
+      String genUsername = generatedUsernames[randomNumber];
+
+      if(!(usernames.contains(genUsername))){
+        VerifyPhoneNo.username = genUsername;
+        break;
+      }
+      i++;
+    }
+
+    if(VerifyPhoneNo.username.isEmpty){
+      VerifyPhoneNo.username = 'user${widget.length}';
+    }
+
     usernameController.text = VerifyPhoneNo.username;
 
     // Find gender of user using email address
