@@ -54,7 +54,7 @@ class RepliesModel extends StatefulWidget {
 class _RepliesModelState extends State<RepliesModel> {
   double defaultHeight = 28;
   int postModelTextMaxLines = 6;
-  int showMoreTextHeight = 0;
+  int showMoreTextHeight = 25;
   bool showMore = false;
 
   @override
@@ -63,7 +63,7 @@ class _RepliesModelState extends State<RepliesModel> {
     var horLineHeight = 28.0;
     int numLines = widget.text.split('\n').length;
 
-    double singleTextHeight = 24;
+    double singleTextHeight = 19;
     double imageHeight = 276;
 
     // Multipled with numLines
@@ -71,7 +71,7 @@ class _RepliesModelState extends State<RepliesModel> {
 
     // Only Text
     if((widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty) && widget.text.isNotEmpty){
-      horLineHeight = defaultHeight + ((singleTextHeight * ((showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)) - 1)) + 19);
+      horLineHeight = defaultHeight + ((singleTextHeight * ((showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)) - 1)) + 19) + (numLines > postModelTextMaxLines ? showMoreTextHeight : 0);
     }
     // Only Image
     else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isEmpty){
@@ -79,7 +79,7 @@ class _RepliesModelState extends State<RepliesModel> {
     }
     // Image + Text
     else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isNotEmpty){
-      horLineHeight = defaultHeight + ((singleTextHeight * ((showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)) - 1)) + 19) + imageHeight;
+      horLineHeight = defaultHeight + ((singleTextHeight * ((showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)) - 1)) + 19) + imageHeight + (numLines > postModelTextMaxLines ? showMoreTextHeight : 0);
     }
     // No one
     else{
