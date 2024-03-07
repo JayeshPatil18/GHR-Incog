@@ -327,11 +327,18 @@ class _ViewRepliesState extends State<ViewReplies> {
                         filled: true,
                         hintText: 'Add a reply...',
                         hintStyle: MainFonts.searchText(color: AppColors.transparentComponentColor),
-                        suffix: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, 'upload', arguments: TwoStringArg(widget.postId, postTextController.text));
-                            },
-                            child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,)),
+                          suffixIconConstraints: BoxConstraints(
+                            minWidth: 2,
+                            minHeight: 2,
+                          ),
+                          suffixIcon: InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, 'upload', arguments: TwoStringArg(widget.postId, postTextController.text));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.open_in_full_rounded, color: AppColors.transparentComponentColor,),
+                              )),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(
                               30),
