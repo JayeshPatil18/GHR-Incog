@@ -54,6 +54,7 @@ class RepliesModel extends StatefulWidget {
 class _RepliesModelState extends State<RepliesModel> {
   double defaultHeight = 28;
   int postModelTextMaxLines = 6;
+  int showMoreTextHeight = 19;
   bool showMore = false;
 
   @override
@@ -70,7 +71,7 @@ class _RepliesModelState extends State<RepliesModel> {
 
     // Only Text
     if((widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty) && widget.text.isNotEmpty){
-      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)));
+      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines))) + (numLines > postModelTextMaxLines ? showMoreTextHeight : 0);
     }
     // Only Image
     else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isEmpty){
@@ -78,7 +79,7 @@ class _RepliesModelState extends State<RepliesModel> {
     }
     // Image + Text
     else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isNotEmpty){
-      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines))) + imageHeight;
+      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines))) + imageHeight + (numLines > postModelTextMaxLines ? showMoreTextHeight : 0);
     }
     // No one
     else{
