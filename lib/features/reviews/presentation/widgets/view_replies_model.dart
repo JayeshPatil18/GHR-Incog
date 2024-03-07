@@ -52,6 +52,7 @@ class RepliesModel extends StatefulWidget {
 }
 
 class _RepliesModelState extends State<RepliesModel> {
+  double defaultHeight = 28;
   int postModelTextMaxLines = 6;
   bool showMore = false;
 
@@ -59,232 +60,234 @@ class _RepliesModelState extends State<RepliesModel> {
   Widget build(BuildContext context) {
     final maxLines = showMore ? 100 : postModelTextMaxLines;
     var horLineHeight = 28.0;
+    int numLines = widget.text.split('\n').length;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final span = TextSpan(text: widget.text, style: MainFonts.postMainText(size: 16));
-        final tp = TextPainter(text: span, textDirection: TextDirection.ltr);
-        tp.layout(maxWidth: constraints.maxWidth);
-        final numLines = tp.computeLineMetrics().length;
-        double singleTextHeight = 19;
+    double singleTextHeight = 19;
+    double imageHeight = 276;
 
-        // Multipled with numLines
-        // Set in way that, perfect line appear
-        if((widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty) && widget.text.isNotEmpty){
-          horLineHeight = 28 + (singleTextHeight * numLines);
-        } else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isEmpty){
-          horLineHeight = 28 + 276;
-        } else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isNotEmpty){
-          horLineHeight = 28 + (singleTextHeight * numLines) + 276;
-        } else{
-          horLineHeight = 28.0;
-        }
-        
-        return Column(
-          children: [
-            Container(
-              color: Colors.transparent,
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+    // Multipled with numLines
+    // Set in way that, perfect line appear
+
+    // Only Text
+    if((widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty) && widget.text.isNotEmpty){
+      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines)));
+    }
+    // Only Image
+    else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isEmpty){
+      horLineHeight = defaultHeight + imageHeight;
+    }
+    // Image + Text
+    else if((widget.mediaUrl != 'null' && widget.mediaUrl.isNotEmpty) && widget.text.isNotEmpty){
+      horLineHeight = defaultHeight + (singleTextHeight * (showMore ? numLines : (numLines > postModelTextMaxLines ? postModelTextMaxLines : numLines))) + imageHeight;
+    }
+    // No one
+    else{
+      horLineHeight = defaultHeight;
+    }
+
+    return Column(
+      children: [
+        Container(
+          color: Colors.transparent,
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          navigateToUserProfile(context, widget.userId);
-                        },
-                        child: Container(
-                          child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
-                              ? CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 18,
-                            child: ClipOval(
-                              child: Container(
+                  GestureDetector(
+                    onTap: () {
+                      navigateToUserProfile(context, widget.userId);
+                    },
+                    child: Container(
+                      child: widget.userProfileUrl == 'null' || widget.userProfileUrl.isEmpty
+                          ? CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 18,
+                        child: ClipOval(
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            color: AppColors.transparentComponentColor,
+                            child: Icon(Icons.person, color: AppColors.lightTextColor,),
+                          ),
+                        ),
+                      ) : CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 18,
+                        child: ClipOval(
+                            child: CustomImageShimmer(
+                                imageUrl: widget.userProfileUrl,
                                 width: double.infinity,
                                 height: double.infinity,
-                                color: AppColors.transparentComponentColor,
-                                child: Icon(Icons.person, color: AppColors.lightTextColor,),
-                              ),
+                                fit: BoxFit.cover)),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    width: 2,
+                    height: horLineHeight,
+                    color: AppColors.transparentComponentColor,
+                  )
+                ],
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            navigateToUserProfile(context, widget.userId);
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                  widget.username.length > 20
+                                      ? widget.username.substring(0, 20) + '...'
+                                      : widget.username,
+                                  style: MainFonts.lableText(
+                                      fontSize: 16, weight: FontWeight.w500)),
+                              SizedBox(width: 6),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: AppColors.transparentComponentColor,
+                                    borderRadius: BorderRadius.circular(3.0)),
+                                padding: EdgeInsets.only(
+                                    top: 2, bottom: 2, left: 3.5, right: 3.5),
+                                child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        color: AppColors.primaryColor30)),
+                              )
+                            ],
+                          ),
+                        ),
+                        Text(formatDateTime(widget.date),
+                            style: MainFonts.miniText(
+                                fontSize: 11, color: AppColors.lightTextColor)),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    widget.text.isEmpty ? SizedBox() : AutoSizeText.rich(
+                      CustomRichText.buildTextSpan(widget.text.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
+                      maxLines: postModelTextMaxLines,
+                      style: MainFonts.postMainText(size: 16),
+                      minFontSize: 16,
+                      overflowReplacement: Column(
+                        // This widget will be replaced.
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          CustomRichText(
+                              wordsList: widget.text.split(RegExp(r'(?<=\s|\n)')),
+                              maxLines: maxLines,
+                              overflow: TextOverflow.ellipsis,
+                              defaultStyle:
+                              MainFonts.postMainText(size: 16),
+                              highlightStyle:
+                              MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showMore = !showMore;
+                              });
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Text(showMore ? 'See less' : 'See more',
+                                  style: MainFonts.lableText(
+                                      color: AppColors.secondaryColor10,
+                                      fontSize: 14,
+                                      weight: FontWeight.bold)),
                             ),
-                          ) : CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 18,
-                            child: ClipOval(
+                          ),
+                        ],
+                      ),
+                    ),
+                    widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty ? SizedBox(height: 0) : Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(widget.mediaUrl , true));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 260,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
                                 child: CustomImageShimmer(
-                                    imageUrl: widget.userProfileUrl,
+                                    imageUrl: widget.mediaUrl,
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover)),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10, bottom: 10),
-                        width: 2,
-                        height: horLineHeight,
-                        color: AppColors.transparentComponentColor,
-                      )
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                navigateToUserProfile(context, widget.userId);
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                      widget.username.length > 20
-                                          ? widget.username.substring(0, 20) + '...'
-                                          : widget.username,
-                                      style: MainFonts.lableText(
-                                          fontSize: 16, weight: FontWeight.w500)),
-                                  SizedBox(width: 6),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: AppColors.transparentComponentColor,
-                                        borderRadius: BorderRadius.circular(3.0)),
-                                    padding: EdgeInsets.only(
-                                        top: 2, bottom: 2, left: 3.5, right: 3.5),
-                                    child: Text(widget.gender.isNotEmpty ? widget.gender[0].toUpperCase() : ' - ',
-                                        style: TextStyle(
-                                            fontSize: 11,
-                                            color: AppColors.primaryColor30)),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Text(formatDateTime(widget.date),
-                                style: MainFonts.miniText(
-                                    fontSize: 11, color: AppColors.lightTextColor)),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        widget.text.isEmpty ? SizedBox() : AutoSizeText.rich(
-                          CustomRichText.buildTextSpan(widget.text.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
-                          maxLines: postModelTextMaxLines,
-                          style: MainFonts.postMainText(size: 16),
-                          minFontSize: 16,
-                          overflowReplacement: Column(
-                            // This widget will be replaced.
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              CustomRichText(
-                                  wordsList: widget.text.split(RegExp(r'(?<=\s|\n)')),
-                                  maxLines: maxLines,
-                                  overflow: TextOverflow.ellipsis,
-                                  defaultStyle:
-                                  MainFonts.postMainText(size: 16),
-                                  highlightStyle:
-                                  MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10)),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showMore = !showMore;
-                                  });
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 8.0),
-                                  child: Text(showMore ? 'See less' : 'See more',
-                                      style: MainFonts.lableText(
-                                          color: AppColors.secondaryColor10,
-                                          fontSize: 14,
-                                          weight: FontWeight.bold)),
-                                ),
-                              ),
-                            ],
+                        GestureDetector(
+                          onTap: widget.onCommentClick,
+                          child: Container(
+                            child: widget.isCommented ? Image.asset('assets/icons/reply-fill.png',
+                                color: AppColors.secondaryColor10,
+                                height: 19,
+                                width: 19) : Image.asset('assets/icons/reply.png',
+                                color: AppColors.primaryColor30,
+                                height: 19,
+                                width: 19),
                           ),
                         ),
-                        widget.mediaUrl == 'null' || widget.mediaUrl.isEmpty ? SizedBox(height: 0) : Column(
-                          children: [
-                            const SizedBox(height: 16),
-                            GestureDetector(
-                              onTap: () {
-                                FocusScope.of(context).unfocus();
-                                Navigator.pushNamed(context, 'view_image', arguments: ImageViewArguments(widget.mediaUrl , true));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                height: 260,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CustomImageShimmer(
-                                        imageUrl: widget.mediaUrl,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover)),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: widget.onCommentClick,
-                              child: Container(
-                                child: widget.isCommented ? Image.asset('assets/icons/reply-fill.png',
-                                    color: AppColors.secondaryColor10,
+                        const SizedBox(width: 5),
+                        Text(widget.commentCount.toString(), style: MainFonts.postMainText(size: 13)),
+                        const SizedBox(width: 40),
+                        GestureDetector(
+                          onTap: () {
+                            ReviewRepo reviewRepo = ReviewRepo();
+                            reviewRepo.likeReview(widget.postId, widget.likedBy.contains(MyApp.userId));
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                child: widget.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
+                                    color: AppColors.heartColor,
                                     height: 19,
-                                    width: 19) : Image.asset('assets/icons/reply.png',
+                                    width: 19) : Image.asset('assets/icons/like.png',
                                     color: AppColors.primaryColor30,
                                     height: 19,
                                     width: 19),
                               ),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(widget.commentCount.toString(), style: MainFonts.postMainText(size: 13)),
-                            const SizedBox(width: 40),
-                            GestureDetector(
-                              onTap: () {
-                                ReviewRepo reviewRepo = ReviewRepo();
-                                reviewRepo.likeReview(widget.postId, widget.likedBy.contains(MyApp.userId));
-                              },
-                              child: Row(
-                                children: [
-                                  Container(
-                                    child: widget.likedBy.contains(MyApp.userId) ? Image.asset('assets/icons/like-fill.png',
-                                        color: AppColors.heartColor,
-                                        height: 19,
-                                        width: 19) : Image.asset('assets/icons/like.png',
-                                        color: AppColors.primaryColor30,
-                                        height: 19,
-                                        width: 19),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(widget.likedBy.length.toString(),
-                                      style: MainFonts.postMainText(size: 12)),
-                                ],
-                              ),
-                            ),
-                          ],
+                              const SizedBox(width: 5),
+                              Text(widget.likedBy.length.toString(),
+                                  style: MainFonts.postMainText(size: 12)),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 20)
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20)
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
-      }
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
