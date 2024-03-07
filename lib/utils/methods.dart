@@ -222,3 +222,54 @@ bool hastextoverflow(
   )..layout(minWidth: minwidth, maxWidth: maxwidth);
   return textpainter.didExceedMaxLines;
 }
+
+String timePassed(DateTime datetime, {bool full = true}) {
+  DateTime now = DateTime.now();
+  DateTime ago = datetime;
+  Duration dur = now.difference(ago);
+  int days = dur.inDays;
+  int years = (days / 365).toInt();
+  int months =  ((days - (years * 365)) / 30).toInt();
+  int weeks = ((days - (years * 365 + months * 30)) / 7).toInt();
+  int rdays = days - (years * 365 + months * 30 + weeks * 7).toInt();
+  int hours = (dur.inHours % 24).toInt();
+  int minutes = (dur.inMinutes % 60).toInt();
+  int seconds = (dur.inSeconds % 60).toInt();
+  var diff = {
+    "d":rdays,
+    "w":weeks,
+    "m":months,
+    "y":years,
+    "s":seconds,
+    "i":minutes,
+    "h":hours
+  };
+
+  Map str = {
+    'y':'year',
+    'm':'month',
+    'w':'week',
+    'd':'day',
+    'h':'hour',
+    'i':'minute',
+    's':'second',
+  };
+
+  str.forEach((k, v){
+    if (diff[k]! > 0) {
+      str[k] = diff[k].toString()  +  ' ' + v.toString() +  (diff[k]! > 1 ? 's' : '');
+    } else {
+      str[k] = "";
+    }
+  });
+  str.removeWhere((index, ele)=>ele == "");
+  List<String> tlist = [];
+  str.forEach((k, v){
+    tlist.add(v);
+  });
+  if(full){
+    return str.length > 0?tlist.join(", ") + " ago":"Just Now";
+  }else{
+    return str.length > 0?tlist[0] + " ago":"Just Now";
+  }
+}
