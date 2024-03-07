@@ -29,6 +29,19 @@ class RealTimeDbService {
     }
   }
 
+  Future<int> getAndUpdateMaxUserId() async {
+    try {
+      DatabaseReference databaseReference = FirebaseDatabase.instance.ref('maxuserid');
+      DatabaseEvent event = await databaseReference.once();
+      int maxUserId = int.parse(event.snapshot.value.toString()) + 1;
+      databaseReference.set(maxUserId);
+      return maxUserId;
+    } catch (error) {
+      print('Error fetching MaxUserId data: $error');
+      return -1;
+    }
+  }
+
   Future<String?> getLeaderboardValue() async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref('leaderboard');
     DatabaseEvent event = await databaseReference.once();

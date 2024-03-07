@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:review_app/features/authentication/data/repositories/users_repo.dart';
 import 'package:review_app/features/authentication/presentation/pages/signup.dart';
+import 'package:review_app/features/reviews/data/repositories/realtime_db_repo.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
 
 import '../../../../constants/boarder.dart';
@@ -273,7 +274,6 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
     try {
       UsersRepo usersRepo = UsersRepo();
       List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
-      int length = getMaxUId(data) + 1;
 
       int userId = -1;
       String username = 'null';
@@ -295,7 +295,10 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
       }
 
       if (userId == -1) {
-        return length;
+        RealTimeDbService realTimeDbService = RealTimeDbService();
+        int maxUserId = await realTimeDbService.getAndUpdateMaxUserId();
+
+        return maxUserId;
       } else {
         updateLoginStatus(true);
         loginDetails(userId.toString(), username);
