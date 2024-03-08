@@ -5,9 +5,9 @@ import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 // In use
 class NotificationFonts {
-  static TextStyle messageText({Color color = AppColors.textColor}) {
+  static TextStyle messageText({Color color = AppColors.textColor, double fontSize = 17.0}) {
     return TextStyle(
-        fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColor);
+        fontSize: fontSize, fontWeight: FontWeight.w400, color: AppColors.textColor);
   }
 
   static TextStyle agoText() {

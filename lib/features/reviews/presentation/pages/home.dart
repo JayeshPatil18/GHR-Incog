@@ -473,9 +473,12 @@ class _HomePageState extends State<HomePage> {
                           height: 34, width: 34),
                     ),
 
-                    Image.asset('assets/icons/ghrp.png',
-                        color: AppColors.primaryColor30,
-                        height: 49, width: 49),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                      child: Image.asset('assets/icons/ghrp.png',
+                          color: AppColors.primaryColor30,
+                          height: 49, width: 49),
+                    ),
 
                     // **********************************************************
                     // notification comment
@@ -488,7 +491,8 @@ class _HomePageState extends State<HomePage> {
                           color: AppColors.primaryColor30,
                           height: AppIconSize.appIcons,
                           width: AppIconSize.appIcons),
-                    )
+                    ),
+                    // SizedBox(width: 35)
                     // **********************************************************
                   ],
                 ),

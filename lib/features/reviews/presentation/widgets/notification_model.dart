@@ -9,14 +9,14 @@ import '../../../../utils/fonts.dart';
 import '../../../../utils/methods.dart';
 
 class NotificationModel extends StatefulWidget {
-  final String profileUrl;
-  final String name;
+  final String message;
+  final String msgType;
   final String ago;
 
   const NotificationModel(
       {super.key,
-      required this.profileUrl,
-      required this.name,
+      required this.message,
+      required this.msgType,
       required this.ago,
       });
 
@@ -29,54 +29,50 @@ class _NotificationModelState extends State<NotificationModel> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 14),
-      padding: EdgeInsets.only(right: 10, top: 10, bottom: 10),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppBoarderRadius.userModelRadius),
-          color: AppColors.primaryColor30,
-          boxShadow: ContainerShadow.boxShadow),
-      child: Column(
+          borderRadius: BorderRadius.circular(AppBoarderRadius.userModelRadius)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Text(widget.ago, style: NotificationFonts.agoText())),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    children: [
-                      Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.textColor,
-                              width: 1.5,
-                            ),
-                          ),
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(widget.profileUrl),
-                            radius: 40,
-                          )),
-                      SizedBox(width: 20),
-                      Flexible(
-                        child: Text(
-                          widget.name,
-                          style: NotificationFonts.messageText(),
-                        ),
-                      ),
-                    ],
-                  ),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // CircleAvatar(
+                //   backgroundImage: NetworkImage(widget.profileUrl),
+                //   radius: 14,
+                // ),
+                widget.msgType.contains('like') ? Image.asset('assets/icons/like-fill.png',
+                    color: AppColors.heartColor,
+                    height: 30,
+                    width: 30) : widget.msgType.contains('reply') ? Image.asset('assets/icons/reply-fill.png',
+                    color: AppColors.secondaryColor10,
+                    height: 30,
+                    width: 30) : widget.msgType.contains('rank') ? Image.asset('assets/icons/rank-fill.png',
+                    color: AppColors.starColor,
+                    height: 30,
+                    width: 30) : Image.asset('assets/icons/user.png',
+                    color: AppColors.iconLighterColor,
+                    height: 30,
+                    width: 30),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.message,
+                      style: NotificationFonts.messageText(),
+                    ),
+                    SizedBox(height: 6),
+                    Text(widget.ago, style: MainFonts.miniText(
+                        fontSize: 11, color: AppColors.lightTextColor))
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Align(
-             alignment: Alignment.bottomRight,
-            child: Icon(Icons.close, size: 16, color: AppColors.iconColor,))
+          Icon(Icons.close_rounded, size: 16, color: AppColors.iconColor,)
         ],
       ),
     );
