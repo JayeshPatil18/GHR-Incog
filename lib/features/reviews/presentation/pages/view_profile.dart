@@ -243,20 +243,25 @@ class _ViewProfileState extends State<ViewProfile> {
                                                             }
                                                           }
 
-                                                          return PostModel(
-                                                            commentCount: commentCount,
-                                                            isCommented: isCommented,
-                                                            date: post.date,
-                                                            likedBy: post.likedBy,
-                                                            mediaUrl: post.mediaUrl,
-                                                            gender: post.gender,
-                                                            userProfileUrl:
-                                                            post.userProfileUrl,
-                                                            parentId: post.parentId,
-                                                            postId: post.postId,
-                                                            text: post.text,
-                                                            userId: post.userId,
-                                                            username: post.username,
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.pushNamed(context, 'view_post', arguments: StringArguments(post.postId));
+                                                            },
+                                                            child: PostModel(
+                                                              commentCount: commentCount,
+                                                              isCommented: isCommented,
+                                                              date: post.date,
+                                                              likedBy: post.likedBy,
+                                                              mediaUrl: post.mediaUrl,
+                                                              gender: post.gender,
+                                                              userProfileUrl:
+                                                              post.userProfileUrl,
+                                                              parentId: post.parentId,
+                                                              postId: post.postId,
+                                                              text: post.text,
+                                                              userId: post.userId,
+                                                              username: post.username,
+                                                            ),
                                                           );
                                                         });
                                                   } else{
