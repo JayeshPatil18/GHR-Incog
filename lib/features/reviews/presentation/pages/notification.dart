@@ -145,7 +145,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return NotificationModel(
-                        message: 'Henry Tyson',
+                        message: '@user4 Tyson',
                         msgType: 'rank',
                         ago: '10 hours ago');
                   },

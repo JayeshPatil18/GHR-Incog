@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/constants/boarder.dart';
 import 'package:review_app/constants/color.dart';
+import 'package:review_app/features/reviews/presentation/widgets/custom_rich_text.dart';
 import 'package:review_app/features/reviews/presentation/widgets/shadow.dart';
 
 import '../../../../utils/fonts.dart';
@@ -60,10 +61,7 @@ class _NotificationModelState extends State<NotificationModel> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.message,
-                      style: NotificationFonts.messageText(),
-                    ),
+                    RichText(text: CustomRichText.buildTextSpan(widget.message.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10))),
                     SizedBox(height: 6),
                     Text(widget.ago, style: MainFonts.miniText(
                         fontSize: 11, color: AppColors.lightTextColor))
