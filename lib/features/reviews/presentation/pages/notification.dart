@@ -38,6 +38,7 @@ import '../../domain/entities/upload_review.dart';
 import '../../domain/entities/user.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
+import '../widgets/dialog_box.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/image_shimmer.dart';
 import '../widgets/notification_model.dart';
@@ -101,28 +102,21 @@ class _NotificationPageState extends State<NotificationPage> {
                       onTap: (() {
                         showDialog<String>(
                           context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            title: const Text('Clear all'),
-                            content: const Text(
-                                'All notifications will be removed.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'OK');
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
+                          builder: (BuildContext context) {
+                            return CustomDialogBox(title: Text('Clear all', style: TextStyle(fontSize: 18)), content: Text('All notifications will be removed.', textAlign: TextAlign.center), textButton1: TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                UsersRepo repoObj = UsersRepo();
+                                repoObj.removeAllNotifications();
+                                Navigator.pop(context, 'OK');
+                              },
+                            ), textButton2: TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context, 'Cancel');
+                              },
+                            ));
+                          }
                         );
                       }),
                       child: Container(

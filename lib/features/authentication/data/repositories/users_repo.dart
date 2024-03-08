@@ -241,4 +241,27 @@ class UsersRepo {
     }
     return 0;
   }
+
+  removeAllNotifications() async {
+
+    List<String>? details = await getLoginDetails();
+    int userId = -1;
+
+    if (details != null) {
+      userId = int.parse(details[0]);
+    }
+
+    UsersRepo usersRepo = UsersRepo();
+    List<Map<String, dynamic>> data = await usersRepo.getUserCredentials();
+
+    for(var user in data){
+      if (user['userid'] == userId) {
+        user['notifications'] = [];
+      }
+    }
+
+    await userFireInstance.doc('usersdoc').update({
+      'userslist': data
+    });
+  }
 }
