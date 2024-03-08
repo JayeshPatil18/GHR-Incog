@@ -1,3 +1,5 @@
+import 'package:review_app/features/reviews/domain/entities/notification.dart';
+
 class User {
   final String bio;
   final String email;
@@ -8,6 +10,7 @@ class User {
   final String status;
   final int uid;
   final String username;
+  final List<MyNotification>? notifications;
 
   User({
     required this.bio,
@@ -19,9 +22,23 @@ class User {
     required this.status,
     required this.uid,
     required this.username,
+    this.notifications,
   });
 
   factory User.fromMap(Map<String, dynamic> map) {
+    List<dynamic>? notificationsList = map['notifications'];
+    List<MyNotification>? myNotifications;
+
+    if (notificationsList != null) {
+      myNotifications = (notificationsList)
+          .map((notificationMap) => MyNotification(
+        message: notificationMap['message'] ?? '',
+        msgType: notificationMap['msgtype'] ?? '',
+        date: notificationMap['date'] ?? '',
+      ))
+          .toList();
+    }
+
     return User(
       bio: map['bio'] ?? '',
       email: map['email'] ?? '',
@@ -32,6 +49,7 @@ class User {
       status: map['status'] ?? '',
       uid: map['userid'] ?? 0,
       username: map['username'] ?? '',
+      notifications: myNotifications,
     );
   }
 
@@ -46,6 +64,7 @@ class User {
       'status': status,
       'userid': uid,
       'username': username,
+      'notifications': notifications,
     };
   }
 }

@@ -61,9 +61,9 @@ class _NotificationModelState extends State<NotificationModel> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(text: CustomRichText.buildTextSpan(widget.message.split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10))),
+                    RichText(text: CustomRichText.buildTextSpan((widget.message.length > 50 ? ('${widget.message.substring(0, 49)}..') : widget.message).split(RegExp(r'(?<=\s|\n)')), MainFonts.postMainText(size: 16), MainFonts.postMainText(size: 16, color: AppColors.secondaryColor10))),
                     SizedBox(height: 6),
-                    Text(widget.ago, style: MainFonts.miniText(
+                    Text(timePassed(DateTime.parse(widget.ago), full: false), style: MainFonts.miniText(
                         fontSize: 11, color: AppColors.lightTextColor))
                   ],
                 ),

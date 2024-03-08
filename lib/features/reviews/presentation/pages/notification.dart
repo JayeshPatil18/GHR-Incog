@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:review_app/constants/values.dart';
+import 'package:review_app/features/reviews/domain/entities/notification.dart';
 import 'package:review_app/features/reviews/presentation/widgets/circle_button.dart';
 import 'package:review_app/features/reviews/presentation/widgets/line.dart';
 import 'package:review_app/features/reviews/presentation/widgets/snackbar.dart';
@@ -26,6 +27,7 @@ import '../../../../main.dart';
 import '../../../../utils/fonts.dart';
 import '../../../../utils/method1.dart';
 import '../../../../utils/methods.dart';
+import '../../../authentication/data/repositories/users_repo.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../data/repositories/review_repo.dart';
 import '../../domain/entities/id_argument.dart';
@@ -33,6 +35,7 @@ import '../../domain/entities/image_argument.dart';
 import '../../domain/entities/string_argument.dart';
 import '../../domain/entities/two_string_argument.dart';
 import '../../domain/entities/upload_review.dart';
+import '../../domain/entities/user.dart';
 import '../bloc/upload_review/upload_review_bloc.dart';
 import '../bloc/upload_review/upload_review_event.dart';
 import '../widgets/dropdown.dart';
@@ -91,7 +94,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               color: AppColors.textColor, size: 20),
                         ),
                         SizedBox(width: 10),
-                        Text('View Post', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
+                        Text('Notifications', style: MainFonts.pageTitleText(fontSize: 22, weight: FontWeight.w400)),
                       ],
                     ),
                     GestureDetector(
@@ -124,7 +127,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       }),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: AppColors.transparentComponentColor.withOpacity(0.05),
+                          color: AppColors.transparentComponentColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(
                               30),
                         ),
@@ -139,17 +142,46 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  padding:
-                  EdgeInsets.only(top: 10, left: 14, right: 14, bottom: 90),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return NotificationModel(
-                        message: '@user4 Tyson',
-                        msgType: 'rank',
-                        ago: '10 hours ago');
-                  },
-                ),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: UsersRepo.userFireInstance.snapshots(),
+                    builder: (context, snapshot) {
+                      final documents;
+                      documents = snapshot.data?.docs;
+                      List<Map<String, dynamic>> usersData = [];
+                      User? user;
+
+                      if (documents != null && documents.isNotEmpty) {
+                        final firstDocument = documents[0];
+
+                        if (firstDocument != null &&
+                            firstDocument.data() != null &&
+                            firstDocument.data().containsKey('userslist')) {
+                          usersData = List<Map<String, dynamic>>.from(
+                              firstDocument.data()['userslist']);
+
+                          List<User> usersList =
+                          usersData.map((userData) => User.fromMap(userData)).toList();
+
+                          List<User> users =
+                          usersList.where((user) => user.uid == MyApp.userId).toList();
+                          user = users.first;
+
+                          List<MyNotification>? notifications = user.notifications;
+
+                          if(notifications != null){
+
+                            return ListView.builder(
+                              itemCount: notifications.length,
+                              itemBuilder: (context, value) {
+                                MyNotification notification = notifications[value];
+                                return NotificationModel(message: notification.message, msgType: notification.msgType, ago: notification.date);
+                              },
+                            );
+                          }
+                        }
+                      }
+                      return Center(child: Text('No Notification', style: MainFonts.filterText(color: AppColors.lightTextColor)));
+                    }),
               )
             ],
           ),

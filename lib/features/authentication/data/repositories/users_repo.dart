@@ -45,6 +45,7 @@ class UsersRepo {
             'score': 0,
             'username': username,
             'status': deviceId,
+            'notifications': [],
           },
         ]),
       });
