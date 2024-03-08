@@ -166,7 +166,7 @@ class _NotificationPageState extends State<NotificationPage> {
                           usersList.where((user) => user.uid == MyApp.userId).toList();
                           user = users.first;
 
-                          List<MyNotification>? notifications = user.notifications;
+                          List<MyNotification>? notifications = List.from(user.notifications!.reversed);
 
                           if(notifications != null && notifications.isNotEmpty){
 
