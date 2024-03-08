@@ -168,7 +168,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
                           List<MyNotification>? notifications = user.notifications;
 
-                          if(notifications != null){
+                          if(notifications != null && notifications.isNotEmpty){
 
                             return ListView.builder(
                               itemCount: notifications.length,
