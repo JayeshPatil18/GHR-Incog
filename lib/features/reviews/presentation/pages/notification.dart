@@ -174,7 +174,8 @@ class _NotificationPageState extends State<NotificationPage> {
                               itemCount: notifications.length,
                               itemBuilder: (context, value) {
                                 MyNotification notification = notifications[value];
-                                return NotificationModel(message: notification.message, msgType: notification.msgType, ago: notification.date);
+
+                                return NotificationModel(message: notification.message, msgType: notification.msgType, ago: notification.date, postId: notification.postId);
                               },
                             );
                           }

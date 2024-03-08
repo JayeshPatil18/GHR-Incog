@@ -13,6 +13,19 @@ class ReviewRepo {
   static final reviewFireInstance = FirebaseFirestore.instance
                             .collection('posts');
 
+  Future<bool> checkExist(String docID) async {
+    bool exist = false;
+    try {
+      await _db.doc("posts/$docID").get().then((doc) {
+        exist = doc.exists;
+      });
+      return exist;
+    } catch (e) {
+      // If any error
+      return false;
+    }
+  }
+
   Future<bool> likeReview(String postId, bool isLiked) async {
 
     try {

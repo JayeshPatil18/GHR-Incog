@@ -35,6 +35,7 @@ class User {
         message: notificationMap['message'] ?? '',
         msgType: notificationMap['msgtype'] ?? '',
         date: notificationMap['date'] ?? '',
+        postId: notificationMap['postid'] ?? '',
       ))
           .toList();
     }
