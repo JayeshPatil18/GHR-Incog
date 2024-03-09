@@ -213,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<bool> sendOtp(String email) async {
     SignUpPage.emailAuth.setConfig(
         appEmail: "jp7470484@gmail.com",
-        appName: "Email OTP",
+        appName: "GHR Incog OTP",
         userEmail: email,
         otpLength: 6,
         otpType: OTPType.digitsOnly);

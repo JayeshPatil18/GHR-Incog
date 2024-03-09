@@ -262,6 +262,10 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
   // }
 
   Future<bool> verifyOtp(String otp) async {
+    // Test Credentials
+    if(widget.email == "dfsadrf@gmail.com" && otp == "008900"){
+      return true;
+    }
     if (await SignUpPage.emailAuth.verifyOTP (otp: otp)
     == true) {
     return true;
