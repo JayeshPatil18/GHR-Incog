@@ -130,7 +130,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: mainAppColor),
           debugShowCheckedModeBanner: false,
-          title: 'Confession App',
+          title: 'GHR Incog',
           builder: (context, widget) => UpgradeAlert(
             upgrader: Upgrader(
               canDismissDialog: false,

@@ -67,7 +67,7 @@ class _ViewPostState extends State<ViewPost> {
     switch (index) {
       case 0:
         if ((input == null || input.isEmpty) && _selectedMedia == null) {
-          return 'Write confession';
+          return 'Write anonymous post';
         }
         break;
 
@@ -685,7 +685,7 @@ class _ViewPostState extends State<ViewPost> {
                                       onPressed: () async {
 
                                         if ((postTextController.text.trim().length > 1) || _selectedMedia != null) {
-                                          // Post Confession
+                                          // Post anonymous post
                                           BlocProvider.of<UploadReviewBloc>(context)
                                               .add(UploadClickEvent(mediaSelected: null, postText: postTextController.text.trim(), parentId: widget.postId,
                                           ));

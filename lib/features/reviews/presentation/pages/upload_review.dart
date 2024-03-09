@@ -57,7 +57,7 @@ class _UploadReviewState extends State<UploadReview> {
     switch (index) {
       case 0:
         if ((input == null || input.isEmpty) && _selectedMedia == null) {
-          return 'Write confession';
+          return 'Write anonymous post';
         }
         break;
 
@@ -202,7 +202,7 @@ class _UploadReviewState extends State<UploadReview> {
                                     bool isValid =
                                         _formKey.currentState!.validate();
                                     if (isValid && (postTextController.text.trim().length > 1) || _selectedMedia != null) {
-                                      // Post Confession
+                                      // Post anonymous post
                                       FocusScope.of(context).unfocus();
                                       BlocProvider.of<UploadReviewBloc>(context)
                                           .add(UploadClickEvent(mediaSelected: _selectedMedia, postText: postTextController.text.trim(), parentId: widget.parentId,
