@@ -52,6 +52,10 @@ class EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _validateInput(String? input, int index) {
+    if (input != null) {
+      input = input.trim();
+    }
+
     switch (index) {
 
       case 0:

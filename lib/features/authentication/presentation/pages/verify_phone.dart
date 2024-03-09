@@ -48,6 +48,11 @@ class _VerifyPhoneNoState extends State<VerifyPhoneNo> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? _validateInput(String? input, int index) {
+
+    if (input != null) {
+      input = input.trim();
+    }
+
     switch (index) {
       case 0:
         if (input == null || input.isEmpty) {

@@ -75,6 +75,7 @@ dependencies:
   vokativ: ^1.0.3
   webview_flutter: ^4.2.2
   url_launcher: ^6.1.11
+  animated_snack_bar: ^0.3.1
 
 
 dev_dependencies:
