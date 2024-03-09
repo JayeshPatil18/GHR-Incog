@@ -25,6 +25,7 @@ import '../../../../constants/cursor.dart';
 import '../../../../constants/values.dart';
 import '../../../../utils/dropdown_items.dart';
 import '../../../../utils/fonts.dart';
+import '../../../../utils/method1.dart';
 import '../../../../utils/methods.dart';
 import '../../data/repositories/category_brand_repo.dart';
 import '../../domain/entities/string_argument.dart';
@@ -194,9 +195,9 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Container(
                       alignment: AlignmentDirectional.centerStart,
-                      padding: EdgeInsets.only(top: 28, left: 20, right: 20),
+                      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                       width: double.infinity,
-                      height: 100,
+                      height: 80,
                       child: Text('Settings', style: MainFonts.pageTitleText()),
                     ),
                     InkWell(
@@ -234,8 +235,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       color: AppColors.transparentComponentColor,
-                      width: double.infinity,
-                      height: 1,
+                      child: Line(),
                     ),
                     InkWell(
                       onTap: () {
@@ -272,8 +272,44 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       color: AppColors.transparentComponentColor,
-                      width: double.infinity,
-                      height: 1,
+                      child: Line(),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('aboutus');
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.home_work_outlined,
+                                    size: 20,
+                                    color: AppColors.primaryColor30,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    child: Text('About Us',
+                                        style: MainFonts.settingLabel()),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 20,
+                                color: AppColors.primaryColor30,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      color: AppColors.transparentComponentColor,
+                      child: Line(),
                     ),
                     InkWell(
                       onTap: () {
@@ -310,8 +346,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       color: AppColors.transparentComponentColor,
-                      width: double.infinity,
-                      height: 1,
+                      child: Line(),
                     ),
                     InkWell(
                       onTap: () {
@@ -347,8 +382,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       color: AppColors.transparentComponentColor,
-                      width: double.infinity,
-                      height: 1,
+                      child: Line(),
                     ),
                     InkWell(
                       onTap: () {
@@ -401,6 +435,33 @@ class _HomePageState extends State<HomePage> {
                           )),
                     ),
                   ],
+                ),
+                InkWell(
+                  onTap: () {
+                    launchDeveloperURL(context);
+                  },
+                  child: Container(
+                      margin: EdgeInsets.only(bottom: 80),
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.code,
+                                size: 20,
+                                color: AppColors.transparentComponentColor,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text('Developer Info',
+                                    style: MainFonts.filterText(color: AppColors.transparentComponentColor)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
                 ),
               ],
             ),

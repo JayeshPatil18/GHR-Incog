@@ -1,6 +1,8 @@
 import 'dart:math';
 
 class AppValues {
+  static String ghrIncogWebUrl = 'https://ghr-incog.vercel.app/';
+
   static int maxRating = 5;
   static var progresBarWidth = 4.0;
   static int closeDelay = 400;

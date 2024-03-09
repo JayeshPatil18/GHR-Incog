@@ -6,14 +6,14 @@ import '../../../../constants/color.dart';
 import '../../../../constants/values.dart';
 import '../../../../utils/fonts.dart';
 
-class PrivacyPolicyPage extends StatefulWidget {
-  const PrivacyPolicyPage({super.key});
+class AboutUsPage extends StatefulWidget {
+  const AboutUsPage({super.key});
 
   @override
-  State<PrivacyPolicyPage> createState() => _PrivacyPolicyPageState();
+  State<AboutUsPage> createState() => _AboutUsPageState();
 }
 
-class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
+class _AboutUsPageState extends State<AboutUsPage> {
   var controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setBackgroundColor(const Color(0x00000000))
@@ -33,7 +33,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
         },
       ),
     )
-    ..loadRequest(Uri.parse('${AppValues.ghrIncogWebUrl}/privacypolicy.html'));
+    ..loadRequest(Uri.parse(AppValues.ghrIncogWebUrl));
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
               Container(
                 alignment: Alignment.centerLeft,
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+                EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -62,7 +62,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                               color: AppColors.textColor, size: 20),
                         ),
                         SizedBox(width: 10),
-                        Text('Privacy Policy',
+                        Text('About Us',
                             style: MainFonts.pageTitleText(
                                 fontSize: 22, weight: FontWeight.w400)),
                       ],

@@ -14,6 +14,8 @@ class AppColors {
   static const gradientStart = Color(0xFF0A3B5D);
   static const gradientMid = Color(0xFF03121c);
 
+  static const splashScreen = Color(0xFF0E5382);
+
   static const backgroundColor60 = Color(0xFF060606);
   static const primaryColor30 = Color(0xFFFFFFFF);
   static const secondaryColor10 = Color(0xFF1D9BF0);
