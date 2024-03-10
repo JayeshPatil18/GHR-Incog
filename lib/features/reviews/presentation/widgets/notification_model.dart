@@ -93,7 +93,7 @@ class _NotificationModelState extends State<NotificationModel> {
                 ],
               ),
             ),
-            Icon(Icons.close_rounded, size: 16, color: AppColors.iconColor,)
+            // Icon(Icons.close_rounded, size: 16, color: AppColors.iconColor,)
           ],
         ),
       ),

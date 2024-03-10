@@ -32,6 +32,10 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // transparent status bar
   ));
+
+  // Also for Bottom Android Button
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+
   // remove in production
   // await Upgrader.clearSavedSettings();
 

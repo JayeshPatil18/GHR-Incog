@@ -28,6 +28,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
 
+  bool isLoading = false;
+
   final FocusNode _focusEmailNode = FocusNode();
   bool _hasEmailFocus = false;
 
@@ -107,24 +109,39 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
-                  bool isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    bool isOtpSent = await sendOtp(emailController.text.trim());
-                    if (isOtpSent) {
-                      FocusScope.of(context).unfocus();
-                      mySnackBarShow(context, 'OTP has been sent.');
 
-                      Future.delayed(const Duration(milliseconds: 300), () {
-                        Navigator.of(context).pushNamed('verifyphone',
-                            arguments:
-                                VerifyArguments(emailController.text.trim()));
-                      });
-                    } else {
-                      mySnackBarShow(context, 'Oops, OTP send failed.');
+                  if(!isLoading){
+                    setIsLoading(true);
+
+                    bool isValid = _formKey.currentState!.validate();
+                    if (isValid) {
+                      bool isOtpSent = await sendOtp(emailController.text.trim());
+                      if (isOtpSent) {
+                        FocusScope.of(context).unfocus();
+                        mySnackBarShow(context, 'OTP has been sent.');
+
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          Navigator.of(context).pushNamed('verifyphone',
+                              arguments:
+                              VerifyArguments(emailController.text.trim()));
+                        });
+                      } else {
+                        mySnackBarShow(context, 'Oops, OTP send failed.');
+                      }
                     }
+
+                    setIsLoading(false);
                   }
                 },
-                child: Text('Continue', style: AuthFonts.authButtonText())),
+                child: isLoading == false ? Text('Continue', style: AuthFonts.authButtonText()) : SizedBox(
+              width: 30,
+              height: 30,
+              child: Center(
+                  child: CircularProgressIndicator(
+                      strokeWidth:
+                      AppValues.progresBarWidth,
+                      color:
+                      AppColors.primaryColor30)))),
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -213,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<bool> sendOtp(String email) async {
     SignUpPage.emailAuth.setConfig(
         appEmail: "jp7470484@gmail.com",
-        appName: "GHR Incog OTP",
+        appName: "GHR Incog",
         userEmail: email,
         otpLength: 6,
         otpType: OTPType.digitsOnly);
@@ -223,5 +240,11 @@ class _SignUpPageState extends State<SignUpPage> {
     } else {
       return false;
     }
+  }
+
+  setIsLoading(bool isLoadingVal) {
+    setState(() {
+      isLoading = isLoadingVal;
+    });
   }
 }
