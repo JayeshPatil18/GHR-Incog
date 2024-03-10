@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(gradient: AppColors.mainGradient),
-            margin: EdgeInsets.only(top: 26),
+            padding: EdgeInsets.only(top: 26),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
