@@ -15,7 +15,7 @@ Welcome to **GHR Incog**, the ultimate platform for fearless college conversatio
 
 </br>
 
-*Available Soon.*
+*Available on Play Store.* [Click here](https://play.google.com/store/apps/details?id=com.apps.confession)
 
 ![Available Soon](https://github.com/JayeshPatil18/GHR-Icog/blob/master/ghr-incog.png)
 
