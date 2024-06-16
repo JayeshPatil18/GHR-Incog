@@ -34,6 +34,7 @@ Welcome to **GHR Incog**, the ultimate platform for fearless college conversatio
 ## Technology Used
 
 - **Flutter**: For a seamless, beautiful cross-platform mobile application.
+- **Dart**: For a flutter, dart language used to build UI and Logic.
 - **Firebase**: Ensuring robust and scalable backend services including authentication, database, and cloud storage.
 - **Node.js**: For backend REST API services to maintain user records.
 
