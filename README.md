@@ -7,7 +7,7 @@
   </a>
 </div>
 <a href="https://play.google.com/store/apps/details?id=com.apps.confession">
-    <img alt="Play Store" src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white" style="margin-left: 10px;">
+    <img alt="Play Store" src="https://e7.pngegg.com/pngimages/733/638/png-clipart-google-play-text-google-play-android-app-store-google-play-text-logo.png" style="margin-left: 10px;">
   </a>
 </br>
 
