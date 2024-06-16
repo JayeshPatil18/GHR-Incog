@@ -1,14 +1,14 @@
 <div align="left">
   <h1>GHR Incog 🚀 - Flutter App</h1>
+  <a href="https://play.google.com/store/apps/details?id=com.apps.confession">
+    <img alt="Play Store" src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=green" style="margin-left: 10px;">
+  </a>
   <img alt="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" style="margin-left: 10px;">
   <img alt="Firebase" src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" style="margin-left: 10px;">
   <a href="https://github.com/JayeshPatil18/GHR-Icog">
     <img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" style="margin-left: 10px;">
   </a>
 </div>
-<a href="https://play.google.com/store/apps/details?id=com.apps.confession">
-    <img alt="Play Store" src="https://e7.pngegg.com/pngimages/733/638/png-clipart-google-play-text-google-play-android-app-store-google-play-text-logo.png" style="margin-left: 10px;">
-  </a>
 </br>
 
 Welcome to **GHR Incog**, the ultimate platform for fearless college conversations. Unlock the power of anonymous expression with GHR Incog! Tailored for G. H. Raisoni College of Engineering and Management, Pune, this mobile application redefines how college students communicate.
