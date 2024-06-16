@@ -1,16 +1,86 @@
-# review_app
+<div align="left">
+  <h1>GHR Incog 🚀 - Flutter App</h1>
+  <img alt="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" style="margin-left: 10px;">
+  <img alt="Firebase" src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" style="margin-left: 10px;">
+  <a href="https://github.com/JayeshPatil18/GHR-Icog">
+    <img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" style="margin-left: 10px;">
+  </a>
+</div>
+</br>
 
-A new Flutter project.
+Welcome to **GHR Incog**, the ultimate platform for fearless college conversations. Unlock the power of anonymous expression with GHR Incog! Tailored for G. H. Raisoni College of Engineering and Management, Pune, this mobile application redefines how college students communicate.
+
+</br>
+
+*Available Soon.*
+
+![Available Soon](https://github.com/JayeshPatil18/GHR-Icog/blob/master/ghr-incog.png)
+
+## Description
+
+**GHR Incog** empowers your voice and embraces anonymity. This platform is designed for college students to share their thoughts and opinions without revealing their identity. With a focus on G. H. Raisoni College of Engineering and Management, Pune, it enables students to engage in open and honest conversations.
+
+## Features
+
+- **Search Posts and Users**: Find specific posts and users quickly with robust search functionality.
+- **Anonymous Profile**: Maintain your anonymity while expressing your thoughts.
+- **Post and Comment**: Share your experiences and engage with others through posts and comments.
+- **Leaderboard**: Discover the most active contributors in our community.
+- **Get Posts from College Students**: View posts shared by fellow college students.
+
+## Technology Used
+
+- **Flutter**: For a seamless, beautiful cross-platform mobile application.
+- **Firebase**: Ensuring robust and scalable backend services including authentication, database, and cloud storage.
+- **Node.js**: For backend REST API services to maintain user records.
+
+## Project Structure
+
+We follow a clean architecture approach to ensure a scalable and maintainable codebase. Below is an overview of our project structure:
+
+```plaintext
+lib
+│
+├── constants
+│   ├── utils
+│   ├── routes
+│
+├── features
+│   ├── authentication
+│   │   ├── data
+│   │   │   └── repository
+│   │   ├── domain
+│   │   │   └── entities
+│   │   ├── presentation
+│   │       ├── bloc
+│   │       ├── provider
+│   │       ├── pages
+│   │       └── widgets
+│   │
+│   ├── post
+│       ├── data
+│       │   └── repository
+│       ├── domain
+│       │   └── entities
+│       ├── presentation
+│           ├── bloc
+│           ├── provider
+│           ├── pages
+│           └── widgets
+```
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with **Review House**, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/JayeshPatil18/GHR-Incog.git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. **Install dependencies**:
+   ```bash
+   flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Run applicatoin**:
+   ```bash
+   flutter run
